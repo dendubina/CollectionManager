@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,7 +11,33 @@
 </head>
 <body>
     <header>
-        
+        <nav class="navbar navbar-dark bg-dark custom-navbar">
+            <div class="container-fluid">
+                <div class="left-header-block">
+                    @Html.ActionLink("Users Manager", "Index", "Home", null, new { @class = "btn btn-outline-primary main-page-link" })
+                </div>
+                <div class="is-sign-in-block">
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            var userName = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+
+                            if (userName is not null)
+                            {
+                                <div class="hello-block"><span style="color: seagreen">Hello, @userName.Value</span></div>
+                            }
+
+                            @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Sign In", "SignIn", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                            @Html.ActionLink("Sign Up", "SignUp", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                        }
+                    }
+                </div>
+            </div>
+        </nav>
     </header>
 <div class="container">
     <main role="main" class="pb-3">

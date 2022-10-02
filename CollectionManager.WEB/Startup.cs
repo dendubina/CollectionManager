@@ -22,6 +22,12 @@ namespace CollectionManager.WEB
 
             services.ConfigureUnitOfWork();
 
+            services.ConfigureAuth(Configuration);
+
+            services.ConfigureIdentity();
+
+            services.AddAuthorization();
+
             services.AddControllersWithViews();
         }
 
