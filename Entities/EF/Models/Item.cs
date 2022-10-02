@@ -24,5 +24,7 @@ namespace Entities.EF.Models
         public ICollection<Like> Likes { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<CustomFieldValue> CustomFieldsValues { get; set; }
     }
 }

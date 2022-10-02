@@ -22,6 +22,8 @@ namespace CollectionManager.WEB
 
             services.ConfigureUnitOfWork();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.ConfigureAuth(Configuration);
 
             services.ConfigureIdentity();

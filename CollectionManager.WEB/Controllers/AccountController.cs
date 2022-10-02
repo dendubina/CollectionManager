@@ -52,7 +52,7 @@ namespace CollectionManager.WEB.Controllers
             {
                 await _authService.SignUpAsync(model);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 return View();

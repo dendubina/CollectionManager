@@ -65,21 +65,33 @@ namespace Repository
             }
 
             var createdUser = await _userManager.FindByNameAsync(userData.UserName);
+            await AddDefaultRoles(createdUser);
             await AddDefaultClaims(createdUser);
              
             return await CreateProfile(createdUser);
         }
 
-        public async Task Logout() => await _signInManager.SignOutAsync();
+        public async Task Logout()
+            => await _signInManager.SignOutAsync();
 
         private async Task AddDefaultClaims(User user)
         {
-            var claims = new List<Claim>()
-            {
-                new (ClaimTypes.Role, "admin"),
-            };
+            var claims = new List<Claim>();
+            var roles = await _userManager.GetRolesAsync(user);
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             await _userManager.AddClaimsAsync(user, claims);
+        }
+
+        private async Task AddDefaultRoles(User user)
+        {
+            var roles = new string[]
+            {
+                "admin",
+            };
+
+            await _userManager.AddToRolesAsync(user, roles);
         }
 
         private async Task<JwtSecurityToken> GenerateJwtToken(User user)

@@ -15,13 +15,5 @@ namespace Entities.EF.Models
 
         [Required]
         public CustomPropertyType FieldType { get; set; }
-
-        [Required]
-        public string Value { get; set; }
-
-        [Required]
-        public Guid ItemId { get; set; }
-
-        public Item Item { get; set; }
     }
 }

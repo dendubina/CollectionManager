@@ -25,6 +25,9 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -82,10 +85,13 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CollectionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("FieldType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ItemId")
+                    b.Property<Guid?>("ItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -93,15 +99,38 @@ namespace Entities.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("CustomFields");
+                });
+
+            modelBuilder.Entity("Entities.EF.Models.CustomFieldValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomFieldId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomFieldId");
+
                     b.HasIndex("ItemId");
 
-                    b.ToTable("CustomFields");
+                    b.ToTable("CustomFieldValue");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
@@ -271,15 +300,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "78dba6dd-779b-43f1-8538-755cac78525f",
-                            ConcurrencyStamp = "af8dec4c-3732-449a-b994-ac9d9604273c",
+                            Id = "37f5364f-8758-473d-bdb3-297cb97c29f1",
+                            ConcurrencyStamp = "9029cb67-5658-459d-8e1c-768f0f4beefb",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "353fc419-b4c0-45fa-b3f6-1c27fcf201c7",
-                            ConcurrencyStamp = "fd21dd2d-5a82-47ea-ba1c-5f9086d50d38",
+                            Id = "48879477-7ed5-4e80-bd22-b06cdd9e5e00",
+                            ConcurrencyStamp = "aa94bb21-c775-4532-b47a-93bcae88364b",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -419,11 +448,30 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.EF.Models.CustomField", b =>
                 {
-                    b.HasOne("Entities.EF.Models.Item", "Item")
+                    b.HasOne("Entities.EF.Models.Collection", null)
+                        .WithMany("CustomFields")
+                        .HasForeignKey("CollectionId");
+
+                    b.HasOne("Entities.EF.Models.Item", null)
                         .WithMany("CustomFieldTypes")
+                        .HasForeignKey("ItemId");
+                });
+
+            modelBuilder.Entity("Entities.EF.Models.CustomFieldValue", b =>
+                {
+                    b.HasOne("Entities.EF.Models.CustomField", "CustomField")
+                        .WithMany()
+                        .HasForeignKey("CustomFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.EF.Models.Item", "Item")
+                        .WithMany("CustomFieldsValues")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CustomField");
 
                     b.Navigation("Item");
                 });
@@ -524,12 +572,16 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.EF.Models.Collection", b =>
                 {
+                    b.Navigation("CustomFields");
+
                     b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("CustomFieldsValues");
 
                     b.Navigation("CustomFieldTypes");
 

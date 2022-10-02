@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Entities.Constants;
 
 namespace Entities.EF.Models
 {
@@ -13,6 +14,8 @@ namespace Entities.EF.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
+        public CollectionCategory Category { get; set; }
+
         public string Description { get; set; }
 
         public string ImageSource { get; set; }
@@ -23,5 +26,7 @@ namespace Entities.EF.Models
         public string OwnerId { get; set; }
 
         public ICollection<Item> Items { get; set; }
+
+        public ICollection<CustomField> CustomFields { get; set; }
     }
 }

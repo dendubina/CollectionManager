@@ -11,6 +11,8 @@ namespace Contracts
 
         Task<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges);
 
+        Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId);
+
         void CreateCollection(Collection collection);
 
         void DeleteCollection(Collection collection);

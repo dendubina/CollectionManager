@@ -170,6 +170,7 @@ namespace Entities.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageSource = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -238,18 +239,24 @@ namespace Entities.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FieldType = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomFields", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_CustomFields_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_CustomFields_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,15 +308,41 @@ namespace Entities.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "78dba6dd-779b-43f1-8538-755cac78525f", "af8dec4c-3732-449a-b994-ac9d9604273c", "user", "USER" });
+            migrationBuilder.CreateTable(
+                name: "CustomFieldValue",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomFieldValue", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomFieldValue_CustomFields_CustomFieldId",
+                        column: x => x.CustomFieldId,
+                        principalTable: "CustomFields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomFieldValue_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "353fc419-b4c0-45fa-b3f6-1c27fcf201c7", "fd21dd2d-5a82-47ea-ba1c-5f9086d50d38", "admin", "ADMIN" });
+                values: new object[] { "37f5364f-8758-473d-bdb3-297cb97c29f1", "9029cb67-5658-459d-8e1c-768f0f4beefb", "user", "USER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "48879477-7ed5-4e80-bd22-b06cdd9e5e00", "aa94bb21-c775-4532-b47a-93bcae88364b", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -366,8 +399,23 @@ namespace Entities.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomFields_CollectionId",
+                table: "CustomFields",
+                column: "CollectionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomFields_ItemId",
                 table: "CustomFields",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldValue_CustomFieldId",
+                table: "CustomFieldValue",
+                column: "CustomFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldValue_ItemId",
+                table: "CustomFieldValue",
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
@@ -412,7 +460,7 @@ namespace Entities.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "CustomFields");
+                name: "CustomFieldValue");
 
             migrationBuilder.DropTable(
                 name: "ItemTag");
@@ -422,6 +470,9 @@ namespace Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "CustomFields");
 
             migrationBuilder.DropTable(
                 name: "Tags");
