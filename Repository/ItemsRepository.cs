@@ -25,13 +25,9 @@ namespace Repository
         }
 
         public void CreateItem(Item item)
-        {
-            throw new NotImplementedException();
-        }
+            => Create(item);
 
         public void DeleteItem(Item item)
-        {
-            throw new NotImplementedException();
-        }
+            => Delete(item);
     }
 }

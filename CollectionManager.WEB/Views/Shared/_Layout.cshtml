@@ -25,7 +25,7 @@
 
                            
                             <div class="hello-block"><span style="color: seagreen">Hello, @userName.Value</span></div>
-                            @Html.ActionLink("My Collections", "Index", "UsersCollections", new {userId = userId.Value}, new{@class = "btn btn-outline-success login-button" })
+                            @Html.ActionLink("My Collections", "Index", "Collections", new {userId = userId.Value}, new{@class = "btn btn-outline-success login-button" })
                             @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
                         }
                         else

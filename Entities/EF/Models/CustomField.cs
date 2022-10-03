@@ -15,5 +15,7 @@ namespace Entities.EF.Models
 
         [Required]
         public CustomPropertyType FieldType { get; set; }
+
+        public Guid CollectionId { get; set; }
     }
 }

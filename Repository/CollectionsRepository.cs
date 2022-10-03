@@ -22,9 +22,13 @@ namespace Repository
         }
 
         public Task<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+            => FindByCondition(x => x.Id.Equals(collectionId), trackChanges)
+                .Include(x => x.CustomFields)
+                .Include(x => x.Items)
+                .ThenInclude(x => x.CustomFieldsValues)
+                .ThenInclude(x => x.CustomField)
+                .FirstOrDefaultAsync();
+        
 
         public async Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId)
             => await FindAll()

@@ -29,6 +29,12 @@ namespace Entities.EF
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RolesConfig());
+
+            modelBuilder.Entity<CustomFieldValue>()
+                .HasOne<Item>()
+                .WithMany(x => x.CustomFieldsValues)
+                .HasForeignKey(x => x.ItemId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

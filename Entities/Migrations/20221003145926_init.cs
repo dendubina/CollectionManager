@@ -187,6 +187,26 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomFields",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FieldType = table.Column<int>(type: "int", nullable: false),
+                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomFields_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -233,27 +253,32 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomFields",
+                name: "CustomFieldValue",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FieldType = table.Column<int>(type: "int", nullable: false),
-                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CustomFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomFields", x => x.Id);
+                    table.PrimaryKey("PK_CustomFieldValue", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomFields_Collections_CollectionId",
-                        column: x => x.CollectionId,
-                        principalTable: "Collections",
+                        name: "FK_CustomFieldValue_CustomFields_CustomFieldId",
+                        column: x => x.CustomFieldId,
+                        principalTable: "CustomFields",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomFields_Items_ItemId",
+                        name: "FK_CustomFieldValue_Items_ItemId",
                         column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomFieldValue_Items_ItemId1",
+                        column: x => x.ItemId1,
                         principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -308,41 +333,15 @@ namespace Entities.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CustomFieldValue",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomFieldValue", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CustomFieldValue_CustomFields_CustomFieldId",
-                        column: x => x.CustomFieldId,
-                        principalTable: "CustomFields",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CustomFieldValue_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "7ba7a806-8f05-494e-b083-270bc487f9e0", "5332ddc7-a76a-433c-becf-56c9eb33b431", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "37f5364f-8758-473d-bdb3-297cb97c29f1", "9029cb67-5658-459d-8e1c-768f0f4beefb", "user", "USER" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "48879477-7ed5-4e80-bd22-b06cdd9e5e00", "aa94bb21-c775-4532-b47a-93bcae88364b", "admin", "ADMIN" });
+                values: new object[] { "a1795796-3e86-4454-a425-726ae1737214", "bd3c17bd-d39c-44fc-8f50-b3577faab19c", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -404,11 +403,6 @@ namespace Entities.Migrations
                 column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomFields_ItemId",
-                table: "CustomFields",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CustomFieldValue_CustomFieldId",
                 table: "CustomFieldValue",
                 column: "CustomFieldId");
@@ -417,6 +411,11 @@ namespace Entities.Migrations
                 name: "IX_CustomFieldValue_ItemId",
                 table: "CustomFieldValue",
                 column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldValue_ItemId1",
+                table: "CustomFieldValue",
+                column: "ItemId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_CollectionId",

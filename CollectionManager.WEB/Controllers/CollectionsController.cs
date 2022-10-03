@@ -13,12 +13,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace CollectionManager.WEB.Controllers
 {
     [Authorize]
-    public class UsersCollectionsController : Controller
+    public class CollectionsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UsersCollectionsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public CollectionsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -33,23 +33,38 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateCollection()
+        public async Task<IActionResult> CollectionDetails(Guid collectionId)
         {
-            return View();
+            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+
+            return View(_mapper.Map<CollectionDetailsToShow>(collection));
         }
+
+        [HttpGet]
+        public IActionResult CreateCollection()
+            => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCollection(CollectionToCreateDto model)
         {
-            var userId = User.GetUserId(); 
-            var entity = _mapper.Map<Collection>(model);
-            entity.OwnerId = userId;
+            var entity = _mapper.Map<Collection>(model,
+                opt => opt.AfterMap((_, dest) => dest.OwnerId = User.GetUserId()));
 
             _unitOfWork.Collections.CreateCollection(entity);
             await _unitOfWork.SaveAsync();
             
-            return RedirectToAction("Index", new {userId = userId});
-        } 
+            return RedirectToAction("Index", new {userId = User.GetUserId()});
+        }
+
+        public async Task<IActionResult> DeleteCollection(Guid collectionId)
+        {
+            var entity = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+
+            _unitOfWork.Collections.DeleteCollection(entity);
+            await _unitOfWork.SaveAsync();
+
+            return RedirectToAction("Index", new { userId = User.GetUserId() });
+        }
     }
 }

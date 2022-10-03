@@ -13,8 +13,6 @@ namespace Entities.EF.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public ICollection<CustomField> CustomFieldTypes { get; set; }
-
         public ICollection<Tag> Tags { get; set; }
 
         public Collection Collection { get; set; }

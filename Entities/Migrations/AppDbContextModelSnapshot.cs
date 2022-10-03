@@ -85,14 +85,11 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CollectionId")
+                    b.Property<Guid>("CollectionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("FieldType")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("ItemId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -102,8 +99,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CollectionId");
-
-                    b.HasIndex("ItemId");
 
                     b.ToTable("CustomFields");
                 });
@@ -120,6 +115,9 @@ namespace Entities.Migrations
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ItemId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +127,8 @@ namespace Entities.Migrations
                     b.HasIndex("CustomFieldId");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("ItemId1");
 
                     b.ToTable("CustomFieldValue");
                 });
@@ -300,15 +300,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "37f5364f-8758-473d-bdb3-297cb97c29f1",
-                            ConcurrencyStamp = "9029cb67-5658-459d-8e1c-768f0f4beefb",
+                            Id = "7ba7a806-8f05-494e-b083-270bc487f9e0",
+                            ConcurrencyStamp = "5332ddc7-a76a-433c-becf-56c9eb33b431",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "48879477-7ed5-4e80-bd22-b06cdd9e5e00",
-                            ConcurrencyStamp = "aa94bb21-c775-4532-b47a-93bcae88364b",
+                            Id = "a1795796-3e86-4454-a425-726ae1737214",
+                            ConcurrencyStamp = "bd3c17bd-d39c-44fc-8f50-b3577faab19c",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -450,11 +450,9 @@ namespace Entities.Migrations
                 {
                     b.HasOne("Entities.EF.Models.Collection", null)
                         .WithMany("CustomFields")
-                        .HasForeignKey("CollectionId");
-
-                    b.HasOne("Entities.EF.Models.Item", null)
-                        .WithMany("CustomFieldTypes")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.EF.Models.CustomFieldValue", b =>
@@ -465,11 +463,15 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.EF.Models.Item", "Item")
+                    b.HasOne("Entities.EF.Models.Item", null)
                         .WithMany("CustomFieldsValues")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Entities.EF.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId1");
 
                     b.Navigation("CustomField");
 
@@ -582,8 +584,6 @@ namespace Entities.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CustomFieldsValues");
-
-                    b.Navigation("CustomFieldTypes");
 
                     b.Navigation("Likes");
                 });
