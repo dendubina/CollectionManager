@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CollectionManager.WEB.Extensions;
+using CollectionManager.WEB.Models.Collections;
 using Contracts;
 using Entities.DTO.Collections;
 using Entities.EF.Models;
@@ -23,9 +25,11 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(Guid userId)
+        public async Task<IActionResult> Index(Guid userId)
         {
-            return View();
+            var collections = await _unitOfWork.Collections.GetCollectionsByUser(userId);
+
+            return View(_mapper.Map<IEnumerable<UsersCollectionToShow>>(collections));
         }
 
         [HttpGet]

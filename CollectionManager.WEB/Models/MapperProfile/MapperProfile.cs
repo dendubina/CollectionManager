@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CollectionManager.WEB.Models.Collections;
 using Entities.DTO.Collections;
 using Entities.DTO.CustomFields;
 using Entities.EF.Models;
@@ -13,6 +14,9 @@ namespace CollectionManager.WEB.Models.MapperProfile
                 .ForMember(x => x.FieldType, opt => opt.MapFrom(x => x.Type));
 
             CreateMap<CollectionToCreateDto, Collection>();
+
+            CreateMap<Collection, UsersCollectionToShow>()
+                .ForMember(x => x.ItemsCount, opt => opt.MapFrom(x => x.Items.Count));
         }
     }
 }

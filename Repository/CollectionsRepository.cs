@@ -29,6 +29,7 @@ namespace Repository
         public async Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId)
             => await FindAll()
                 .Include(x => x.Items)
+                .Include(x => x.Owner)
                 .Where(x => x.OwnerId == userId.ToString())
                 .ToArrayAsync();
 
@@ -36,8 +37,6 @@ namespace Repository
             => Create(collection);
 
         public void DeleteCollection(Collection collection)
-        {
-            throw new NotImplementedException();
-        }
+            => Delete(collection);        
     }
 }
