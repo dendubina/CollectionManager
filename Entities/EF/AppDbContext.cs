@@ -30,11 +30,17 @@ namespace Entities.EF
 
             modelBuilder.ApplyConfiguration(new RolesConfig());
 
-            modelBuilder.Entity<CustomFieldValue>()
+           /* modelBuilder.Entity<CustomFieldValue>()
                 .HasOne<Item>()
                 .WithMany(x => x.CustomFieldsValues)
                 .HasForeignKey(x => x.ItemId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction);*/
+
+            modelBuilder.Entity<CustomField>()
+                .HasMany<CustomFieldValue>()
+                .WithOne(x => x.CustomField)
+                .HasForeignKey(x => x.CustomFieldId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

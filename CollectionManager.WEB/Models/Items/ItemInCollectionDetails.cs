@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Entities.EF.Models;
+using CollectionManager.WEB.Models.CustomFieldValues;
 
 namespace CollectionManager.WEB.Models.Items
 {
@@ -12,6 +12,6 @@ namespace CollectionManager.WEB.Models.Items
 
         public Guid CollectionId { get; set; }
 
-        public IEnumerable<CustomFieldValue> CustomFieldValues { get; set; }
+        public IEnumerable<CustomFieldValueToShow> CustomFieldValues { get; set; }
     }
 }

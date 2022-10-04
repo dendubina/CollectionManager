@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CollectionManager.WEB.Models.Collections;
+using CollectionManager.WEB.Models.CustomFieldValues;
 using CollectionManager.WEB.Models.Items;
 using Entities.DTO.Collections;
 using Entities.DTO.CustomFields;
@@ -12,7 +14,7 @@ namespace CollectionManager.WEB.Models.MapperProfile
     {
         public MapperProfile()
         {
-            CreateMap<CollectionToCreateDto, Collection>();
+            CreateMap<CollectionToManipulateDto, Collection>().ReverseMap();
 
             CreateMap<Collection, UsersCollectionToShow>()
                 .ForMember(x => x.ItemsCount, opt => opt.MapFrom(x => x.Items.Count));
@@ -26,8 +28,9 @@ namespace CollectionManager.WEB.Models.MapperProfile
                 .ForMember(x => x.CustomFieldValuesToCreate, opt => opt.MapFrom(x => x.CustomFields));
 
 
-            CreateMap<CustomFieldToCreate, CustomField>()
-                .ForMember(x => x.FieldType, opt => opt.MapFrom(x => x.Type));
+            CreateMap<CustomFieldToManipulateDto, CustomField>()
+                .ForMember(x => x.FieldType, opt => opt.MapFrom(x => x.Type))
+                .ReverseMap();
 
             CreateMap<CustomField, CustomFieldValueToCreate>()
                 .ForMember(x => x.Type, opt => opt.MapFrom(x => x.FieldType))
@@ -35,7 +38,11 @@ namespace CollectionManager.WEB.Models.MapperProfile
 
             CreateMap<CustomFieldValueToCreate, CustomFieldValue>();
 
-            CreateMap<Item, ItemInCollectionDetails>();
+            CreateMap<CustomFieldValue, CustomFieldValueToShow>()
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.CustomField.Name));
+
+            CreateMap<Item, ItemInCollectionDetails>()
+                .ForMember(x => x.CustomFieldValues, opt => opt.MapFrom(x => x.CustomFieldsValues));
 
             CreateMap<ItemToCreate, Item>()
                 .ForMember(x => x.CustomFieldsValues, opt => opt.MapFrom(x => x.CustomFieldValuesToCreate));

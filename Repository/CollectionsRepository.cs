@@ -26,7 +26,7 @@ namespace Repository
                 .Include(x => x.CustomFields)
                 .Include(x => x.Items)
                 .ThenInclude(x => x.CustomFieldsValues)
-                .ThenInclude(x => x.CustomField)
+                //.ThenInclude(x => x.CustomField)
                 .FirstOrDefaultAsync();
         
 
@@ -41,6 +41,8 @@ namespace Repository
             => Create(collection);
 
         public void DeleteCollection(Collection collection)
-            => Delete(collection);        
+            => Delete(collection);
+
+        public void UpdateCollection(Collection collection) => DbContext.Update(collection);
     }
 }

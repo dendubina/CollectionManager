@@ -16,5 +16,7 @@ namespace Contracts
         void CreateCollection(Collection collection);
 
         void DeleteCollection(Collection collection);
+
+        void UpdateCollection(Collection collection);
     }
 }

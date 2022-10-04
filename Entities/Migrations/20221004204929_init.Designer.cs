@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221003145926_init")]
+    [Migration("20221004204929_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,9 +117,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ItemId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,8 +126,6 @@ namespace Entities.Migrations
                     b.HasIndex("CustomFieldId");
 
                     b.HasIndex("ItemId");
-
-                    b.HasIndex("ItemId1");
 
                     b.ToTable("CustomFieldValue");
                 });
@@ -302,15 +297,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7ba7a806-8f05-494e-b083-270bc487f9e0",
-                            ConcurrencyStamp = "5332ddc7-a76a-433c-becf-56c9eb33b431",
+                            Id = "68cb8a9e-dde3-4c08-9db7-14b20395bb57",
+                            ConcurrencyStamp = "d03ccbab-8dd9-4b9d-87f6-90cadc29e5b4",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "a1795796-3e86-4454-a425-726ae1737214",
-                            ConcurrencyStamp = "bd3c17bd-d39c-44fc-8f50-b3577faab19c",
+                            Id = "87a693bc-6174-4d5c-86e9-037b8b176473",
+                            ConcurrencyStamp = "3936f8ad-db8c-43fd-a6c6-d3970f0fa292",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -462,18 +457,14 @@ namespace Entities.Migrations
                     b.HasOne("Entities.EF.Models.CustomField", "CustomField")
                         .WithMany()
                         .HasForeignKey("CustomFieldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.EF.Models.Item", null)
-                        .WithMany("CustomFieldsValues")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Entities.EF.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId1");
+                        .WithMany("CustomFieldsValues")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CustomField");
 

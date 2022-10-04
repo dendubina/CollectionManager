@@ -46,22 +46,41 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCollection(CollectionToCreateDto model)
+        public async Task<IActionResult> CreateCollection(CollectionToManipulateDto model)
         {
-            var entity = _mapper.Map<Collection>(model,
+            var collection = _mapper.Map<Collection>(model,
                 opt => opt.AfterMap((_, dest) => dest.OwnerId = User.GetUserId()));
 
-            _unitOfWork.Collections.CreateCollection(entity);
+            _unitOfWork.Collections.CreateCollection(collection);
             await _unitOfWork.SaveAsync();
             
             return RedirectToAction("Index", new {userId = User.GetUserId()});
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditCollection(Guid collectionId)
+        {
+            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+
+            return View(_mapper.Map<CollectionToManipulateDto>(collection));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCollection(CollectionToManipulateDto model)
+        {
+            var collection = await _unitOfWork.Collections.GetCollectionAsync(model.Id, trackChanges: true);
+
+            _mapper.Map(model, collection);
+            await _unitOfWork.SaveAsync();
+
+            return RedirectToAction("Index", new { userId = User.GetUserId() });
+        }
+
         public async Task<IActionResult> DeleteCollection(Guid collectionId)
         {
-            var entity = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
 
-            _unitOfWork.Collections.DeleteCollection(entity);
+            _unitOfWork.Collections.DeleteCollection(collection);
             await _unitOfWork.SaveAsync();
 
             return RedirectToAction("Index", new { userId = User.GetUserId() });

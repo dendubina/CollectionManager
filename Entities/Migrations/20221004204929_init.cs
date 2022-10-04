@@ -259,7 +259,6 @@ namespace Entities.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ItemId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CustomFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -270,18 +269,13 @@ namespace Entities.Migrations
                         column: x => x.CustomFieldId,
                         principalTable: "CustomFields",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CustomFieldValue_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CustomFieldValue_Items_ItemId1",
-                        column: x => x.ItemId1,
-                        principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -336,12 +330,12 @@ namespace Entities.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7ba7a806-8f05-494e-b083-270bc487f9e0", "5332ddc7-a76a-433c-becf-56c9eb33b431", "user", "USER" });
+                values: new object[] { "68cb8a9e-dde3-4c08-9db7-14b20395bb57", "d03ccbab-8dd9-4b9d-87f6-90cadc29e5b4", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a1795796-3e86-4454-a425-726ae1737214", "bd3c17bd-d39c-44fc-8f50-b3577faab19c", "admin", "ADMIN" });
+                values: new object[] { "87a693bc-6174-4d5c-86e9-037b8b176473", "3936f8ad-db8c-43fd-a6c6-d3970f0fa292", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -411,11 +405,6 @@ namespace Entities.Migrations
                 name: "IX_CustomFieldValue_ItemId",
                 table: "CustomFieldValue",
                 column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomFieldValue_ItemId1",
-                table: "CustomFieldValue",
-                column: "ItemId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_CollectionId",

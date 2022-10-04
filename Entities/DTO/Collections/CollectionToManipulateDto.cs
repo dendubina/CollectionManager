@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entities.Constants;
 using Entities.DTO.CustomFields;
 using Microsoft.AspNetCore.Http;
 
 namespace Entities.DTO.Collections
 {
-    public class CollectionToCreateDto
+    public class CollectionToManipulateDto
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public CollectionCategory Category { get; set; }
@@ -15,6 +18,6 @@ namespace Entities.DTO.Collections
 
         public IFormFile Image { get; set; }
 
-        public IEnumerable<CustomFieldToCreate> CustomFields { get; set; }
+        public IList<CustomFieldToManipulateDto> CustomFields { get; set; }
     }
 }

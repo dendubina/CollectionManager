@@ -1,5 +1,4 @@
-﻿@using CollectionManager.WEB.Models.Items
-@model CollectionManager.WEB.Models.Collections.CollectionDetailsToShow
+﻿@model CollectionManager.WEB.Models.Collections.CollectionDetailsToShow
 
 <!DOCTYPE html>
 
@@ -48,25 +47,59 @@
     
     @if (Model.ItemInCollectionDetails.Any())
     {
-        var props = Model.ItemInCollectionDetails.First().CustomFieldValues;
-        
+        var customPropertiesNames = Model.ItemInCollectionDetails.First().CustomFieldValues.Select(x => x.Name).Take(2);
+
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(x => nameof(ItemInCollectionDetails.Name))
+                    @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Id)
                 </th>
                 <th>
-                    @*@Html.DisplayNameFor(x => x.ItemInCollectionDetails.)*@
+                    @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Name)
                 </th>
+                @foreach (var name in customPropertiesNames)
+                {
+                    <th>
+                        @Html.DisplayFor(x => name)
+                    </th>
+                }
             </tr>
             </thead>
+            @foreach (var item in Model.ItemInCollectionDetails)
+            {
+                var customValuesToShow = item.CustomFieldValues.Take(2).ToArray();
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Name)
+                    </td>
+                    @if (customValuesToShow.Any())
+                    {
+                        foreach (var customFieldValue in customValuesToShow)
+                        {
+                            if (DateTime.TryParse(customFieldValue.Value, out DateTime date))
+                            {
+                                <td>
+                                    @date.Date.ToShortDateString()
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.DisplayFor(x => customFieldValue.Value)
+                                </td>
+                            }
+                            
+                        }
+                    }
+                </tr>
+            }
         </table>
     }
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
 </div>
 </body>
 </html>

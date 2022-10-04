@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.ItemsCount)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { collectionId = item.Id }) |
+            @Html.ActionLink("Edit", "EditCollection", new { collectionId = item.Id }) |
             @Html.ActionLink("Details", "CollectionDetails", new { collectionId = item.Id }) |
             @Html.ActionLink("Delete", "DeleteCollection", new { collectionId = item.Id })
         </td>
