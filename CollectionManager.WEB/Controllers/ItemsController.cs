@@ -24,7 +24,7 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> AddItemToCollection(Guid collectionId)
         {
-            var entity = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+            var entity = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
 
             var model = _mapper.Map<ItemToCreate>(entity);
 
@@ -37,7 +37,20 @@ namespace CollectionManager.WEB.Controllers
         {
             var entity = _mapper.Map<Item>(item);
 
+           /* foreach (var value in entity.CustomValues)
+            {
+                value.Item = entity;
+            }*/
+
             _unitOfWork.Items.CreateItem(entity);
+            await _unitOfWork.SaveAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> DeleteItem(Guid itemId)
+        {
+            _unitOfWork.Items.DeleteItem(new Item{Id = itemId});
             await _unitOfWork.SaveAsync();
 
             return RedirectToAction("Index", "Home");

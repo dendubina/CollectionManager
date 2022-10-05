@@ -112,11 +112,10 @@ namespace Entities.Migrations
                     b.Property<Guid>("CustomFieldId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ItemId")
+                    b.Property<Guid?>("ItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -125,7 +124,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("CustomFieldValue");
+                    b.ToTable("CustomFieldValues");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
@@ -295,15 +294,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "68cb8a9e-dde3-4c08-9db7-14b20395bb57",
-                            ConcurrencyStamp = "d03ccbab-8dd9-4b9d-87f6-90cadc29e5b4",
+                            Id = "23bfa0e9-f0dd-402f-8544-a456c6b630a5",
+                            ConcurrencyStamp = "f11d92fd-22d2-4c2b-9239-2750bbc16693",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "87a693bc-6174-4d5c-86e9-037b8b176473",
-                            ConcurrencyStamp = "3936f8ad-db8c-43fd-a6c6-d3970f0fa292",
+                            Id = "c77d9c4b-7777-46c7-a5f5-135a422b1661",
+                            ConcurrencyStamp = "87278232-5cc0-417a-81d3-c7a047027559",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -443,41 +442,39 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.EF.Models.CustomField", b =>
                 {
-                    b.HasOne("Entities.EF.Models.Collection", null)
+                    b.HasOne("Entities.EF.Models.Collection", "Collection")
                         .WithMany("CustomFields")
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.CustomFieldValue", b =>
                 {
-                    b.HasOne("Entities.EF.Models.CustomField", "CustomField")
-                        .WithMany()
+                    b.HasOne("Entities.EF.Models.CustomField", "Field")
+                        .WithMany("CustomFieldValues")
                         .HasForeignKey("CustomFieldId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.EF.Models.Item", "Item")
-                        .WithMany("CustomFieldsValues")
-                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CustomField");
+                    b.HasOne("Entities.EF.Models.Item", "Item")
+                        .WithMany("CustomValues")
+                        .HasForeignKey("ItemId");
+
+                    b.Navigation("Field");
 
                     b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
                 {
-                    b.HasOne("Entities.EF.Models.Collection", "Collection")
+                    b.HasOne("Entities.EF.Models.Collection", null)
                         .WithMany("Items")
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Like", b =>
@@ -570,11 +567,16 @@ namespace Entities.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("Entities.EF.Models.CustomField", b =>
+                {
+                    b.Navigation("CustomFieldValues");
+                });
+
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("CustomFieldsValues");
+                    b.Navigation("CustomValues");
 
                     b.Navigation("Likes");
                 });

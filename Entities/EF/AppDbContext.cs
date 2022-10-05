@@ -24,23 +24,20 @@ namespace Entities.EF
 
         public DbSet<Like> Likes { get; set; }
 
+        public DbSet<CustomFieldValue> CustomFieldValues { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RolesConfig());
 
-           /* modelBuilder.Entity<CustomFieldValue>()
-                .HasOne<Item>()
-                .WithMany(x => x.CustomFieldsValues)
-                .HasForeignKey(x => x.ItemId)
-                .OnDelete(DeleteBehavior.NoAction);*/
-
-            modelBuilder.Entity<CustomField>()
+           /* modelBuilder.Entity<Item>()
                 .HasMany<CustomFieldValue>()
-                .WithOne(x => x.CustomField)
-                .HasForeignKey(x => x.CustomFieldId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithOne()
+                .HasForeignKey(x => x.ItemId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);*/
         }
     }
 }

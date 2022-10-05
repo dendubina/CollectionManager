@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.EF.Models
 {
@@ -7,15 +7,15 @@ namespace Entities.EF.Models
     {
         public Guid Id { get; set; }
 
-        [Required]
         public string Value { get; set; }
 
-        public Guid ItemId { get; set; }
+        public Guid? ItemId { get; set; }
 
+        [ForeignKey(nameof(ItemId))]
         public Item Item { get; set; }
 
         public Guid CustomFieldId { get; set; }
 
-        public CustomField CustomField { get; set; }
+        public CustomField Field { get; set; }
     }
 }

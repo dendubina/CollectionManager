@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using CollectionManager.WEB.Models.Collections;
 using CollectionManager.WEB.Models.CustomFieldValues;
 using CollectionManager.WEB.Models.Items;
@@ -39,13 +38,13 @@ namespace CollectionManager.WEB.Models.MapperProfile
             CreateMap<CustomFieldValueToCreate, CustomFieldValue>();
 
             CreateMap<CustomFieldValue, CustomFieldValueToShow>()
-                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.CustomField.Name));
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Field.Name));
 
             CreateMap<Item, ItemInCollectionDetails>()
-                .ForMember(x => x.CustomFieldValues, opt => opt.MapFrom(x => x.CustomFieldsValues));
+                .ForMember(x => x.CustomFieldValues, opt => opt.MapFrom(x => x.CustomValues));
 
             CreateMap<ItemToCreate, Item>()
-                .ForMember(x => x.CustomFieldsValues, opt => opt.MapFrom(x => x.CustomFieldValuesToCreate));
+                .ForMember(x => x.CustomValues, opt => opt.MapFrom(x => x.CustomFieldValuesToCreate));
         }
     }
 }

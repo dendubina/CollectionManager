@@ -49,8 +49,15 @@
     {
         let i = 0;
 
+        function remove(event) {
+            i--;
+            event.target.parentElement.remove();
+        }
+
         const getHtml = () => {
-            let value = "<div class='form-group'>" +
+            let value =
+                "<div>" +
+                "<div class='form-group'>" +
                 "<label class='control-label'>Name</label>" +
                 "<input type='text' class='form-control' name='CustomFields[" + i + "].name' />" +
                 "</div>" +
@@ -62,6 +69,8 @@
                 "<option value='2'>String</option>" +
                 "<option value='3'>Bool</option>" +
                 "</select>" +
+                "</div>" +
+                "<button type='button' onclick='remove(event)' class='btn btn-danger'>Cancel</button>" +
                 "</div>";
             i++;
             return value;

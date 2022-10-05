@@ -34,19 +34,40 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-
-            @for (int i = 0; i < Model.CustomFields.Count; i++)
-            {
-                @Html.HiddenFor(x => Model.CustomFields[i].Id)
-                @Html.HiddenFor(x => Model.CustomFields[i].CollectionId)
-
-
-                <label class="control-label">Name</label>
-                <input asp-for="@Model.CustomFields[i].Name" class="form-control" />
-
-                <label class="control-label">Type</label>
-                @Html.DropDownListFor(x => Model.CustomFields[i].Type, Html.GetEnumSelectList<CustomPropertyType>(), "Select type", new { @class = "form-control" })
-            }
+            
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        To Remove
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.CustomFields.Count; i++)
+                    {
+                        @Html.HiddenFor(x => Model.CustomFields[i].Id)
+                        @Html.HiddenFor(x => Model.CustomFields[i].CollectionId)
+                        <tr>
+                            <td>
+                                <input asp-for="@Model.CustomFields[i].Name" class="form-control" />
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => Model.CustomFields[i].Type, Html.GetEnumSelectList<CustomPropertyType>(), "Select type", new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(x => Model.CustomFields[i].ToRemove)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

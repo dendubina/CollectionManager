@@ -21,14 +21,16 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public Task<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges)
-            => FindByCondition(x => x.Id.Equals(collectionId), trackChanges)
+        public async Task<Collection> GetCollectionDetails(Guid collectionId)
+            => await FindByCondition(x => x.Id.Equals(collectionId), trackChanges: false)
                 .Include(x => x.CustomFields)
                 .Include(x => x.Items)
-                .ThenInclude(x => x.CustomFieldsValues)
-                //.ThenInclude(x => x.CustomField)
+                .ThenInclude(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
                 .FirstOrDefaultAsync();
-        
+
+        public IQueryable<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges)
+            => FindByCondition(x => x.Id.Equals(collectionId), trackChanges);
 
         public async Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId)
             => await FindAll()
@@ -42,7 +44,5 @@ namespace Repository
 
         public void DeleteCollection(Collection collection)
             => Delete(collection);
-
-        public void UpdateCollection(Collection collection) => DbContext.Update(collection);
     }
 }

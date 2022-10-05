@@ -11,6 +11,8 @@ namespace Entities.DTO.CustomFields
 
         public string Name { get; set; }
 
+        public bool ToRemove { get; set; }
+
         public CustomPropertyType Type { get; set; }
     }
 }

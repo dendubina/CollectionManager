@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CollectionManager.WEB.Extensions;
@@ -9,6 +10,7 @@ using Entities.DTO.Collections;
 using Entities.EF.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollectionManager.WEB.Controllers
 {
@@ -35,7 +37,7 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> CollectionDetails(Guid collectionId)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+            var collection = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
 
             return View(_mapper.Map<CollectionDetailsToShow>(collection));
         }
@@ -53,37 +55,44 @@ namespace CollectionManager.WEB.Controllers
 
             _unitOfWork.Collections.CreateCollection(collection);
             await _unitOfWork.SaveAsync();
-            
-            return RedirectToAction("Index", new {userId = User.GetUserId()});
+
+            return RedirectToIndex();
         }
 
         [HttpGet]
         public async Task<IActionResult> EditCollection(Guid collectionId)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
+            var collection = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
 
             return View(_mapper.Map<CollectionToManipulateDto>(collection));
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCollection(CollectionToManipulateDto model)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionAsync(model.Id, trackChanges: true);
+            model.CustomFields = model.CustomFields.Where(x => x.ToRemove == false).ToList();
+
+            var collection = await _unitOfWork.Collections
+                .GetCollectionAsync(model.Id, trackChanges: true)
+                .Include(x => x.CustomFields)
+                .FirstOrDefaultAsync();
 
             _mapper.Map(model, collection);
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction("Index", new { userId = User.GetUserId() });
+            return RedirectToIndex();
         }
 
         public async Task<IActionResult> DeleteCollection(Guid collectionId)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionAsync(collectionId, trackChanges: false);
-
-            _unitOfWork.Collections.DeleteCollection(collection);
+            _unitOfWork.Collections.DeleteCollection(new Collection{Id = collectionId});
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction("Index", new { userId = User.GetUserId() });
+            return RedirectToIndex();
         }
+
+        private RedirectToActionResult RedirectToIndex()
+            => RedirectToAction("Index", new { userId = User.GetUserId() });
     }
 }

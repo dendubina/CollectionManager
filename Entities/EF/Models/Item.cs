@@ -15,7 +15,7 @@ namespace Entities.EF.Models
 
         public ICollection<Tag> Tags { get; set; }
 
-        public Collection Collection { get; set; }
+       // public Collection Collection { get; set; }
 
         public Guid CollectionId { get; set; }
 
@@ -23,6 +23,6 @@ namespace Entities.EF.Models
 
         public ICollection<Comment> Comments { get; set; }
 
-        public ICollection<CustomFieldValue> CustomFieldsValues { get; set; }
+        public ICollection<CustomFieldValue> CustomValues { get; set; }
     }
 }

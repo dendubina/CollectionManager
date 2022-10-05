@@ -253,29 +253,29 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomFieldValue",
+                name: "CustomFieldValues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CustomFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomFieldValue", x => x.Id);
+                    table.PrimaryKey("PK_CustomFieldValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomFieldValue_CustomFields_CustomFieldId",
+                        name: "FK_CustomFieldValues_CustomFields_CustomFieldId",
                         column: x => x.CustomFieldId,
                         principalTable: "CustomFields",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomFieldValue_Items_ItemId",
+                        name: "FK_CustomFieldValues_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -330,12 +330,12 @@ namespace Entities.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "68cb8a9e-dde3-4c08-9db7-14b20395bb57", "d03ccbab-8dd9-4b9d-87f6-90cadc29e5b4", "user", "USER" });
+                values: new object[] { "23bfa0e9-f0dd-402f-8544-a456c6b630a5", "f11d92fd-22d2-4c2b-9239-2750bbc16693", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "87a693bc-6174-4d5c-86e9-037b8b176473", "3936f8ad-db8c-43fd-a6c6-d3970f0fa292", "admin", "ADMIN" });
+                values: new object[] { "c77d9c4b-7777-46c7-a5f5-135a422b1661", "87278232-5cc0-417a-81d3-c7a047027559", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -397,13 +397,13 @@ namespace Entities.Migrations
                 column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomFieldValue_CustomFieldId",
-                table: "CustomFieldValue",
+                name: "IX_CustomFieldValues_CustomFieldId",
+                table: "CustomFieldValues",
                 column: "CustomFieldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomFieldValue_ItemId",
-                table: "CustomFieldValue",
+                name: "IX_CustomFieldValues_ItemId",
+                table: "CustomFieldValues",
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
@@ -448,7 +448,7 @@ namespace Entities.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "CustomFieldValue");
+                name: "CustomFieldValues");
 
             migrationBuilder.DropTable(
                 name: "ItemTag");
