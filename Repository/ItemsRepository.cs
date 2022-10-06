@@ -20,9 +20,8 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Item> GetItemAsync(Guid itemId, bool trackChanges)
-            => await FindByCondition(x => x.Id.Equals(itemId), trackChanges)
-                .FirstOrDefaultAsync();
+        public IQueryable<Item> GetItem(Guid itemId, bool trackChanges)
+            => FindByCondition(x => x.Id.Equals(itemId), trackChanges);
 
         public async Task<Item> GetItemDetailsAsync(Guid itemId)
             => await FindByCondition(x => x.Id.Equals(itemId), trackChanges: false)

@@ -10,6 +10,6 @@ namespace Entities.DTO.Items
 
         public Guid CollectionId { get; set; }
 
-        public IList<CustomFieldValueToCreate> CustomFieldValuesToCreate { get; set; }
+        public IList<CustomFieldValueToManipulateDto> CustomFieldValuesToCreate { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(Guid userId)
         {
-            var collections = await _unitOfWork.Collections.GetCollectionsByUser(userId);
+            var collections = await _unitOfWork.Collections.GetCollectionsByUserAsync(userId);
 
             return View(_mapper.Map<IEnumerable<UsersCollectionToShow>>(collections));
         }
@@ -38,7 +38,7 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> CollectionDetails(Guid collectionId)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
+            var collection = await _unitOfWork.Collections.GetCollectionDetailsAsync(collectionId);
 
             return View(_mapper.Map<CollectionDetailsToShow>(collection));
         }
@@ -48,7 +48,6 @@ namespace CollectionManager.WEB.Controllers
             => View();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCollection(CollectionToManipulateDto model)
         {
             var collection = _mapper.Map<Collection>(model,
@@ -63,19 +62,18 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> EditCollection(Guid collectionId)
         {
-            var collection = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
+            var collection = await _unitOfWork.Collections.GetCollectionDetailsAsync(collectionId);
 
             return View(_mapper.Map<CollectionToManipulateDto>(collection));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCollection(CollectionToManipulateDto model)
         {
             model.CustomFields = model.CustomFields.Where(x => x.ToRemove == false).ToList();
 
             var collection = await _unitOfWork.Collections
-                .GetCollectionAsync(model.Id, trackChanges: true)
+                .GetCollection(model.Id, trackChanges: true)
                 .Include(x => x.CustomFields)
                 .FirstOrDefaultAsync();
 

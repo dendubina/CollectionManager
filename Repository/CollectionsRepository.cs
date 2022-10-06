@@ -20,7 +20,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Collection> GetCollectionDetails(Guid collectionId)
+        public async Task<Collection> GetCollectionDetailsAsync(Guid collectionId)
             => await FindByCondition(x => x.Id.Equals(collectionId), trackChanges: false)
                 .Include(x => x.CustomFields)
                 .Include(x => x.Items)
@@ -28,10 +28,10 @@ namespace Repository
                 .ThenInclude(x => x.Field)
                 .FirstOrDefaultAsync();
 
-        public IQueryable<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges)
+        public IQueryable<Collection> GetCollection(Guid collectionId, bool trackChanges)
             => FindByCondition(x => x.Id.Equals(collectionId), trackChanges);
 
-        public async Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId)
+        public async Task<IEnumerable<Collection>> GetCollectionsByUserAsync(Guid userId)
             => await FindAll()
                 .Include(x => x.Items)
                 .Include(x => x.Owner)

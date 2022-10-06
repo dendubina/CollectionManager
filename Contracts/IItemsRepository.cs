@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Entities.EF.Models;
 
@@ -9,7 +10,7 @@ namespace Contracts
     {
         Task<IEnumerable<Item>> GetAllItemsAsync();
 
-        Task<Item> GetItemAsync(Guid itemId, bool trackChanges);
+        IQueryable<Item> GetItem(Guid itemId, bool trackChanges);
 
         Task<Item> GetItemDetailsAsync(Guid itemId);
 

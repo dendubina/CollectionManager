@@ -22,7 +22,6 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
             try
@@ -45,7 +44,6 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
             try

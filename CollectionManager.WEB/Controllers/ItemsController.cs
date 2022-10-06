@@ -6,6 +6,7 @@ using Entities.DTO.Items;
 using Entities.EF.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollectionManager.WEB.Controllers
 {
@@ -26,23 +27,45 @@ namespace CollectionManager.WEB.Controllers
         {
             var item = await _unitOfWork.Items.GetItemDetailsAsync(itemId);
 
-            var model = _mapper.Map<ItemDetailsToReturnDto>(item);
-
-            return View(model);
+            return View(_mapper.Map<ItemDetailsToReturnDto>(item));
         }
 
         [HttpGet]
         public async Task<IActionResult> AddItemToCollection(Guid collectionId)
         {
-            var collectionDetails = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
+            var collectionDetails = await _unitOfWork.Collections.GetCollectionDetailsAsync(collectionId);
 
-            var model = _mapper.Map<ItemToCreate>(collectionDetails);
+            return View(_mapper.Map<ItemToCreate>(collectionDetails));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid itemId)
+        {
+            var item = await _unitOfWork.Items.GetItem(itemId, trackChanges: false)
+                .Include(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
+                .FirstOrDefaultAsync();
+
+            var model = _mapper.Map<ItemToEditDto>(item);
 
             return View(model);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ItemToEditDto model)
+        {
+            var item = await _unitOfWork.Items.GetItem(model.Id, trackChanges: true)
+                .Include(x => x.CustomValues)
+                //.ThenInclude(x => x.Field)
+                .FirstOrDefaultAsync();
+
+            _mapper.Map(model, item);
+            await _unitOfWork.SaveAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
         {
             var entity = _mapper.Map<Item>(item);

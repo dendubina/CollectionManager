@@ -10,11 +10,11 @@ namespace Contracts
     {
         Task<IEnumerable<Collection>> GetAllCollectionsAsync();
 
-        Task<Collection> GetCollectionDetails(Guid collectionId);
+        Task<Collection> GetCollectionDetailsAsync(Guid collectionId);
             
-        IQueryable<Collection> GetCollectionAsync(Guid collectionId, bool trackChanges);
+        IQueryable<Collection> GetCollection(Guid collectionId, bool trackChanges);
 
-        Task<IEnumerable<Collection>> GetCollectionsByUser(Guid userId);
+        Task<IEnumerable<Collection>> GetCollectionsByUserAsync(Guid userId);
 
         void CreateCollection(Collection collection);
 
