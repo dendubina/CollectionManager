@@ -15,6 +15,8 @@ namespace CollectionManager.WEB.Models.Collections
 
         public string Description { get; set; }
 
+        public string OwnerId { get; set; }
+
         public CollectionCategory Category { get; set; }
 
         public IEnumerable<ItemInCollectionDetails> ItemInCollectionDetails { get; set; }   

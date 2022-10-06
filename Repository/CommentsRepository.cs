@@ -11,7 +11,6 @@ namespace Repository
     {
         public CommentsRepository(AppDbContext repositoryContext) : base(repositoryContext)
         {
-
         }
 
         public Task<IEnumerable<Comment>> GetAllCommentsAsync()

@@ -13,7 +13,6 @@ namespace Repository
     {
         public ItemsRepository(AppDbContext repositoryContext) : base(repositoryContext)
         {
-
         }
 
         public Task<IEnumerable<Item>> GetAllItemsAsync()
@@ -22,7 +21,18 @@ namespace Repository
         }
 
         public async Task<Item> GetItemAsync(Guid itemId, bool trackChanges)
-            => await FindByCondition(x => x.Id.Equals(itemId), trackChanges).FirstOrDefaultAsync();
+            => await FindByCondition(x => x.Id.Equals(itemId), trackChanges)
+                .FirstOrDefaultAsync();
+
+        public async Task<Item> GetItemDetailsAsync(Guid itemId)
+            => await FindByCondition(x => x.Id.Equals(itemId), trackChanges: false)
+                .Include(x => x.Collection)
+                .ThenInclude(x => x.Owner)
+                .Include(x => x.Likes)
+                .Include(x => x.Comments)
+                .Include(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
+                .FirstOrDefaultAsync();
 
         public void CreateItem(Item item)
             => Create(item);

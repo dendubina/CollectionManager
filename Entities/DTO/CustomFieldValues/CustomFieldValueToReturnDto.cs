@@ -1,8 +1,8 @@
 ﻿using Entities.Constants;
 
-namespace CollectionManager.WEB.Models.CustomFieldValues
+namespace Entities.DTO.CustomFieldValues
 {
-    public class CustomFieldValueToShow
+    public class CustomFieldValueToReturnDto
     {
         public string Name { get; set; }
 

@@ -1,4 +1,5 @@
-﻿@model CollectionManager.WEB.Models.Collections.CollectionDetailsToShow
+﻿@using CollectionManager.WEB.Extensions
+@model CollectionManager.WEB.Models.Collections.CollectionDetailsToShow
 
 <!DOCTYPE html>
 
@@ -47,7 +48,11 @@
     
     @if (Model.ItemInCollectionDetails.Any())
     {
-        var customPropertiesNames = Model.ItemInCollectionDetails.First().CustomFieldValues.Select(x => x.Name).Take(2);
+        var customPropertiesNames = Model.ItemInCollectionDetails
+            .First()
+            .CustomFieldValues
+            .Select(x => x.Name)
+            .Take(2);
 
         <table class="table table-striped">
             <thead>
@@ -64,6 +69,9 @@
                         @Html.DisplayFor(x => name)
                     </th>
                 }
+                <th>
+                    Actions
+                </th>
             </tr>
             </thead>
             @foreach (var item in Model.ItemInCollectionDetails)
@@ -96,10 +104,20 @@
                             
                         }
                     }
+                <td>
+                    @Html.ActionLink("Details", "Details","Items", new { itemId = item.Id })
+
+                    @if(Model.OwnerId == User.GetUserId() || User.IsInRole("admin"))
+                    {
+                        <span>|</span> @Html.ActionLink("Edit", "Edit","Items", new { itemId = item.Id }) <span>|</span>
+                        @Html.ActionLink("Delete", "Delete","Items", new { itemId = item.Id })
+                    }
+                </td>
                 </tr>
             }
         </table>
     }
 </div>
+@Html.ActionLink("Add Item", "AddItemToCollection", "Items", new{collectionId = Model.Id}, new {@class = "btn btn-primary"})
 </body>
 </html>

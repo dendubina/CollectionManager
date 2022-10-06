@@ -13,7 +13,6 @@ namespace Repository
     {
         public CollectionsRepository(AppDbContext repositoryContext) : base(repositoryContext)
         {
-
         }
 
         public Task<IEnumerable<Collection>> GetAllCollectionsAsync()

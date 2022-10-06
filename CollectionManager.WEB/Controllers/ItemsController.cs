@@ -22,11 +22,21 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(Guid itemId)
+        {
+            var item = await _unitOfWork.Items.GetItemDetailsAsync(itemId);
+
+            var model = _mapper.Map<ItemDetailsToReturnDto>(item);
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddItemToCollection(Guid collectionId)
         {
-            var entity = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
+            var collectionDetails = await _unitOfWork.Collections.GetCollectionDetails(collectionId);
 
-            var model = _mapper.Map<ItemToCreate>(entity);
+            var model = _mapper.Map<ItemToCreate>(collectionDetails);
 
             return View(model);
         }
@@ -45,7 +55,7 @@ namespace CollectionManager.WEB.Controllers
             _unitOfWork.Items.CreateItem(entity);
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("CollectionDetails", "Collections", new {collectionId = item.CollectionId});
         }
 
         public async Task<IActionResult> DeleteItem(Guid itemId)

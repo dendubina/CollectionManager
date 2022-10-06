@@ -13,11 +13,11 @@ namespace Entities.EF.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public ICollection<Tag> Tags { get; set; }
-
-       // public Collection Collection { get; set; }
+        public Collection Collection { get; set; }
 
         public Guid CollectionId { get; set; }
+
+        public ICollection<Tag> Tags { get; set; }
 
         public ICollection<Like> Likes { get; set; }
 

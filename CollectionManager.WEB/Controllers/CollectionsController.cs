@@ -33,7 +33,8 @@ namespace CollectionManager.WEB.Controllers
 
             return View(_mapper.Map<IEnumerable<UsersCollectionToShow>>(collections));
         }
-
+        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> CollectionDetails(Guid collectionId)
         {

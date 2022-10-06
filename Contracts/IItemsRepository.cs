@@ -11,6 +11,8 @@ namespace Contracts
 
         Task<Item> GetItemAsync(Guid itemId, bool trackChanges);
 
+        Task<Item> GetItemDetailsAsync(Guid itemId);
+
         void CreateItem(Item item);
 
         void DeleteItem(Item item);

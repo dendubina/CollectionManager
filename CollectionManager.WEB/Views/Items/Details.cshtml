@@ -1,0 +1,66 @@
+﻿@model Entities.DTO.Items.ItemDetailsToReturnDto
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+
+<div>
+    <h4>ItemDetailsToReturnDto</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CollectionName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CollectionName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CollectionId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CollectionId)
+        </dd>
+        @foreach (var value in Model.CustomFieldValues)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayFor(x => value.Name)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(x => value.Value)
+            </dd>
+        }
+    </dl>
+</div>
+
+<button type="button" class="btn btn-success">Like [@Model.Likes.Count()]</button>
+
+<button type="button" class="btn btn-secondary">Comments [@Model.Comments.Count()]</button>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
+</div>
+</body>
+</html>
