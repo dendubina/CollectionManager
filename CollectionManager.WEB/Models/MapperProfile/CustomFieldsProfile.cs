@@ -20,8 +20,9 @@ namespace CollectionManager.WEB.Models.MapperProfile
             CreateMap<CustomFieldValue, CustomFieldValueToManipulateDto>()
                 .ForMember(x => x.Type, opt => opt.MapFrom(x => x.Field.FieldType))
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Field.Name))
-                .ForMember(x => x.CustomFieldId, opt => opt.MapFrom(x => x.Field.Id))
-                .ReverseMap();
+                .ForMember(x => x.CustomFieldId, opt => opt.MapFrom(x => x.Field.Id));
+
+            CreateMap<CustomFieldValueToManipulateDto, CustomFieldValue>();
 
             CreateMap<CustomFieldValue, CustomFieldValueToReturnDto>()
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Field.Name));

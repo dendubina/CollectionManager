@@ -19,7 +19,10 @@ namespace CollectionManager.WEB.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(opts =>
-                opts.UseSqlServer(configuration.GetConnectionString("LocalDb")));
+            {
+                opts.UseSqlServer(configuration.GetConnectionString("LocalDb"));
+                opts.EnableSensitiveDataLogging();
+            });
         }
 
         public static void ConfigureUnitOfWork(this IServiceCollection services)

@@ -46,23 +46,19 @@ namespace CollectionManager.WEB.Controllers
                 .ThenInclude(x => x.Field)
                 .FirstOrDefaultAsync();
 
-            var model = _mapper.Map<ItemToEditDto>(item);
-
-            return View(model);
+            return View(_mapper.Map<ItemToEditDto>(item));
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(ItemToEditDto model)
         {
             var item = await _unitOfWork.Items.GetItem(model.Id, trackChanges: true)
-                .Include(x => x.CustomValues)
-                //.ThenInclude(x => x.Field)
                 .FirstOrDefaultAsync();
 
             _mapper.Map(model, item);
             await _unitOfWork.SaveAsync();
 
-            return Ok();
+            return RedirectToCollectionDetails(item.CollectionId);
         }
 
         [HttpPost]
@@ -70,23 +66,21 @@ namespace CollectionManager.WEB.Controllers
         {
             var entity = _mapper.Map<Item>(item);
 
-           /* foreach (var value in entity.CustomValues)
-            {
-                value.Item = entity;
-            }*/
-
             _unitOfWork.Items.CreateItem(entity);
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction("CollectionDetails", "Collections", new {collectionId = item.CollectionId});
+            return RedirectToCollectionDetails(item.CollectionId);
         }
 
-        public async Task<IActionResult> DeleteItem(Guid itemId)
+        public async Task<IActionResult> Delete(Guid itemId, Guid collectionId)
         {
             _unitOfWork.Items.DeleteItem(new Item{Id = itemId});
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToCollectionDetails(collectionId);
         }
+
+        private RedirectToActionResult RedirectToCollectionDetails(Guid collectionId)
+            => RedirectToAction("CollectionDetails", "Collections", new {collectionId});
     }
 }
