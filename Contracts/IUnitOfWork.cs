@@ -10,6 +10,8 @@ namespace Contracts
 
         ICommentsRepository Comments { get; }
 
+        ILikesRepository Likes { get; }
+
         Task SaveAsync();
     }
 }

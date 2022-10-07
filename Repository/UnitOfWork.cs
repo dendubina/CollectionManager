@@ -10,6 +10,7 @@ namespace Repository
         private ICollectionRepository _collectionRepository;
         private IItemsRepository _itemsRepository;
         private ICommentsRepository _commentsRepository;
+        private ILikesRepository _likesRepository;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -52,6 +53,19 @@ namespace Repository
                 }
 
                 return _commentsRepository;
+            }
+        }
+
+        public ILikesRepository Likes
+        {
+            get
+            {
+                if (_likesRepository is null)
+                {
+                    _likesRepository = new LikesRepository(_context);
+                }
+
+                return _likesRepository;
             }
         }
 
