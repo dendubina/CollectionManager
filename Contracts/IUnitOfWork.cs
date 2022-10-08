@@ -12,6 +12,8 @@ namespace Contracts
 
         ILikesRepository Likes { get; }
 
+        ITagsRepository Tags { get; }
+
         Task SaveAsync();
     }
 }

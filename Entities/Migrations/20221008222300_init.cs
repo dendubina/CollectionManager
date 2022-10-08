@@ -50,12 +50,11 @@ namespace Entities.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,11 +282,11 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     ItemsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    TagsName = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemTag", x => new { x.ItemsId, x.TagsId });
+                    table.PrimaryKey("PK_ItemTag", x => new { x.ItemsId, x.TagsName });
                     table.ForeignKey(
                         name: "FK_ItemTag_Items_ItemsId",
                         column: x => x.ItemsId,
@@ -295,10 +294,10 @@ namespace Entities.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemTag_Tags_TagsId",
-                        column: x => x.TagsId,
+                        name: "FK_ItemTag_Tags_TagsName",
+                        column: x => x.TagsName,
                         principalTable: "Tags",
-                        principalColumn: "Id",
+                        principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -330,12 +329,12 @@ namespace Entities.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "23bfa0e9-f0dd-402f-8544-a456c6b630a5", "f11d92fd-22d2-4c2b-9239-2750bbc16693", "user", "USER" });
+                values: new object[] { "48e7eab5-467e-4226-a9ef-8a1d166c4946", "8923fc76-0dba-4338-8534-8f4246d028ad", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c77d9c4b-7777-46c7-a5f5-135a422b1661", "87278232-5cc0-417a-81d3-c7a047027559", "admin", "ADMIN" });
+                values: new object[] { "0186df09-6340-4319-a7b9-e972cbb79f15", "0dc5191d-c2fd-46ad-b88a-2238892fafc5", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -412,9 +411,9 @@ namespace Entities.Migrations
                 column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemTag_TagsId",
+                name: "IX_ItemTag_TagsName",
                 table: "ItemTag",
-                column: "TagsId");
+                column: "TagsName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_AuthorId",

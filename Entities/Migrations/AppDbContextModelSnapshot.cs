@@ -171,16 +171,11 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.EF.Models.Tag", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.ToTable("Tags");
                 });
@@ -255,12 +250,12 @@ namespace Entities.Migrations
                     b.Property<Guid>("ItemsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TagsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TagsName")
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("ItemsId", "TagsId");
+                    b.HasKey("ItemsId", "TagsName");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("TagsName");
 
                     b.ToTable("ItemTag");
                 });
@@ -294,15 +289,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "23bfa0e9-f0dd-402f-8544-a456c6b630a5",
-                            ConcurrencyStamp = "f11d92fd-22d2-4c2b-9239-2750bbc16693",
+                            Id = "48e7eab5-467e-4226-a9ef-8a1d166c4946",
+                            ConcurrencyStamp = "8923fc76-0dba-4338-8534-8f4246d028ad",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "c77d9c4b-7777-46c7-a5f5-135a422b1661",
-                            ConcurrencyStamp = "87278232-5cc0-417a-81d3-c7a047027559",
+                            Id = "0186df09-6340-4319-a7b9-e972cbb79f15",
+                            ConcurrencyStamp = "0dc5191d-c2fd-46ad-b88a-2238892fafc5",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -470,11 +465,13 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.EF.Models.Item", b =>
                 {
-                    b.HasOne("Entities.EF.Models.Collection", null)
+                    b.HasOne("Entities.EF.Models.Collection", "Collection")
                         .WithMany("Items")
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("Entities.EF.Models.Like", b =>
@@ -504,7 +501,7 @@ namespace Entities.Migrations
 
                     b.HasOne("Entities.EF.Models.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("TagsName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

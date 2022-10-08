@@ -11,6 +11,7 @@ namespace Repository
         private IItemsRepository _itemsRepository;
         private ICommentsRepository _commentsRepository;
         private ILikesRepository _likesRepository;
+        private ITagsRepository _tagsRepository;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -66,6 +67,19 @@ namespace Repository
                 }
 
                 return _likesRepository;
+            }
+        }
+
+        public ITagsRepository Tags
+        {
+            get
+            {
+                if (_tagsRepository is null)
+                {
+                    _tagsRepository = new TagsRepository(_context);
+                }
+
+                return _tagsRepository;
             }
         }
 

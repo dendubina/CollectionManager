@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entities.DTO.CustomFields;
+using Entities.EF.Models;
 
 namespace Entities.DTO.Items
 {
@@ -11,5 +12,7 @@ namespace Entities.DTO.Items
         public Guid CollectionId { get; set; }
 
         public IList<CustomFieldValueToManipulateDto> CustomFieldValuesToCreate { get; set; }
+
+        public IList<Tag> Tags { get; set; }
     }
 }

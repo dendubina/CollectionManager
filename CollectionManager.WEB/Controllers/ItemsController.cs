@@ -40,6 +40,19 @@ namespace CollectionManager.WEB.Controllers
             return View(_mapper.Map<ItemToCreate>(collectionDetails));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
+        {
+            var entity = _mapper.Map<Item>(item);
+            var tags = await _unitOfWork.Tags.GetAll();
+            _unitOfWork.Tags.CreateTags(item.Tags.Except(tags))
+
+            _unitOfWork.Items.CreateItem(entity);
+            await _unitOfWork.SaveAsync();
+
+            return RedirectToCollectionDetails(item.CollectionId);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Edit(Guid itemId)
         {
@@ -54,21 +67,9 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ItemToEditDto model)
         {
-            var item = await _unitOfWork.Items.GetItem(model.Id, trackChanges: true)
-                .FirstOrDefaultAsync();
+            var item = await _unitOfWork.Items.GetItem(model.Id, trackChanges: true).FirstOrDefaultAsync();
 
             _mapper.Map(model, item);
-            await _unitOfWork.SaveAsync();
-
-            return RedirectToCollectionDetails(item.CollectionId);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
-        {
-            var entity = _mapper.Map<Item>(item);
-
-            _unitOfWork.Items.CreateItem(entity);
             await _unitOfWork.SaveAsync();
 
             return RedirectToCollectionDetails(item.CollectionId);

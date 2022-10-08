@@ -68,10 +68,11 @@
 
             <div class="form-outline mb-4">
                 <form asp-action="PostComment" asp-controller="Comments">
+
                     <input type="hidden" name="itemId" value="@Model.Id"/>
-                    
-                    <input type="text" name="CommentText" id="addANote" class="form-control" placeholder="Type comment..."/>
-                    
+                    @Html.TextBox("CommentText", null, new {data_val="true", data_val_required="Text is required", @class= "form-control", placeholder = "Type comment..." })
+                    <span  class="text-danger" data-valmsg-for="CommentText" data-valmsg-replace="true"></span><br/>
+
                     <input type="submit" value="Post" class="btn btn-primary"/>
                 </form>
             </div>
