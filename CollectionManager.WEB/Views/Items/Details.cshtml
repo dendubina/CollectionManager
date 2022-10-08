@@ -54,24 +54,59 @@
                 </dd>
             }
         </dl>
-    </div>
-
-    @if (User.Identity.IsAuthenticated)
-    {
-        if (Model.Likes.Any(x => x.AuthorId == User.GetUserId()))
+        
+        @if (User.Identity.IsAuthenticated)
         {
-            <button class="btn btn-outline-danger" onclick="location.href = '@Url.Action("RemoveLike", "Likes", new {itemId = Model.Id})'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+            if (Model.Likes.Any(x => x.AuthorId == User.GetUserId()))
+            {
+                <button class="btn btn-outline-danger" onclick="location.href = '@Url.Action("RemoveLike", "Likes", new {itemId = Model.Id})'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+            }
+            else
+            {
+                <button class="btn btn-outline-secondary" onclick="location.href = '@Url.Action("PutLike", "Likes", new {itemId = Model.Id})'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+            }
+
+            <div class="form-outline mb-4">
+                <form asp-action="PostComment" asp-controller="Comments">
+                    <input type="hidden" name="itemId" value="@Model.Id"/>
+                    
+                    <input type="text" name="CommentText" id="addANote" class="form-control" placeholder="Type comment..."/>
+                    
+                    <input type="submit" value="Post" class="btn btn-primary"/>
+                </form>
+            </div>
         }
-        else
+        
+        @if (Model.Comments.Any())
         {
-            <button class="btn btn-outline-secondary" onclick="location.href = '@Url.Action("PutLike", "Likes", new {itemId = Model.Id})'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+            <div class="container my-5 py-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="card text-dark">
+                            @foreach (var comment in Model.Comments.OrderByDescending(x => x.Date))
+                            {
+                                <div class="card-body p-4">
+                                    <div class="d-flex flex-start">              
+                                        <div>
+                                            <h6 class="fw-bold mb-1">@comment.AuthorName</h6>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <p class="mb-0">
+                                                    @comment.Date.ToString("F")
+                                                </p>
+                                            </div>
+                                            <p class="mb-0">
+                                                @comment.Text
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    }
-
-    <button type="button" class="btn btn-secondary">Comments [@Model.Comments.Count()]</button>
-
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
+        
     </div>
 </body>
 </html>

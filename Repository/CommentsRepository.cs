@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Contracts;
 using Entities.EF;
 using Entities.EF.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -13,24 +14,12 @@ namespace Repository
         {
         }
 
-        public Task<IEnumerable<Comment>> GetAllCommentsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Comment> GetCommentAsync(Guid commentId, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Comment>> GetCommentsByItemId(Guid itemId)
+            => await FindByCondition(x => x.ItemId.Equals(itemId), trackChanges: false)
+                .Include(x => x.Author)
+                .ToArrayAsync();
 
         public void CreateComment(Comment comment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteComment(Comment comment)
-        {
-            throw new NotImplementedException();
-        }
+            => Create(comment);
     }
 }

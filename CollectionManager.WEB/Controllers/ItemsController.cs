@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
@@ -23,6 +24,7 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid itemId)
         {
             var item = await _unitOfWork.Items.GetItemDetailsAsync(itemId);

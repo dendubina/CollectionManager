@@ -7,12 +7,8 @@ namespace Contracts
 {
     public interface ICommentsRepository
     {
-        Task<IEnumerable<Comment>> GetAllCommentsAsync();
-
-        Task<Comment> GetCommentAsync(Guid commentId, bool trackChanges);
+        Task<IEnumerable<Comment>> GetCommentsByItemId(Guid itemId);
 
         void CreateComment(Comment comment);
-
-        void DeleteComment(Comment comment);
     }
 }
