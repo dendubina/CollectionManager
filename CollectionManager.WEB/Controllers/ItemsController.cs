@@ -44,11 +44,15 @@ namespace CollectionManager.WEB.Controllers
         public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
         {
             var entity = _mapper.Map<Item>(item);
-            var tags = await _unitOfWork.Tags.CreateTags(item.Tags);
-
 
             _unitOfWork.Items.CreateItem(entity);
-            entity.Tags = tags.ToList(); 
+
+            if (item.Tags is not null && item.Tags.Any())
+            {
+                var tags = await _unitOfWork.Tags.CreateTags(item.Tags);
+                entity.Tags = tags.ToList();
+            }
+
             await _unitOfWork.SaveAsync();
 
             return RedirectToCollectionDetails(item.CollectionId);

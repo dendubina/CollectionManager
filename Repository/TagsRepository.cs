@@ -31,6 +31,5 @@ namespace Repository
                 .Where(x => enumerable.Select(n => n.Name).Any(f => f == x.Name))
                 .ToList();
         }
-        
     }
 }
