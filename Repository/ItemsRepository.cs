@@ -28,6 +28,7 @@ namespace Repository
                 .Include(x => x.Collection)
                 .ThenInclude(x => x.Owner)
                 .Include(x => x.Likes)
+                .Include(x => x.Tags)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.Author)
                 .Include(x => x.CustomValues)

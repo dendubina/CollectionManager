@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Entities.EF.Models;
 
@@ -6,10 +7,10 @@ namespace Contracts
 {
     public interface ITagsRepository
     {
-        Task<IEnumerable<Tag>> GetAll();
+        IQueryable<Tag> GetAll();
 
         Task<IEnumerable<Tag>> FindBySubstring(string substring);
 
-        Task CreateTags(IEnumerable<Tag> tags);
+        Task<IEnumerable<Tag>> CreateTags(IEnumerable<Tag> tags);
     }
 }

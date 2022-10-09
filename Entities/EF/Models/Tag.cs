@@ -11,5 +11,11 @@ namespace Entities.EF.Models
         public string Name { get; set; }
 
         public ICollection<Item> Items { get; set; }
+
+        public override bool Equals(object obj)
+            => obj is Tag tag && Name == tag.Name;
+
+        public override int GetHashCode()
+            => Name.GetHashCode();
     }
 }

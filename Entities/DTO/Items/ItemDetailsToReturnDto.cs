@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Entities.DTO.Comments;
 using Entities.DTO.CustomFieldValues;
 using Entities.DTO.Likes;
+using Entities.EF.Models;
 
 namespace Entities.DTO.Items
 {
@@ -21,6 +22,8 @@ namespace Entities.DTO.Items
         public IEnumerable<LikeToReturnDto> Likes { get; set; }
 
         public IEnumerable<CommentToReturnDto> Comments { get; set; }
+
+        public IEnumerable<Tag> Tags { get; set; }
 
         public IEnumerable<CustomFieldValueToReturnDto> CustomFieldValues { get; set; }
     }

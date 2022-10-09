@@ -53,6 +53,13 @@
                     @Html.DisplayFor(x => value.Value)
                 </dd>
             }
+            
+            <dt class="col-sm-2">
+                Tags
+            </dt>
+            <dd class="col-sm-10">
+                @string.Join(", ", Model.Tags.Select(x => x.Name))
+            </dd>
         </dl>
         
         @if (User.Identity.IsAuthenticated)

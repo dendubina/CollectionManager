@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
 using Entities.EF;
@@ -13,14 +14,23 @@ namespace Repository
         {
         }
 
-        public async Task<IEnumerable<Tag>> GetAll()
-            => await FindAll().ToArrayAsync();
+        public IQueryable<Tag> GetAll()
+            => FindAll();
 
         public async Task<IEnumerable<Tag>> FindBySubstring(string substring)
             => await FindByCondition(x => x.Name.Contains(substring), trackChanges: false)
                 .ToArrayAsync();
 
-        public Task CreateTags(IEnumerable<Tag> tags)
-            => DbContext.Tags.AddRangeAsync(tags);
+        public async Task<IEnumerable<Tag>> CreateTags(IEnumerable<Tag> tags)
+        {
+            var enumerable = tags as Tag[] ?? tags.ToArray();
+            await DbContext.Tags.AddRangeAsync(enumerable.Except(await GetAll().ToArrayAsync()));
+            await DbContext.SaveChangesAsync();
+
+            return FindAll()
+                .Where(x => enumerable.Select(n => n.Name).Any(f => f == x.Name))
+                .ToList();
+        }
+        
     }
 }
