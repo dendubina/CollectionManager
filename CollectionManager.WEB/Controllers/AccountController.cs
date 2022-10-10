@@ -17,9 +17,8 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public IActionResult SignIn()
-        {
-            return View();
-        }
+            => View();
+       
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInModel model)
@@ -34,14 +33,13 @@ namespace CollectionManager.WEB.Controllers
                 return View();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToHomePage();
         }
 
         [HttpGet]
         public IActionResult SignUp()
-        {
-            return View();
-        }
+            => View();
+        
 
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpModel model)
@@ -56,14 +54,17 @@ namespace CollectionManager.WEB.Controllers
                 return View();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToHomePage();
         }
 
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToHomePage();
         }
+
+        private RedirectToActionResult RedirectToHomePage()
+            => RedirectToAction("Index", "Home");
     }
 }

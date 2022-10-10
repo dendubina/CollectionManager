@@ -22,6 +22,11 @@ namespace CollectionManager.WEB.Models.MapperProfile
                 .ForMember(x => x.Name, opt => opt.Ignore())
                 .ForMember(x => x.CollectionId, opt => opt.MapFrom(x => x.Id))
                 .ForMember(x => x.CustomFieldValuesToCreate, opt => opt.MapFrom(x => x.CustomFields));
+
+            CreateMap<Collection, LargestCollectionToReturnDto>()
+                .ForMember(x => x.OwnerName, opt => opt.MapFrom(x => x.Owner.UserName))
+                .ForMember(x => x.OwnerId, opt => opt.MapFrom(x => x.Owner.Id))
+                .ForMember(x => x.ItemsCount, opt => opt.MapFrom(x => x.Items.Count));
         }
     }
 }

@@ -99,7 +99,7 @@
                         <td>
                             @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id })
 
-                            @if (Model.OwnerId == User.GetUserId() || User.IsInRole("admin"))
+                            @if (User.IsUserHasAccess(Model.OwnerId))
                             {
                                 <span>|</span> @Html.ActionLink("Edit", "Edit", "Items", new { itemId = item.Id }) <span>|</span>
                                 @Html.ActionLink("Delete", "Delete", "Items", new { itemId = item.Id, collectionId = Model.Id })

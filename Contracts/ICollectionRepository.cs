@@ -10,6 +10,8 @@ namespace Contracts
     {
         Task<IEnumerable<Collection>> GetAllCollectionsAsync();
 
+        Task<IEnumerable<Collection>> GetMostLargeCollections(int count);
+
         Task<Collection> GetCollectionDetailsAsync(Guid collectionId);
             
         IQueryable<Collection> GetCollection(Guid collectionId, bool trackChanges);

@@ -33,7 +33,16 @@ namespace CollectionManager.WEB.Controllers
 
             return View(_mapper.Map<IEnumerable<UsersCollectionToShow>>(collections));
         }
-        
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetLargestCollections()
+        {
+            var collections = await _unitOfWork.Collections.GetMostLargeCollections(5);
+
+            return PartialView(_mapper.Map<IEnumerable<LargestCollectionToReturnDto>>(collections));
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> CollectionDetails(Guid collectionId)
