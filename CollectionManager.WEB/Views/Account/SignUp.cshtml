@@ -1,13 +1,45 @@
 ﻿@model Entities.DTO.User.SignUpModel
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>SignUp</title>
+    <link rel="stylesheet" href="~/css/SignIn.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
-<body>
+
+<body class="text-center">
+<form asp-action="SignUp" class="form-signin">
+    <img class="mb-4" src="~/unnamed.png" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign Up</h1>
+    
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="UserName" id="inputEmail" class="form-control" placeholder="User name">
+    <span asp-validation-for="UserName" class="text-danger"></span>
+    
+    <input asp-for="Email" class="form-control" placeholder="Email"/>
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password">
+    <span asp-validation-for="Password" class="text-danger"></span>
+    
+    <input asp-for="PasswordConfirm" class="form-control" placeholder="Password confirm" />
+    <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+</form>
+</body>
+
+@*<body>
+
+
 <div class="form-container">
     <div class="form">
         <h4>SignUp</h4>
@@ -40,6 +72,6 @@
         </form>
     </div>
 </div>
-       
-</body>
+
+</body>*@
 </html>

@@ -20,6 +20,14 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Collection>> GetMostLargeCollections(int count)
+            => await FindAll()
+                .OrderByDescending(x => x.Items.Count)
+                .Take(count)
+                .Include(x => x.Items)
+                .Include(x => x.Owner)
+                .ToArrayAsync();
+
         public async Task<Collection> GetCollectionDetailsAsync(Guid collectionId)
             => await FindByCondition(x => x.Id.Equals(collectionId), trackChanges: false)
                 .Include(x => x.CustomFields)
