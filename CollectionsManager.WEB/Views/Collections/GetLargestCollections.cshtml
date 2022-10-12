@@ -1,0 +1,28 @@
+﻿@using CollectionManager.WEB.Extensions
+@model IEnumerable<CollectionsManager.BLL.DTO.Collections.LargestCollectionToReturnDto>
+
+<div class="row justify-content-around">
+    @foreach (var collection in Model)
+    {
+        <div class="col-md-auto">
+            <div class="card">
+                <img src="@collection.ImageSource" class="card-img-top custom-card-img" alt=":(">
+                <div class="card-body custom-card-body">
+                    <h5 class="card-title custom-card-title">@collection.Name</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Items count: @collection.ItemsCount</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Owner: @collection.OwnerName</h6>
+                </div>
+                <div class="bottom-card-block text-center">
+                    @Html.ActionLink("Details", "CollectionDetails", "Collections", new{ collectionId = collection.Id }, new { @class = "btn btn-primary btn-sm" })
+                    
+                    @if (User.IsUserHasAccess(collection.OwnerId))
+                    {
+                        @Html.ActionLink("Edit", "EditCollection", "Collections", new { collectionId = collection.Id }, new { @class = "btn btn-warning btn-sm", style ="margin-right: 5px;" })
+                        @Html.ActionLink("Delete", "DeleteCollection", "Collections", new { collectionId = collection.Id }, new { @class = "btn btn-danger btn-sm" })
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
