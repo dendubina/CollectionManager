@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CollectionsManager.BLL.DTO.Collections;
+using CollectionsManager.BLL.DTO.Items;
 
 namespace CollectionsManager.BLL.Services.Interfaces
 {
@@ -13,12 +14,14 @@ namespace CollectionsManager.BLL.Services.Interfaces
 
         Task<IEnumerable<UsersCollectionToReturnDto>> GetCollectionsByUserAsync(Guid userId);
 
+        Task<ItemToCreate> GetItemToAddAsync(Guid collectionId);
+
         Task<CollectionToManipulateDto> GetCollectionToEditAsync(Guid collectionId);
 
-        Task CreateCollection(CollectionToManipulateDto collection);
+        Task CreateCollectionAsync(CollectionToManipulateDto collection);
 
-        Task UpdateCollection(CollectionToManipulateDto collection);
+        Task UpdateCollectionAsync(CollectionToManipulateDto collection);
 
-        Task DeleteCollection(Guid collectionId, string currentUserId);
+        Task DeleteCollectionAsync(Guid collectionId, string currentUserId);
     }
 }

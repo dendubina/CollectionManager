@@ -21,11 +21,7 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index(Guid userId)
-        {
-            var collections = await _unitOfWork.Collections.GetCollectionsByUserAsync(userId);
-
-            return View(collections);
-        }
+            => View(await _unitOfWork.Collections.GetCollectionsByUserAsync(userId));
 
         [AllowAnonymous]
         [HttpGet]
@@ -46,7 +42,7 @@ namespace CollectionManager.WEB.Controllers
         {
             model.OwnerId = User.GetUserId();
 
-            await _unitOfWork.Collections.CreateCollection(model);
+            await _unitOfWork.Collections.CreateCollectionAsync(model);
 
             return RedirectToIndex();
         }
@@ -61,14 +57,14 @@ namespace CollectionManager.WEB.Controllers
             model.CustomFields = model.CustomFields.Where(x => x.ToRemove == false).ToList();
             model.OwnerId = User.GetUserId();
 
-            await _unitOfWork.Collections.UpdateCollection(model);
+            await _unitOfWork.Collections.UpdateCollectionAsync(model);
 
             return RedirectToIndex();
         }
 
         public async Task<IActionResult> DeleteCollection(Guid collectionId)
         {
-            await _unitOfWork.Collections.DeleteCollection(collectionId, User.GetUserId());
+            await _unitOfWork.Collections.DeleteCollectionAsync(collectionId, User.GetUserId());
 
             return RedirectToIndex();
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CollectionsManager.BLL.DTO.Collections;
+using CollectionsManager.BLL.DTO.Items;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.BLL.Extensions;
 using CollectionsManager.BLL.Services.Interfaces;
@@ -45,6 +46,7 @@ namespace CollectionsManager.BLL.Services
                 .Include(x => x.CustomFields)
                 .Include(x => x.Items)
                 .ThenInclude(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
                 .Select(entity => _mapper.Map<CollectionDetailsToReturnDto>(entity))
                 .FirstOrDefaultAsync();
 
@@ -75,13 +77,20 @@ namespace CollectionsManager.BLL.Services
             return collection;
         }
 
-        public async Task CreateCollection(CollectionToManipulateDto collection)
+        public async Task<ItemToCreate> GetItemToAddAsync(Guid collectionId)
+            => await _unitOfWork.Collections
+                .GetCollection(collectionId, trackChanges: false)
+                .Include(x => x.CustomFields)
+                .Select(collection => _mapper.Map<ItemToCreate>(collection))
+                .FirstOrDefaultAsync();
+
+        public async Task CreateCollectionAsync(CollectionToManipulateDto collection)
         {
             _unitOfWork.Collections.CreateCollection(_mapper.Map<Collection>(collection));
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateCollection(CollectionToManipulateDto collection)
+        public async Task UpdateCollectionAsync(CollectionToManipulateDto collection)
         {
             var entity = await _unitOfWork.Collections
                 .GetCollection(collection.Id, trackChanges: true)
@@ -95,7 +104,7 @@ namespace CollectionsManager.BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task DeleteCollection(Guid collectionId, string currentUserId)
+        public async Task DeleteCollectionAsync(Guid collectionId, string currentUserId)
         {
             var collection = await _unitOfWork.Collections
                 .GetCollection(collectionId, trackChanges: false)

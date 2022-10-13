@@ -42,6 +42,11 @@ namespace CollectionsManager.BLL.Services
         {
             var entity = await _unitOfWork.Items
                 .GetItem(itemId, trackChanges: false)
+                .Include(x => x.Likes)
+                .Include(x => x.Comments)
+                .Include(x => x.Tags)
+                .Include(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
                 .Select(item => _mapper.Map<ItemDetailsToReturnDto>(item))
                 .FirstOrDefaultAsync();
 

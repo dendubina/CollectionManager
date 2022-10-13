@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using CollectionManager.WEB.Extensions;
 using CollectionsManager.BLL.DTO.Items;
 using CollectionsManager.BLL.Services.Interfaces;
@@ -13,12 +12,10 @@ namespace CollectionManager.WEB.Controllers
     public class ItemsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public ItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ItemsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -28,11 +25,7 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public async Task<IActionResult> AddItemToCollection(Guid collectionId)
-        {
-            var collectionDetails = await _unitOfWork.Collections.GetCollectionDetailsAsync(collectionId);
-
-            return View(_mapper.Map<ItemToCreate>(collectionDetails));
-        }
+            => View(await _unitOfWork.Collections.GetItemToAddAsync(collectionId));
 
         [HttpPost]
         public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
