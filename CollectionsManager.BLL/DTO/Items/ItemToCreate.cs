@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CollectionsManager.BLL.DTO.CustomFields;
-using CollectionsManager.DAL.Entities;
+using CollectionsManager.BLL.DTO.Tags;
 
 namespace CollectionsManager.BLL.DTO.Items
 {
@@ -13,6 +13,6 @@ namespace CollectionsManager.BLL.DTO.Items
 
         public IList<CustomFieldValueToManipulateDto> CustomFieldValuesToCreate { get; set; }
 
-        public IList<Tag> Tags { get; set; }
+        public IList<TagDto> Tags { get; set; }
     }
 }

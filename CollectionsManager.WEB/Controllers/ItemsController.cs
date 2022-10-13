@@ -45,7 +45,7 @@ namespace CollectionManager.WEB.Controllers
             model.CurrentUserId = User.GetUserId();
             await _unitOfWork.Items.UpdateItemAsync(model);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToCollectionDetails(model.CollectionId);
         }
 
         public async Task<IActionResult> Delete(Guid itemId, Guid collectionId)

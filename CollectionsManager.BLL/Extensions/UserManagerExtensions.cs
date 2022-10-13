@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.DAL.Entities;
 using Microsoft.AspNetCore.Identity;

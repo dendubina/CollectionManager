@@ -20,22 +20,11 @@ namespace CollectionsManager.DAL.Repositories
         public async Task<IEnumerable<Tag>> CreateTags(IEnumerable<Tag> tags)
         {
             var enumerable = tags as Tag[] ?? tags.ToArray();
-            await DbContext.Tags.AddRangeAsync(enumerable.Except(await GetAll(trackChanges: false).ToArrayAsync()));
-            await DbContext.SaveChangesAsync();
+            await DbContext.Tags.AddRangeAsync(enumerable.Except(await FindAll(trackChanges: false).ToArrayAsync()).ToList());
 
-            return FindAll(trackChanges: false)
+            return FindAll(trackChanges: true)
                 .Where(x => enumerable.Select(n => n.Name).Any(f => f == x.Name))
                 .ToList();
         }
-       
-
-        /* public async Task<IEnumerable<Tag>> FindBySubstring(string substring)
-            => await FindByCondition(x => x.Name.Contains(substring), trackChanges: false)
-                .ToArrayAsync();
-
-        public async Task<IEnumerable<Tag>> CreateTags(IEnumerable<Tag> tags)
-        {
-           
-        }*/
     }
 }

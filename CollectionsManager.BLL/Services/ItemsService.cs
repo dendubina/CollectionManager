@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,19 +29,21 @@ namespace CollectionsManager.BLL.Services
 
         public async Task<ItemToEditDto> GetItemToEditAsync(Guid itemId)
         {
-            var entity = await _unitOfWork.Items
+            var item = await _unitOfWork.Items
                 .GetItem(itemId, trackChanges: false)
+                .Include(x => x.CustomValues)
+                .ThenInclude(x => x.Field)
                 .Select(item => _mapper.Map<ItemToEditDto>(item))
                 .FirstOrDefaultAsync();
 
-            CheckIsExists(entity, itemId);
+            CheckIsExists(item, itemId);
 
-            return entity;
+            return item;
         }
 
         public async Task<ItemDetailsToReturnDto> GetItemDetailsAsync(Guid itemId)
         {
-            var entity = await _unitOfWork.Items
+            var item = await _unitOfWork.Items
                 .GetItem(itemId, trackChanges: false)
                 .Include(x => x.Likes)
                 .Include(x => x.Comments)
@@ -50,20 +53,21 @@ namespace CollectionsManager.BLL.Services
                 .Select(item => _mapper.Map<ItemDetailsToReturnDto>(item))
                 .FirstOrDefaultAsync();
 
-            CheckIsExists(entity, itemId);
+            CheckIsExists(item, itemId);
 
-            return entity;
+            return item;
         }
 
         public async Task CreateItemAsync(ItemToCreate item)
         {
             var entity = _mapper.Map<Item>(item);
+
             _unitOfWork.Items.CreateItem(entity);
 
             if (item.Tags is not null && item.Tags.Any())
             {
-                var tags = await _unitOfWork.Tags.CreateTags(item.Tags);
-                entity.Tags = tags.ToList();
+                var tags = await _unitOfWork.Tags.CreateTags(_mapper.Map<IEnumerable<Tag>>(item.Tags));
+                entity.Tags = tags.ToArray();
             }
 
             await _unitOfWork.SaveAsync();

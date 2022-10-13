@@ -8,6 +8,8 @@ namespace CollectionsManager.BLL.DTO.Items
     {
         public Guid Id { get; set; }
 
+        public Guid CollectionId { get; set; }
+
         public string CurrentUserId { get; set; }
 
         public string Name { get; set; }

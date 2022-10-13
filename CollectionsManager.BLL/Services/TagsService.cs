@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using CollectionsManager.BLL.DTO.Tags;
 using CollectionsManager.BLL.Services.Interfaces;
-using CollectionsManager.DAL.Entities;
 using CollectionsManager.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollectionsManager.BLL.Services
 {
@@ -16,14 +17,17 @@ namespace CollectionsManager.BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<IEnumerable<Tag>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public Task<IEnumerable<Tag>> FindBySubstringAsync(string substring)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<TagDto>> GetAllAsync()
+            => await _unitOfWork.Tags
+                .GetAll(trackChanges: false)
+                .Select(tag => new TagDto { Name = tag.Name })
+                .ToArrayAsync();
+
+        public async Task<IEnumerable<TagDto>> FindBySubstringAsync(string substring)
+            => await _unitOfWork.Tags
+                .GetAll(trackChanges: false)
+                .Where(x => x.Name.Contains(substring))
+                .Select(tag => new TagDto { Name = tag.Name })
+                .ToArrayAsync();
     }
 }

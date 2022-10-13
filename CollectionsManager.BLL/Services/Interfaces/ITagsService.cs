@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CollectionsManager.DAL.Entities;
+using CollectionsManager.BLL.DTO.Tags;
 
 namespace CollectionsManager.BLL.Services.Interfaces
 {
     public interface ITagsService
     {
-        Task<IEnumerable<Tag>> GetAllAsync();
+        Task<IEnumerable<TagDto>> GetAllAsync();
 
-        Task<IEnumerable<Tag>> FindBySubstringAsync(string substring);
+        Task<IEnumerable<TagDto>> FindBySubstringAsync(string substring);
     }
 }
