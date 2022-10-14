@@ -63,7 +63,7 @@
                 <button type="button" id="addTagButton" class="btn btn-secondary">Add tag</button>
 
                 <div class="tags-list-block">
-                    <ul id="tagsList">
+                    <ul class="tags-ul" id="tagsList">
                     </ul>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 if (response.length > 0) {
 
                     response.forEach((item) => {
-                        let li = `<li>${item}</li>`;
+                        let li = `<li class ="tags-li">${item}</li>`;
                         tagsList.insertAdjacentHTML('beforeend', li);
                     });
 

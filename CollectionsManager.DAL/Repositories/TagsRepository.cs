@@ -21,6 +21,7 @@ namespace CollectionsManager.DAL.Repositories
         {
             var enumerable = tags as Tag[] ?? tags.ToArray();
             await DbContext.Tags.AddRangeAsync(enumerable.Except(await FindAll(trackChanges: false).ToArrayAsync()).ToList());
+            await DbContext.SaveChangesAsync();
 
             return FindAll(trackChanges: true)
                 .Where(x => enumerable.Select(n => n.Name).Any(f => f == x.Name))

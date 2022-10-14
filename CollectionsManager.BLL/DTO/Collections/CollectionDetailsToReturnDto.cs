@@ -17,6 +17,8 @@ namespace CollectionsManager.BLL.DTO.Collections
 
         public string OwnerId { get; set; }
 
+        public string OwnerName { get; set; }
+
         public CollectionCategory Category { get; set; }
 
         public IEnumerable<ItemInCollectionDetailsDto> ItemInCollectionDetails { get; set; }   

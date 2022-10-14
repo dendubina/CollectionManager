@@ -15,7 +15,8 @@ namespace CollectionsManager.BLL.MapperProfiles
                 .ForMember(x => x.ItemsCount, opt => opt.MapFrom(x => x.Items.Count));
 
             CreateMap<Collection, CollectionDetailsToReturnDto>()
-                .ForMember(x => x.ItemInCollectionDetails, opt => opt.MapFrom(x => x.Items));
+                .ForMember(x => x.ItemInCollectionDetails, opt => opt.MapFrom(x => x.Items))
+                .ForMember(x => x.OwnerName, opt => opt.MapFrom(x => x.Owner.UserName));
 
             CreateMap<Collection, ItemToCreate>()
                 .ForMember(x => x.Name, opt => opt.Ignore())

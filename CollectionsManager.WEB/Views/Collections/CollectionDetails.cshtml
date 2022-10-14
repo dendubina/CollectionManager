@@ -1,4 +1,5 @@
 ﻿@using CollectionManager.WEB.Extensions
+@using Markdig
 @model CollectionsManager.BLL.DTO.Collections.CollectionDetailsToReturnDto
 
 <!DOCTYPE html>
@@ -7,109 +8,143 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>CollectionDetails</title>
+    <link rel="stylesheet" href="~/css/CollectionDetails.css" />
 </head>
 <body>
 
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Id)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Category)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Category)
-            </dd>
-        </dl>
-
-        @if (Model.ItemInCollectionDetails.Any())
-        {
-            var customPropertiesNames = Model.ItemInCollectionDetails
-                .First()
-                .CustomFieldValues
-                .Select(x => x.Name)
-                .Take(2);
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Name)
-                        </th>
-                        @foreach (var name in customPropertiesNames)
-                        {
-                            <th>
-                                @Html.DisplayFor(x => name)
-                            </th>
-                        }
-                        <th>
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                @foreach (var item in Model.ItemInCollectionDetails)
-                {
-                    var customValuesToShow = item.CustomFieldValues.Take(2).ToArray();
-
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(x => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.Name)
-                        </td>
-                        @if (customValuesToShow.Any())
-                        {
-                            foreach (var customFieldValue in customValuesToShow)
-                            {
-                                if (DateTime.TryParse(customFieldValue.Value, out DateTime date))
-                                {
-                                    <td>
-                                        @date.Date.ToShortDateString()
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                        @Html.DisplayFor(x => customFieldValue.Value)
-                                    </td>
-                                }
-
-                            }
-                        }
-                        <td>
-                            @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id })
-
-                            @if (User.IsUserHasAccess(Model.OwnerId))
-                            {
-                                <span>|</span> @Html.ActionLink("Edit", "Edit", "Items", new { itemId = item.Id }) <span>|</span>
-                                @Html.ActionLink("Delete", "Delete", "Items", new { itemId = item.Id, collectionId = Model.Id })
-                            }
-                        </td>
-                    </tr>
-                }
-            </table>
-        }
-        @Html.ActionLink("Add Item", "AddItemToCollection", "Items", new { collectionId = Model.Id }, new { @class = "btn btn-primary" })
+@if (Model.ImageSource is not null)
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <img src="@Model.ImageSource"/>
+            </div>
+        </div>
     </div>
+}
+
+<div class="container-fluid">
+    <div class="text-center"><h4>Info</h4></div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Collection Name
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Owner
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+    </dl>
+</div>
+
+<div class="text-center"><h4>Description</h4></div>
+<div class="container">
+    <div class="description-block">
+        @Html.Raw(Markdown.ToHtml(Model.Description))
+    </div>
+</div>
+
+<div>
+    @if (Model.ItemInCollectionDetails.Any())
+    {
+        <div class="text-center" style="margin-top: 10px"><h4>Items</h4></div>
+
+        var customPropertiesNames = Model.ItemInCollectionDetails
+            .First()
+            .CustomFieldValues
+            .Select(x => x.Name)
+            .Take(2);
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => Model.ItemInCollectionDetails.First().Name)
+                </th>
+                @foreach (var name in customPropertiesNames)
+                {
+                    <th>
+                        @Html.DisplayFor(x => name)
+                    </th>
+                }
+                <th>
+                    Actions
+                </th>
+            </tr>
+            </thead>
+            @foreach (var item in Model.ItemInCollectionDetails)
+            {
+                var customValuesToShow = item.CustomFieldValues.Take(2).ToArray();
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Name)
+                    </td>
+                    @if (customValuesToShow.Any())
+                    {
+                        foreach (var customFieldValue in customValuesToShow)
+                        {
+                            if (DateTime.TryParse(customFieldValue.Value, out DateTime date))
+                            {
+                                <td>
+                                    @date.Date.ToShortDateString()
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.DisplayFor(x => customFieldValue.Value)
+                                </td>
+                            }
+
+                        }
+                    }
+                    <td>
+                        @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id })
+
+                        @if (User.IsUserHasAccess(Model.OwnerId))
+                        {
+                            <span>|</span>
+                            @Html.ActionLink("Edit", "Edit", "Items", new { itemId = item.Id })
+                            <span>|</span>
+                            @Html.ActionLink("Delete", "Delete", "Items", new { itemId = item.Id, collectionId = Model.Id })
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p style="margin-left: 20px; margin-top: 20px; font-style: italic;">No items in collection</p>
+    }
+
+    @if (User.IsUserHasAccess(Model.OwnerId))
+    {
+        @Html.ActionLink("Add Item", "AddItemToCollection", "Items", new { collectionId = Model.Id }, new { @class = "btn btn-primary add-item-button" })
+    }
+</div>
 </body>
 </html>

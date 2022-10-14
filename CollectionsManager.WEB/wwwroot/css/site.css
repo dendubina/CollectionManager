@@ -71,17 +71,22 @@
     margin: 10px;
 }
 
-ul {
+.tags-ul {
     list-style-type: none;
     width: 395px;
     padding: 0;
     margin-left: 1px;
 }
 
-li {
+.tags-li {
     border-bottom: 1px solid black;
     font-size: 20px;
     background-color: #b7b5b8;
+}
+
+.tags-li:hover {
+    background-color: #0d6efd;
+    cursor: pointer;
 }
 
 #tagInputBlock {
@@ -91,11 +96,6 @@ li {
 .tags-list-block {
     position: absolute;
     top: 38px;
-}
-
-li:hover {
-    background-color: #0d6efd;
-    cursor: pointer;
 }
 
 .card {
@@ -121,4 +121,8 @@ li:hover {
 
 .custom-card-body {
     padding: 10px;
+}
+
+.add-item-button {
+    margin: 10px;
 }
