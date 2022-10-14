@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using CollectionManager.WEB.Mapper;
 using CollectionsManager.BLL.MapperProfiles;
 using CollectionsManager.BLL.Services;
 using CollectionsManager.BLL.Services.AuthService;
@@ -46,7 +47,9 @@ namespace CollectionManager.WEB.Extensions
                 typeof(CommentsProfile),
                 typeof(CustomFieldsProfile),
                 typeof(ItemsProfile),
-                typeof(LikesProfile));
+                typeof(TagsProfile),
+                typeof(LikesProfile),
+                typeof(WebProfile));
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

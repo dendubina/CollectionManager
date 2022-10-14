@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CollectionManager.WEB.Extensions;
+using CollectionManager.WEB.Models.Items;
 using CollectionsManager.BLL.DTO.Items;
+using CollectionsManager.BLL.DTO.Tags;
 using CollectionsManager.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +15,13 @@ namespace CollectionManager.WEB.Controllers
     [Authorize]
     public class ItemsController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ItemsController(IUnitOfWork unitOfWork)
+        public ItemsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -37,15 +43,31 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid itemId)
-            => View(await _unitOfWork.Items.GetItemToEditAsync(itemId));
+        {
+            var item = await _unitOfWork.Items.GetItemToEditAsync(itemId);
+
+            return View(_mapper.Map<ItemToEditViewModel>(item));
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ItemToEditDto model)
+        public async Task<IActionResult> Edit(ItemToEditViewModel model)
         {
-            model.CurrentUserId = User.GetUserId();
-            await _unitOfWork.Items.UpdateItemAsync(model);
+            var dto = _mapper.Map<ItemToEditDto>(model);
+            dto.CurrentUserId = User.GetUserId();
+            var tags = model.ExistedTags
+                .Where(x => x.ToRemove == false)
+                .Select(x => x.Name);
 
-            return RedirectToCollectionDetails(model.CollectionId);
+            if (model.TagsToAdd is not null)
+            {
+                tags = tags.Union(model.TagsToAdd.Select(x => x.Name));
+            }
+               
+            dto.Tags = tags.Select(tagName => new TagDto { Name = tagName });
+
+            await _unitOfWork.Items.UpdateItemAsync(dto);
+
+            return RedirectToAction("Details", new { itemId = model.Id });
         }
 
         public async Task<IActionResult> Delete(Guid itemId, Guid collectionId)

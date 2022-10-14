@@ -21,8 +21,11 @@ namespace CollectionsManager.BLL.MapperProfiles
                 .ForMember(x => x.CustomFieldValues, opt => opt.MapFrom(x => x.CustomValues));
 
             CreateMap<Item, ItemToEditDto>()
-                .ForMember(x => x.CustomFields, opt => opt.MapFrom(x => x.CustomValues))
-                .ReverseMap();
+                .ForMember(x => x.CustomFields, opt => opt.MapFrom(x => x.CustomValues));
+
+            CreateMap<ItemToEditDto, Item>()
+                .ForMember(x => x.CustomValues, opt => opt.MapFrom(x => x.CustomFields))
+                .ForMember(x => x.Tags, opt => opt.Ignore());
         }
     }
 }

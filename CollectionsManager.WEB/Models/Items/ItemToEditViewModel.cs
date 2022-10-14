@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CollectionManager.WEB.Models.Tags;
 using CollectionsManager.BLL.DTO.CustomFields;
 using CollectionsManager.BLL.DTO.Tags;
 
-namespace CollectionsManager.BLL.DTO.Items
+namespace CollectionManager.WEB.Models.Items
 {
-    public class ItemToEditDto
+    public class ItemToEditViewModel
     {
         public Guid Id { get; set; }
 
@@ -15,7 +16,9 @@ namespace CollectionsManager.BLL.DTO.Items
 
         public string Name { get; set; }
 
-        public IEnumerable<TagDto> Tags { get; set; }
+        public IList<TagDto> TagsToAdd { get; set; }
+
+        public IList<ExistedTagToEditViewModel> ExistedTags { get; set; }
 
         public IList<CustomFieldValueToManipulateDto> CustomFields { get; set; }
     }

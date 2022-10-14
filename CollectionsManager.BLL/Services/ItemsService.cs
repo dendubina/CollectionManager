@@ -31,6 +31,7 @@ namespace CollectionsManager.BLL.Services
         {
             var item = await _unitOfWork.Items
                 .GetItem(itemId, trackChanges: false)
+                .Include(x => x.Tags)
                 .Include(x => x.CustomValues)
                 .ThenInclude(x => x.Field)
                 .Select(item => _mapper.Map<ItemToEditDto>(item))
@@ -45,6 +46,8 @@ namespace CollectionsManager.BLL.Services
         {
             var item = await _unitOfWork.Items
                 .GetItem(itemId, trackChanges: false)
+                .Include(x => x.Collection)
+                .ThenInclude(x => x.Owner)
                 .Include(x => x.Likes)
                 .Include(x => x.Comments)
                 .Include(x => x.Tags)
@@ -78,12 +81,19 @@ namespace CollectionsManager.BLL.Services
             var entity = await _unitOfWork.Items
                 .GetItem(item.Id, trackChanges: true)
                 .Include(x => x.Collection)
+                .Include(x => x.Tags)
                 .FirstOrDefaultAsync();
 
             CheckIsExists(entity, item.Id);
             await _userManager.CheckIsUserHasAccess(entity.Collection.OwnerId, item.CurrentUserId);
 
             _mapper.Map(item, entity);
+            if (item.Tags is not null && item.Tags.Any())
+            {
+                var tags = await _unitOfWork.Tags.CreateTags(_mapper.Map<IEnumerable<Tag>>(item.Tags));
+                entity.Tags = tags.ToArray();
+            }
+
             await _unitOfWork.SaveAsync();
         }
 
