@@ -59,8 +59,9 @@ namespace CollectionManager.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                   // pattern: "{controller=Home}/{action=Index}/{id?}");
-                 pattern: "{controller=Collections}/{action=CollectionDetails}/{collectionId=84ebf274-bcdc-4b21-67bf-08daa9e35e95}");
+                // pattern: "{controller=Home}/{action=Index}/{id?}");
+                // pattern: "{controller=Collections}/{action=CollectionDetails}/{collectionId=84ebf274-bcdc-4b21-67bf-08daa9e35e95}");
+                    pattern: "{controller=Collections}/{action=CreateCollection}/{id?}");
             });
         }
     }

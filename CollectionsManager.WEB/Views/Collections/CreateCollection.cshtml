@@ -1,5 +1,4 @@
 ﻿@using CollectionsManager.DAL.Constants
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CollectionsManager.BLL.DTO.Collections.CollectionToManipulateDto
 
 <!DOCTYPE html>
@@ -7,12 +6,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/CollectionDetails.css" />
     <title>Create Collection</title>
 </head>
 <body>
 
-<div class="row">
-    <div class="col-md-4">
+<div class="text-center" style="margin-top: 10px"><h4>Create collection</h4></div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
         <form asp-action="CreateCollection">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -23,13 +25,18 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input asp-for="Image" type="file" accept="image/*" placeholder="hello" class="form-control"/>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Category" class="control-label"></label>
                     @Html.DropDownListFor(x => x.Category, Html.GetEnumSelectList<CollectionCategory>(), "Select Category", new { @class = "form-control" })
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control"/>
+                    @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
@@ -41,8 +48,16 @@
                 <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
+        
+        <div id="descriptionPreviewBlock" style="display: none">
+            <div class="text-center" style="margin-top: 10px"><h4>Description preview</h4></div>
+            <div class="description-block" id="previewViewBlock">
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="~/js/MarkDownScript.js" asp-append-version="true"></script>
 </body>
 </html>
 

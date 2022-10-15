@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CollectionManager.WEB.Extensions;
+using CollectionManager.WEB.Models;
 using CollectionsManager.BLL.DTO.Collections;
 using CollectionsManager.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,10 @@ namespace CollectionManager.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLargestCollections()
             => PartialView(await _unitOfWork.Collections.GetMostLargeCollectionsAsync(5));
+
+        [HttpPost]
+        public IActionResult GetMarkDownPreview([FromBody] MarkDownViewModel model)
+            => PartialView(model);
 
         [AllowAnonymous]
         [HttpGet]
