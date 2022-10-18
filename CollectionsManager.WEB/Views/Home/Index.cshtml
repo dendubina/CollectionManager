@@ -6,10 +6,6 @@
     <h4>Largest collections</h4>
 </div>
 
-<div class="container-fluid" id="cardsContainer"></div>
-
-<script>
-    let response = fetch("/Collections/GetLargestCollections")
-        .then(resp => resp.text())
-        .then(result => cardsContainer.insertAdjacentHTML('beforeend', result));
-</script>
+<div class="container-fluid">
+    @await Component.InvokeAsync("LargestCollections")
+</div>
