@@ -35,11 +35,13 @@
                 @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            
+            @if (Model.CustomFields is not null && Model.CustomFields.Any())
+            {
+                <div class="text-center" style="margin-top: 10px"><h4>Custom fields</h4></div>
 
-            <div class="text-center" style="margin-top: 10px"><h4>Custom fields</h4></div>
-
-            <table class="table table-striped">
-                <thead>
+                <table class="table table-striped">
+                    <thead>
                     <tr>
                         <th>
                             Name
@@ -51,8 +53,8 @@
                             To Remove
                         </th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @for (int i = 0; i < Model.CustomFields.Count; i++)
                     {
                         @Html.HiddenFor(x => Model.CustomFields[i].Id)
@@ -69,8 +71,10 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -86,7 +86,7 @@
                         @Html.DisplayFor(x => name)
                     </th>
                 }
-                <th>
+                <th style="text-align: center">
                     Actions
                 </th>
             </tr>
@@ -120,7 +120,7 @@
                             }
                         }
                     }
-                    <td>
+                    <td style="text-align: center">
                         @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id })
 
                         @if (User.IsUserHasAccess(Model.OwnerId))

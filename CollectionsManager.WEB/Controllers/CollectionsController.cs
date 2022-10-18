@@ -24,11 +24,6 @@ namespace CollectionManager.WEB.Controllers
         public async Task<IActionResult> Index(Guid userId)
             => View(await _unitOfWork.Collections.GetCollectionsByUserAsync(userId));
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> GetLargestCollections()
-            => PartialView(await _unitOfWork.Collections.GetMostLargeCollectionsAsync(5));
-
         [HttpPost]
         public IActionResult GetMarkDownPreview([FromBody] MarkDownViewModel model)
             => PartialView(model);
@@ -59,7 +54,7 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCollection(CollectionToManipulateDto model)
         {
-            model.CustomFields = model.CustomFields.Where(x => x.ToRemove == false).ToList();
+            model.CustomFields = model.CustomFields?.Where(x => x.ToRemove == false).ToList();
             model.OwnerId = User.GetUserId();
 
             await _unitOfWork.Collections.UpdateCollectionAsync(model);
