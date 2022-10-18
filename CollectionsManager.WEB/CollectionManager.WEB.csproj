@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.1.0" />
     <PackageReference Include="markdig" Version="0.30.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
@@ -19,6 +20,10 @@
   <ItemGroup>
     <ProjectReference Include="..\CollectionsManager.BLL\CollectionsManager.BLL.csproj" />
     <ProjectReference Include="..\CollectionsManager.DAL\CollectionsManager.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Config\" />
   </ItemGroup>
 
 </Project>

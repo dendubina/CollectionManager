@@ -22,6 +22,8 @@ namespace CollectionManager.WEB
 
             services.ConfigureRepositoryManager();
 
+            services.ConfigureImageStorage(Configuration);
+
             services.ConfigureUnitOfWork();
 
             services.ConfigureAutoMapper();

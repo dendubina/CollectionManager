@@ -5,6 +5,7 @@ using CollectionsManager.BLL.MapperProfiles;
 using CollectionsManager.BLL.Services;
 using CollectionsManager.BLL.Services.AuthService;
 using CollectionsManager.BLL.Services.AuthService.Options;
+using CollectionsManager.BLL.Services.ImageService;
 using CollectionsManager.BLL.Services.Interfaces;
 using CollectionsManager.DAL.EF;
 using CollectionsManager.DAL.Entities;
@@ -38,6 +39,11 @@ namespace CollectionManager.WEB.Extensions
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+        }
+
+        public static void ConfigureImageStorage(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IImageStorageService, CloudStorageService>();
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)

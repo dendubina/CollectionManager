@@ -18,14 +18,16 @@ namespace CollectionsManager.BLL.Services
     public class CollectionsService : ICollectionsService
     {
         private readonly UserManager<User> _userManager;
+        private readonly IImageStorageService _imageService;
         private readonly IRepositoryManager _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CollectionsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager)
+        public CollectionsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager, IImageStorageService imageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _imageService = imageService;
         }
 
         public async Task<IEnumerable<LargestCollectionToReturnDto>> GetMostLargeCollectionsAsync(int count)
@@ -86,7 +88,14 @@ namespace CollectionsManager.BLL.Services
 
         public async Task CreateCollectionAsync(CollectionToManipulateDto collection)
         {
-            _unitOfWork.Collections.CreateCollection(_mapper.Map<Collection>(collection));
+            var entity = _mapper.Map<Collection>(collection);
+
+            if (collection.Image is not null)
+            {
+                entity.ImageSource = await _imageService.UploadImageAsync(collection.Image);
+            }
+
+            _unitOfWork.Collections.CreateCollection(entity);
             await _unitOfWork.SaveAsync();
         }
 
@@ -101,6 +110,12 @@ namespace CollectionsManager.BLL.Services
             await _userManager.CheckIsUserHasAccess(entity.OwnerId, collection.OwnerId);
 
             _mapper.Map(collection, entity);
+
+            if (collection.Image is not null)
+            {
+                entity.ImageSource = await _imageService.UploadImageAsync(collection.Image);
+            }
+
             await _unitOfWork.SaveAsync();
         }
 
