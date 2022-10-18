@@ -11,7 +11,7 @@ namespace CollectionsManager.BLL.Extensions
         {
             var user = await userManager.FindByIdAsync(currentUserId);
 
-            if (entityOwnerId == user.Id || await userManager.IsInRoleAsync(user, "admin"))
+            if (entityOwnerId.Equals(user.Id) || await userManager.IsInRoleAsync(user, "admin"))
             {
                 return;
             }

@@ -21,6 +21,12 @@
                         if (User.Identity.IsAuthenticated)
                         {
                             <div class="hello-block"><span style="color: seagreen">Hello, @User.GetUserName()</span></div>
+
+                            @if (User.IsInRole("admin"))
+                            {
+                                @Html.ActionLink("Admin Panel", "Index", "Users", null, new{@class = "btn btn-outline-warning login-button" })
+                            }
+
                             @Html.ActionLink("My Collections", "Index", "Collections", new { userId = User.GetUserId() }, new{@class = "btn btn-outline-success login-button" })
                             @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
                         }

@@ -30,6 +30,11 @@ namespace CollectionsManager.DAL.EF
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder
+                .Entity<Collection>()
+                .Property(x => x.ImageSource)
+                .HasDefaultValue("https://embdesignshop.com/frontassets/images/no_image.jpg");
+
             modelBuilder.ApplyConfiguration(new RolesConfig());
         }
     }

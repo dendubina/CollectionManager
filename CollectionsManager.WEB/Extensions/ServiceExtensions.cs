@@ -33,14 +33,10 @@ namespace CollectionManager.WEB.Extensions
         }
 
         public static void ConfigureUnitOfWork(this IServiceCollection services)
-        {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-        }
+            => services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)
-        {
-            services.AddScoped<IRepositoryManager, RepositoryManager>();
-        }
+            => services.AddScoped<IRepositoryManager, RepositoryManager>();
 
         public static void ConfigureImageStorage(this IServiceCollection services, IConfiguration configuration)
         {
