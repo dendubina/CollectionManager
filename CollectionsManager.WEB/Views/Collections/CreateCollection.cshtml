@@ -21,7 +21,7 @@
             <div id="inputsBlock">
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control"/>
+                    <input asp-for="Name" class="form-control" autocomplete="off"/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -39,9 +39,11 @@
                     @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+                <div class="text-center" style="margin-top: 10px"><h4>Custom fields</h4></div>
             </div>
+            
 
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="button" value="Add property" class="btn btn-success" id="addPropertyInput"/>
             </div>
             <div class="form-group">
@@ -75,7 +77,7 @@
                 "<div>" +
                 "<div class='form-group'>" +
                 "<label class='control-label'>Name</label>" +
-                "<input type='text' class='form-control' name='CustomFields[" + i + "].name' />" +
+                "<input type='text' class='form-control' name='CustomFields[" + i + "].name' autocomplete='off' />" +
                 "</div>" +
                 "<div class='form-group'>" +
                 "<label class='control-label'>Type</label>" +
@@ -86,7 +88,7 @@
                 "<option value='3'>Bool</option>" +
                 "</select>" +
                 "</div>" +
-                "<button type='button' onclick='remove(event)' class='btn btn-danger'>Cancel</button>" +
+                "<button type='button' onclick='remove(event)' class='cancel-button btn btn-danger'>Cancel</button>" +
                 "</div>";
             i++;
             return value;

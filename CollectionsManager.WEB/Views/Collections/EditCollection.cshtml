@@ -6,19 +6,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/CollectionDetails.css" />
     <title>EditCollection</title>
 </head>
 <body>
 
-<h4>CollectionToManipulateDto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="text-center" style="margin-top: 10px"><h4>Edit collection</h4></div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
         <form asp-action="EditCollection">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             @Html.HiddenFor(x => x.Id)
-            
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -31,23 +32,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+                @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            
+
+            <div class="text-center" style="margin-top: 10px"><h4>Custom fields</h4></div>
+
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                    <th>
-                        To Remove
-                    </th>
-                </tr>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th style="text-align: center">
+                            To Remove
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                     @for (int i = 0; i < Model.CustomFields.Count; i++)
@@ -61,7 +64,7 @@
                             <td>
                                 @Html.DropDownListFor(x => Model.CustomFields[i].Type, Html.GetEnumSelectList<CustomPropertyType>(), "Select type", new { @class = "form-control" })
                             </td>
-                            <td>
+                            <td style="text-align: center; vertical-align: middle">
                                 @Html.CheckBoxFor(x => Model.CustomFields[i].ToRemove)
                             </td>
                         </tr>
@@ -72,7 +75,15 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+
+        <div id="descriptionPreviewBlock" style="display: none">
+            <div class="text-center" style="margin-top: 10px"><h4>Description preview</h4></div>
+            <div class="description-block" id="previewViewBlock">
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="~/js/MarkDownScript.js" asp-append-version="true"></script>
 </body>
 </html>

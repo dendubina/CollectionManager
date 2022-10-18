@@ -3,8 +3,7 @@
     const descInput = document.getElementById("descriptionInput");
     const view = document.getElementById("previewViewBlock");
 
-    descInput.onkeyup = () => {
-
+    const getPreview = () => {
         if (descInput.value.length > 0) {
             previewBlock.style.display = "block";
 
@@ -21,5 +20,11 @@
         } else {
             previewBlock.style.display = "none";
         }
+    }
+
+    getPreview();
+
+    descInput.onkeyup = () => {
+        getPreview();
     }
 }
