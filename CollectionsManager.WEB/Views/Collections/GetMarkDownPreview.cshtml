@@ -1,4 +1,7 @@
 ﻿@using Markdig
 @model MarkDownViewModel
 
-@Html.Raw(Markdown.ToHtml(Model.Value))
+@if (Model?.Value != null)
+{
+    @Html.Raw(Markdown.ToHtml(Model.Value))
+}
