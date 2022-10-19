@@ -10,124 +10,72 @@
 </head>
 <body>
 
-<div class="text-center"><h4>Create Item</h4></div>
-<div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="text-center"><h4>Create Item</h4></div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-        <form asp-action="AddItemToCollection" id="addItemForm">
-            @Html.HiddenFor(x => x.CollectionId)
+            <form asp-action="AddItemToCollection" id="addItemForm">
+                @Html.HiddenFor(x => x.CollectionId)
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" autocomplete="off"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            @{
-                for (int i = 0; i < Model.CustomFieldValuesToCreate.Count; i++)
-                {
-                    @Html.HiddenFor(x => x.CustomFieldValuesToCreate[i].CustomFieldId)
-                    @Html.HiddenFor(x => x.CustomFieldValuesToCreate[i].Type)
-
-                    <div class="form-group">
-                        @Html.DisplayFor(x => x.CustomFieldValuesToCreate[i].Name)
-
-                        @switch (Model.CustomFieldValuesToCreate[i].Type)
-                        {
-                            case CustomPropertyType.DateTime:
-                                <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="datetime-local" class="form-control"/>break;
-
-                            case CustomPropertyType.Bool:
-                                <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="checkbox" class="form-check-input"/>break;
-
-                            default:
-                                <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" class="form-control"/>break;
-                        }
-                        <span asp-validation-for="@Model.CustomFieldValuesToCreate[i]" class="text-danger"></span>
-                    </div>
-                }
-            }
-            
-            <div class="form-group">
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        Tags:
-                    </dt>
-                    <dd class="col-sm-10">
-                        <span id="tagsRow"></span>
-                    </dd>
-                </dl>
-            </div>
-
-            <div class="form-group" id="tagInputBlock">
-                <input type="text" id="tagInput" class="form-control" autocomplete="off" placeholder="Type a tag..."/>
-
-                <button type="button" id="addTagButton" class="btn btn-secondary" style="margin-top: 10px;">Add tag</button>
-
-                <div class="tags-list-block">
-                    <ul class="tags-ul" id="tagsList">
-                    </ul>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-            </div>
+                @{
+                    for (int i = 0; i < Model.CustomFieldValuesToCreate.Count; i++)
+                    {
+                        @Html.HiddenFor(x => x.CustomFieldValuesToCreate[i].CustomFieldId)
+                        @Html.HiddenFor(x => x.CustomFieldValuesToCreate[i].Type)
 
-            <div class="form-group text-center">
-                <input type="submit" value="Create" class="btn btn-primary" style="padding-left: 30px; padding-right: 30px"/>
-            </div>
-        </form>
+                        <div class="form-group">
+                            @Html.DisplayFor(x => x.CustomFieldValuesToCreate[i].Name)
+
+                            @switch (Model.CustomFieldValuesToCreate[i].Type)
+                            {
+                                case CustomPropertyType.DateTime:
+                                    <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="datetime-local" class="form-control" />break;
+
+                                case CustomPropertyType.Bool:
+                                    <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="checkbox" class="form-check-input" />break;
+
+                                default:
+                                    <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" autocomplete="off" class="form-control" />break;
+                            }
+                            <span asp-validation-for="@Model.CustomFieldValuesToCreate[i]" class="text-danger"></span>
+                        </div>
+                    }
+                }
+
+                <div class="form-group">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            Tags:
+                        </dt>
+                        <dd class="col-sm-10">
+                            <span id="tagsRow"></span>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="form-group" id="tagInputBlock">
+                    <input type="text" id="tagInput" class="form-control" autocomplete="off" placeholder="Type a tag..." />
+
+                    <button type="button" id="addTagButton" class="btn btn-secondary" style="margin-top: 10px;">Add tag</button>
+
+                    <div class="tags-list-block">
+                        <ul class="tags-ul" id="tagsList">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Create" class="btn btn-primary" style="padding-left: 30px; padding-right: 30px" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+    <script src="~/js/TagsScript.js" asp-append-version="true"></script>
 </body>
 </html>
-<script>
-    {
-        const baseUrl = "https://localhost:5001";
-        const tagInput = document.getElementById('tagInput');
-        const addTagButton = document.getElementById('addTagButton');
-        const tagsRow = document.getElementById('tagsRow');
-        const addItemForm = document.getElementById('addItemForm');
-        const tagsList = document.getElementById('tagsList');
-        let addedTags = [];
-
-        addTagButton.onclick = () => {
-            const value = tagInput.value;
-
-            if (value && !addedTags.includes(value) && value.length < 50) {
-                tagsRow.insertAdjacentHTML('beforeend', value + ", ");
-                addItemForm.insertAdjacentHTML('beforeend', `<input type='text' style="display: none;"  name='Tags[${addedTags.length}].name' value='${value}' />`);
-                addedTags.push(value);
-            }
-
-        };
-
-        tagsList.onclick = (event) => {
-            tagsList.style.display = "none";
-            tagInput.value = event.target.innerHTML;
-        }
-
-        tagInput.onkeyup = async () => {
-            tagsList.style.display = "none";
-            tagsList.innerHTML = '';
-
-            if (tagInput.value.length > 0) {
-
-                let url = new URL("/Tags/FindTags", baseUrl);
-                url.searchParams.append("substring", tagInput.value);
-
-                let response = await fetch(url)
-                    .then(resp => resp.json());
-
-                if (response.length > 0) {
-
-                    response.forEach((item) => {
-                        let li = `<li class ="tags-li">${item}</li>`;
-                        tagsList.insertAdjacentHTML('beforeend', li);
-                    });
-
-                    tagsList.style.display = "block";
-
-                }
-            }
-            
-        }
-    }
-</script>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CollectionManager.WEB.Extensions;
 using CollectionsManager.BLL.DTO.Comments;
 using CollectionsManager.BLL.Services.Interfaces;
@@ -26,5 +27,10 @@ namespace CollectionManager.WEB.Controllers
 
             return RedirectToAction("Details", "Items", new { comment.ItemId });
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCommentsForItem(Guid itemId)
+            => Json(await _unitOfWork.Comments.GetCommentsByItemId(itemId));
     }
 }

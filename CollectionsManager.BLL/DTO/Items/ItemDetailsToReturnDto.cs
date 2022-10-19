@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CollectionsManager.BLL.DTO.Comments;
 using CollectionsManager.BLL.DTO.CustomFieldValues;
 using CollectionsManager.BLL.DTO.Likes;
 using CollectionsManager.DAL.Entities;
@@ -20,8 +19,6 @@ namespace CollectionsManager.BLL.DTO.Items
         public Guid CollectionId { get; set; }
 
         public IEnumerable<LikeToReturnDto> Likes { get; set; }
-
-        public IEnumerable<CommentToReturnDto> Comments { get; set; }
 
         public IEnumerable<Tag> Tags { get; set; }
 

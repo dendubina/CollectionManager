@@ -49,7 +49,6 @@ namespace CollectionsManager.BLL.Services
                 .Include(x => x.Collection)
                 .ThenInclude(x => x.Owner)
                 .Include(x => x.Likes)
-                .Include(x => x.Comments)
                 .Include(x => x.Tags)
                 .Include(x => x.CustomValues)
                 .ThenInclude(x => x.Field)

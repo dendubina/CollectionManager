@@ -1,4 +1,5 @@
 ﻿@using CollectionManager.WEB.Extensions
+@using System.Globalization
 @model CollectionsManager.BLL.DTO.Items.ItemDetailsToReturnDto
 
 <!DOCTYPE html>
@@ -18,35 +19,36 @@
         <hr/>
         <div class="col-md-6">
             <dl class="row">
+                @Html.HiddenFor(model => model.Id, new {id ="itemId"})
 
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Id)
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @Html.DisplayFor(model => model.Id)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Name)
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @Html.DisplayFor(model => model.Name)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.CollectionName)
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @Html.DisplayFor(model => model.CollectionName)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.OwnerName)
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @Html.DisplayFor(model => model.OwnerName)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.CollectionId)
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @Html.DisplayFor(model => model.CollectionId)
                 </dd>
 
@@ -55,7 +57,7 @@
                     <dt class="col-sm-2">
                         @Html.DisplayFor(x => field.Name)
                     </dt>
-                    <dd class="col-sm-9 item-details-dd">
+                    <dd class="col-sm-10 item-details-dd">
                         @Html.DisplayFor(x => field.Value)
                     </dd>
                 }
@@ -63,67 +65,50 @@
                 <dt class="col-sm-2">
                     Tags
                 </dt>
-                <dd class="col-sm-9 item-details-dd">
+                <dd class="col-sm-10 item-details-dd">
                     @string.Join(", ", Model.Tags.Select(x => x.Name))
                 </dd>
             </dl>
-    </div>
-    </div>
+            
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="text-end">
+                    @if (Model.Likes.Any(x => x.AuthorId == User.GetUserId()))
+                    {
+                        <button class="btn btn-outline-danger like-button" onclick="location.href = '@Url.Action("RemoveLike", "Likes", new { itemId = Model.Id })'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-secondary like-button" onclick="location.href = '@Url.Action("PutLike", "Likes", new { itemId = Model.Id })'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
+                    }
 
+                </div>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        if (Model.Likes.Any(x => x.AuthorId == User.GetUserId()))
-        {
-            <button class="btn btn-outline-danger" onclick="location.href = '@Url.Action("RemoveLike", "Likes", new { itemId = Model.Id })'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
-        }
-        else
-        {
-            <button class="btn btn-outline-secondary" onclick="location.href = '@Url.Action("PutLike", "Likes", new { itemId = Model.Id })'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
-        }
+                <div style="margin-top: 10px;">
+                    <form asp-action="PostComment" asp-controller="Comments">
 
-        <div class="form-outline mb-4">
-            <form asp-action="PostComment" asp-controller="Comments">
-
-                <input type="hidden" name="itemId" value="@Model.Id"/>
-                @Html.TextBox("CommentText", null, new { data_val = "true", data_val_required = "Text is required", @class = "form-control", placeholder = "Type comment..." })
-                <span class="text-danger" data-valmsg-for="CommentText" data-valmsg-replace="true"></span><br/>
-
-                <input type="submit" value="Post" class="btn btn-primary"/>
-            </form>
-        </div>
-    }
-
-    @if (Model.Comments.Any())
-    {
-        <div class="container my-5 py-5">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-lg-10">
-                    <div class="card text-dark">
-                        @foreach (var comment in Model.Comments.OrderByDescending(x => x.Date))
-                        {
-                            <div class="card-body p-4">
-                                <div class="d-flex flex-start">
-                                    <div>
-                                        <h6 class="fw-bold mb-1">@comment.AuthorName</h6>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="mb-0">
-                                                @comment.Date.ToString("F")
-                                            </p>
-                                        </div>
-                                        <p class="mb-0">
-                                            @comment.Text
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
+                        <input type="hidden" name="itemId" value="@Model.Id"/>
+                        @Html.TextArea("CommentText", null, new { data_val = "true", data_val_required = "Text is required", @class = "form-control", rows="2", autocomplete="off", placeholder = "Type comment..." })
+                        <span class="text-danger" data-valmsg-for="CommentText" data-valmsg-replace="true"></span><br/>
+                        
+                        <div class="text-center">
+                            <input style="padding-right: 30px; padding-left: 30px" type="submit" value="Post" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            }
+            
+            <div class="container my-5 py-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card text-dark" id="commentsBlock">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
-
+    </div>
 </div>
+<script src="~/js/UpdatingCommentsScript.js" asp-append-version="true"></script>
 </body>
 </html>

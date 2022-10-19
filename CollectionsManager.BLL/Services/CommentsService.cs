@@ -26,6 +26,7 @@ namespace CollectionsManager.BLL.Services
             => await _unitOfWork.Comments
                 .GetAll(trackChanges: false)
                 .Where(x => x.ItemId.Equals(itemId))
+                .Include(x => x.Author)
                 .Select(comment => _mapper.Map<CommentToReturnDto>(comment))
                 .ToArrayAsync();
 

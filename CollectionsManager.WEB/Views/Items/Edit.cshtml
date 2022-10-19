@@ -65,11 +65,12 @@
             </dl>
 
             <div class="form-group" id="tagInputBlock">
-                <input type="text" id="tagInput" class="form-control" placeholder="Type a tag..." autocomplete="off" />
-                <button type="button" id="addTagButton" class="btn btn-secondary">Add tag</button>
+                <input type="text" id="tagInput" class="form-control" autocomplete="off" placeholder="Type a tag..." />
+
+                <button type="button" id="addTagButton" class="btn btn-secondary" style="margin-top: 10px;">Add tag</button>
 
                 <div class="tags-list-block">
-                    <ul id="tagsList">
+                    <ul class="tags-ul" id="tagsList">
                     </ul>
                 </div>
             </div>
@@ -107,59 +108,7 @@
         </form>
     </div>
 </div>
+<script src="~/js/TagsScript.js" asp-append-version="true"></script>
 </body>
 </html>
-<script>
-    {
-        const baseUrl = "https://localhost:5001";
-        const tagInput = document.getElementById('tagInput');
-        const addTagButton = document.getElementById('addTagButton');
-        const tagsRow = document.getElementById('tagsRow');
-        const addItemForm = document.getElementById('addItemForm');
-        const tagsList = document.getElementById('tagsList');
-        let addedTags = [];
 
-        addTagButton.onclick = () => {
-            const value = tagInput.value;
-
-            if (value && !addedTags.includes(value) && value.length < 50) {
-                tagsRow.insertAdjacentHTML('beforeend', value + ", ");
-                addItemForm.insertAdjacentHTML('beforeend', `<input type='text' style="display: none;"  name='TagsToAdd[${addedTags.length}].name' value='${value}' />`);
-                addedTags.push(value);
-            }
-
-        };
-
-        tagsList.onclick = (event) => {
-            tagsList.style.display = "none";
-            tagInput.value = event.target.innerHTML;
-        }
-
-        tagInput.onkeyup = async () => {
-            tagsList.style.display = "none";
-            tagsList.innerHTML = '';
-
-            if (tagInput.value.length > 0) {
-
-                let url = new URL("/Tags/FindTags", baseUrl);
-                url.searchParams.append("substring", tagInput.value);
-
-                let response = await fetch(url)
-                    .then(resp => resp.json());
-
-                if (response.length > 0) {
-
-                    response.forEach((item) => {
-                        let li = `<li>${item}</li>`;
-                        tagsList.insertAdjacentHTML('beforeend', li);
-                    });
-
-                    tagsList.style.display = "block";
-
-                }
-            }
-            
-        }
-
-    }
-</script>
