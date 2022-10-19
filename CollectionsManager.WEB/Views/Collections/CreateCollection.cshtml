@@ -18,28 +18,33 @@
         <form asp-action="CreateCollection" enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div id="inputsBlock">
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" autocomplete="off"/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Image" class="control-label"></label>
                     <input asp-for="Image" class="form-control"/>
                     <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Category" class="control-label"></label>
                     @Html.DropDownListFor(x => x.Category, Html.GetEnumSelectList<CollectionCategory>(), "Select Category", new { @class = "form-control" })
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
                     @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="text-center" style="margin-top: 10px"><h4>Custom fields</h4></div>
+
             </div>
             
 

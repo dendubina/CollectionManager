@@ -1,0 +1,14 @@
+﻿img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+p {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+td {
+    vertical-align: middle;
+}

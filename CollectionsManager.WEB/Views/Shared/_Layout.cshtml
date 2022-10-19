@@ -27,7 +27,7 @@
                                 @Html.ActionLink("Admin Panel", "Index", "Users", null, new{@class = "btn btn-outline-warning login-button" })
                             }
 
-                            @Html.ActionLink("My Collections", "Index", "Collections", new { userId = User.GetUserId() }, new{@class = "btn btn-outline-success login-button" })
+                            @Html.ActionLink("My Collections", "UsersCollections", "Collections", new { userId = User.GetUserId() }, new{@class = "btn btn-outline-success login-button" })
                             @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
                         }
                         else

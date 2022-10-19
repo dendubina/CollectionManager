@@ -21,7 +21,7 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(Guid userId)
+        public async Task<IActionResult> UsersCollections(Guid userId)
             => View(await _unitOfWork.Collections.GetCollectionsByUserAsync(userId));
 
         [HttpPost]
@@ -70,6 +70,6 @@ namespace CollectionManager.WEB.Controllers
         }
 
         private RedirectToActionResult RedirectToIndex()
-            => RedirectToAction("Index", new { userId = User.GetUserId() });
+            => RedirectToAction("UsersCollections", new { userId = User.GetUserId() });
     }
 }
