@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -18,5 +20,8 @@ namespace CollectionsManager.BLL.Extensions
 
             throw new ForbiddenAccessException($"User with id {currentUserId} has no access to operation");
         }
+
+        public static IQueryable<User> FindByIds(this UserManager<User> userManager, IEnumerable<string> userIds)
+            => userManager.Users.Where(x => userIds.Any(f => f == x.Id));
     }
 }

@@ -11,5 +11,7 @@
         ILikesService Likes { get; }
 
         ITagsService Tags { get; }
+
+        IUserService Users { get; }
     }
 }

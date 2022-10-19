@@ -86,9 +86,9 @@ namespace CollectionsManager.BLL.Services.AuthService
 
         private async Task AddDefaultRoles(User user)
         {
-            var roles = new string[]
+            var roles = new []
             {
-                "admin",
+                "user",
             };
 
             await _userManager.AddToRolesAsync(user, roles);

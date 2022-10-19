@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionsManager.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221018195422_init")]
+    [Migration("20221019104845_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -293,15 +293,15 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e9692344-db46-4b77-a83c-6aa9cbde5b3d",
-                            ConcurrencyStamp = "25693225-e4ad-4cca-9385-ef2e0614339f",
+                            Id = "eab06147-2136-4010-b5ce-12fea5c765d9",
+                            ConcurrencyStamp = "fdf343db-42ce-4837-ba6a-a91646df0254",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "2dc5589c-f248-47f7-b69a-5370584d7532",
-                            ConcurrencyStamp = "a2da369f-2566-49fe-8157-501760497d06",
+                            Id = "189c142d-4123-45ce-9a2a-f9decb9ca7d8",
+                            ConcurrencyStamp = "730d900d-8004-457b-9bce-f722e351333a",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });

@@ -18,6 +18,7 @@ namespace CollectionsManager.BLL.Services
         private IItemsService _itemsService;
         private ILikesService _likesService;
         private ITagsService _tagsService;
+        private IUserService _userService;
 
         public UnitOfWork(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IImageStorageService storageService)
         {
@@ -89,6 +90,19 @@ namespace CollectionsManager.BLL.Services
                 }
 
                 return _tagsService;
+            }
+        }
+
+        public IUserService Users
+        {
+            get
+            {
+                if (_userService is null)
+                {
+                    _userService = new UserService(_userManager);
+                }
+
+                return _userService;
             }
         }
     }

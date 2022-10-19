@@ -329,12 +329,12 @@ namespace CollectionsManager.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "e9692344-db46-4b77-a83c-6aa9cbde5b3d", "25693225-e4ad-4cca-9385-ef2e0614339f", "user", "USER" });
+                values: new object[] { "eab06147-2136-4010-b5ce-12fea5c765d9", "fdf343db-42ce-4837-ba6a-a91646df0254", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2dc5589c-f248-47f7-b69a-5370584d7532", "a2da369f-2566-49fe-8157-501760497d06", "admin", "ADMIN" });
+                values: new object[] { "189c142d-4123-45ce-9a2a-f9decb9ca7d8", "730d900d-8004-457b-9bce-f722e351333a", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
