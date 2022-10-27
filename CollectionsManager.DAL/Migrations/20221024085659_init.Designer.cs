@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionsManager.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221019104845_init")]
+    [Migration("20221024085659_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,22 +249,7 @@ namespace CollectionsManager.DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ItemTag", b =>
-                {
-                    b.Property<Guid>("ItemsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TagsName")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ItemsId", "TagsName");
-
-                    b.HasIndex("TagsName");
-
-                    b.ToTable("ItemTag");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("CollectionsManager.DAL.Entities.Users.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -293,18 +278,48 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "eab06147-2136-4010-b5ce-12fea5c765d9",
-                            ConcurrencyStamp = "fdf343db-42ce-4837-ba6a-a91646df0254",
+                            Id = "c54baca8-517b-4def-b19d-d15d90f4ed30",
+                            ConcurrencyStamp = "6f0183fa-7150-4312-8d81-fbe7c59d9fe3",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "189c142d-4123-45ce-9a2a-f9decb9ca7d8",
-                            ConcurrencyStamp = "730d900d-8004-457b-9bce-f722e351333a",
+                            Id = "09b82502-6233-448a-90fb-2519ba271e84",
+                            ConcurrencyStamp = "e5aa3118-c578-46eb-b3ab-55be62095ff8",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
+                });
+
+            modelBuilder.Entity("CollectionsManager.DAL.Entities.Users.UserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("ItemTag", b =>
+                {
+                    b.Property<Guid>("ItemsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TagsName")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ItemsId", "TagsName");
+
+                    b.HasIndex("TagsName");
+
+                    b.ToTable("ItemTag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -375,21 +390,6 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -495,6 +495,25 @@ namespace CollectionsManager.DAL.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("CollectionsManager.DAL.Entities.Users.UserRole", b =>
+                {
+                    b.HasOne("CollectionsManager.DAL.Entities.Users.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollectionsManager.DAL.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ItemTag", b =>
                 {
                     b.HasOne("CollectionsManager.DAL.Entities.Item", null)
@@ -512,7 +531,7 @@ namespace CollectionsManager.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("CollectionsManager.DAL.Entities.Users.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -530,21 +549,6 @@ namespace CollectionsManager.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CollectionsManager.DAL.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CollectionsManager.DAL.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -587,6 +591,13 @@ namespace CollectionsManager.DAL.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("CollectionsManager.DAL.Entities.Users.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

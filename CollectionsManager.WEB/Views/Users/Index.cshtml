@@ -1,0 +1,66 @@
+﻿@model IList<CollectionManager.WEB.Models.Users.UserViewModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("HandleChangingRoles", "Users", FormMethod.Post))
+    {
+        <div class="buttons-block text-center">
+            <button type="submit" name="submit" value="AddAdminRole" class="btn btn-outline-success">Add admin</button>
+            <button type="submit" name="submit" value="RemoveAdminRole" class="btn btn-outline-warning">Remove admin</button>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @*@Html.CheckBox("SelectAll", false, new { id = "selectAll" })*@ Select
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m[0].Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m[0].UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m[0].Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m[0].Roles)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    @Html.HiddenFor(m => m[i].Id)
+                    @Html.HiddenFor(m => m[i].UserName)
+                    @Html.HiddenFor(m => m[i].Email)
+                    <tr>
+                        <td class="check-box-td">
+                            @Html.CheckBoxFor(m => m[i].IsSelected, new { @class = "user-check-box" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m[i].Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m[i].UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m[i].Email)
+                        </td>
+                        <td>
+                            <span>@string.Join(", ", Model[i].Roles)</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</body>
+</html>

@@ -13,6 +13,7 @@ namespace CollectionsManager.DAL.Repositories
         private ILikesRepository _likesRepository;
         private ITagsRepository _tagsRepository;
         private ICustomFieldValuesRepository _customFieldValuesRepository;
+        private IUserRepository _userRepository;
 
         public RepositoryManager(AppDbContext context)
         {
@@ -94,6 +95,19 @@ namespace CollectionsManager.DAL.Repositories
                 }
 
                 return _customFieldValuesRepository;
+            }
+        }
+
+        public IUserRepository Users
+        {
+            get
+            {
+                if (_userRepository is null)
+                {
+                    _userRepository = new UserRepository(_context);
+                }
+
+                return _userRepository;
             }
         }
 

@@ -16,6 +16,8 @@ namespace CollectionsManager.DAL.Repositories.Interfaces
 
         ICustomFieldValuesRepository CustomFieldValues { get; }
 
+        IUserRepository Users { get; }
+
         Task SaveAsync();
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using CollectionsManager.BLL.DTO.User;
+using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.BLL.Extensions;
 using CollectionsManager.BLL.Services.Interfaces;
 using CollectionsManager.DAL.Entities;
+using CollectionsManager.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,25 +17,61 @@ namespace CollectionsManager.BLL.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
+        
+        private readonly IRepositoryManager _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<User> userManager,  IMapper mapper, IRepositoryManager unitOfWork)
         {
             _userManager = userManager;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<UserToReturnDto>> GetAll()
+        public async Task<IEnumerable<UserToReturnDto>> GetAllAsync()
+            => await _userManager.Users
+                .Select(user => new UserToReturnDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Roles = user.UserRoles.Select(x => x.Role.Name)
+                })
+                .ToArrayAsync();
+        
+        public async Task AddAdminRoleAsync(IEnumerable<string> userIds, string currentUserId)
         {
-            throw new System.NotImplementedException();
+            if (!await _userManager.IsInAdminRoleAsync(currentUserId))
+            {
+                ThrowForbiddenAccessException(currentUserId);
+            }
+
+            var users = await _userManager.FindByIdsAsync(userIds).ToArrayAsync();
+
+            foreach (var user in users)
+            {
+                await _userManager.AddToRoleAsync(user, "admin");
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "admin"));
+            }
         }
 
-        public async Task AddAdminRole(IEnumerable<string> userIds)
-            => await _userManager
-                .FindByIds(userIds)
-                .ForEachAsync(x => _userManager.AddToRoleAsync(x, "admin"));
+        public async Task RemoveAdminRoleAsync(IEnumerable<string> userIds, string currentUserId)
+        {
+            if (!await _userManager.IsInAdminRoleAsync(currentUserId))
+            {
+                ThrowForbiddenAccessException(currentUserId);
+            }
 
-        public async Task RemoveAdminRole(IEnumerable<string> userIds)
-            => await _userManager
-                .FindByIds(userIds)
-                .ForEachAsync(x => _userManager.RemoveFromRoleAsync(x, "admin"));
+            var users = await _userManager.FindByIdsAsync(userIds).ToArrayAsync();
+
+            foreach (var user in users)
+            {
+                await _userManager.RemoveFromRoleAsync(user, "admin");
+                await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, "admin"));
+            }
+        }
+
+        private static void ThrowForbiddenAccessException(string currentUserId)
+            => throw new ForbiddenAccessException($"User with id {currentUserId} doesn't have access");
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace CollectionsManager.BLL.DTO.User
+namespace CollectionManager.WEB.Models.Users
 {
-    public class UserToReturnDto
+    public class UserViewModel
     {
         public string Id { get; set; }
 
@@ -11,5 +11,7 @@ namespace CollectionsManager.BLL.DTO.User
         public string Email { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }

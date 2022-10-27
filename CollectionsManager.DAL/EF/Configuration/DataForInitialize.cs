@@ -1,18 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using CollectionsManager.DAL.Entities.Users;
 
 namespace CollectionsManager.DAL.EF.Configuration
 {
     internal static class DataForInitialize
     {
-        internal static readonly IdentityRole[] Roles =
+        internal static readonly Role[] Roles =
         {
-            new IdentityRole
+            new Role()
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = "user",
                 NormalizedName = "USER",
             },
-            new IdentityRole
+            new Role()
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = "admin",
                 NormalizedName = "ADMIN",
             },

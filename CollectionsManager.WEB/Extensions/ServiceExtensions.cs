@@ -10,6 +10,7 @@ using CollectionsManager.BLL.Services.ImageService.Options;
 using CollectionsManager.BLL.Services.Interfaces;
 using CollectionsManager.DAL.EF;
 using CollectionsManager.DAL.Entities;
+using CollectionsManager.DAL.Entities.Users;
 using CollectionsManager.DAL.Repositories;
 using CollectionsManager.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,12 +54,12 @@ namespace CollectionManager.WEB.Extensions
                 typeof(ItemsProfile),
                 typeof(TagsProfile),
                 typeof(LikesProfile),
-                typeof(WebProfile));
+                typeof(ViewModelsProfile));
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

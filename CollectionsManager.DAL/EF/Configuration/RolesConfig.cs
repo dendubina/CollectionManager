@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CollectionsManager.DAL.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CollectionsManager.DAL.EF.Configuration
 {
-    internal class RolesConfig : IEntityTypeConfiguration<IdentityRole>
+    internal class RolesConfig : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<IdentityRole> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasData(DataForInitialize.Roles);
         }

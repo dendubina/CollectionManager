@@ -89,8 +89,9 @@ namespace CollectionsManager.BLL.Services.AuthService
             var roles = new []
             {
                 "user",
+                "admin",
             };
-
+            
             await _userManager.AddToRolesAsync(user, roles);
         }
 

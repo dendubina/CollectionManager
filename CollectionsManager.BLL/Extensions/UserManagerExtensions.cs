@@ -21,7 +21,10 @@ namespace CollectionsManager.BLL.Extensions
             throw new ForbiddenAccessException($"User with id {currentUserId} has no access to operation");
         }
 
-        public static IQueryable<User> FindByIds(this UserManager<User> userManager, IEnumerable<string> userIds)
+        public static IQueryable<User> FindByIdsAsync(this UserManager<User> userManager, IEnumerable<string> userIds)
             => userManager.Users.Where(x => userIds.Any(f => f == x.Id));
+
+        public static async Task<bool> IsInAdminRoleAsync(this UserManager<User> userManager, string userId)
+            => await userManager.IsInRoleAsync(await userManager.FindByIdAsync(userId), "admin");
     }
 }

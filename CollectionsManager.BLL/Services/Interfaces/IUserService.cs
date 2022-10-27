@@ -6,10 +6,10 @@ namespace CollectionsManager.BLL.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserToReturnDto>> GetAll();
+        Task<IEnumerable<UserToReturnDto>> GetAllAsync();
 
-        Task AddAdminRole(IEnumerable<string> userIds);
+        Task AddAdminRoleAsync(IEnumerable<string> userIds, string currentUserId);
 
-        Task RemoveAdminRole(IEnumerable<string> userIds);
+        Task RemoveAdminRoleAsync(IEnumerable<string> userIds, string currentUserId);
     }
 }
