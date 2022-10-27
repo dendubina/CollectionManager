@@ -1,8 +1,5 @@
 ﻿@model CollectionsManager.BLL.DTO.User.SignInModel
 
-@{
-    Layout = null;
-}
 
 <!DOCTYPE html>
 
@@ -10,25 +7,27 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="~/css/SignIn.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <title>SignIn</title>
 </head>
+<body>
 
-<body class="text-center">
+<div class="text-center">
     <form asp-action="SignIn" class="form-signin">
         <img class="mb-4" src="~/unnamed.png" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <input asp-for="UserName" id="inputEmail" class="form-control" placeholder="User name">
+        <input asp-for="UserName" type="text" id="inputEmail" class="form-control" placeholder="User name">
         <span asp-validation-for="UserName" class="text-danger"></span>
 
         <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password">
         <span asp-validation-for="Password" class="text-danger"></span>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
     </form>
+</div>
+
 </body>
 
 @*<div class="form-container">

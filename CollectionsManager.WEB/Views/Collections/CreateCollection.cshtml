@@ -81,7 +81,8 @@
                 "<div>" +
                 "<div class='form-group'>" +
                 "<label class='control-label'>Name</label>" +
-                "<input type='text' class='form-control' name='CustomFields[" + i + "].name' autocomplete='off' />" +
+                "<input type='text' class='form-control' name='CustomFields[" + i + "].name' data-val='true' data-val-required='Name must not be empty.' autocomplete='off' />" +
+                "<span class='text-danger field-validation-valid' data-valmsg-for='CustomFields['" + i + "].name data-valmsg-replace='true'" +
                 "</div>" +
                 "<div class='form-group'>" +
                 "<label class='control-label'>Type</label>" +

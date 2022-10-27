@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using CollectionManager.WEB.Mapper;
+using CollectionManager.WEB.Validators.Account;
 using CollectionsManager.BLL.MapperProfiles;
 using CollectionsManager.BLL.Services;
 using CollectionsManager.BLL.Services.AuthService;
@@ -13,6 +14,8 @@ using CollectionsManager.DAL.Entities;
 using CollectionsManager.DAL.Entities.Users;
 using CollectionsManager.DAL.Repositories;
 using CollectionsManager.DAL.Repositories.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +72,13 @@ namespace CollectionManager.WEB.Extensions
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             });
+        }
+
+        public static void ConfigureFluentValidation(this IServiceCollection services)
+        {
+            ValidatorOptions.Global.LanguageManager.Enabled = false;
+            services.AddFluentValidationClientsideAdapters();
+            services.AddValidatorsFromAssemblyContaining<SignInModelValidator>();
         }
 
         public static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)

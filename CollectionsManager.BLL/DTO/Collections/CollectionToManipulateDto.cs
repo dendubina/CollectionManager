@@ -20,6 +20,6 @@ namespace CollectionsManager.BLL.DTO.Collections
 
         public IFormFile Image { get; set; }
 
-        public IList<CustomFieldToManipulateDto> CustomFields { get; set; }
+        public List<CustomFieldToManipulateDto> CustomFields { get; set; }
     }
 }
