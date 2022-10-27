@@ -276,17 +276,24 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c54baca8-517b-4def-b19d-d15d90f4ed30",
-                            ConcurrencyStamp = "6f0183fa-7150-4312-8d81-fbe7c59d9fe3",
-                            Name = "user",
+                            Id = "e35ce4e8-5eb7-4538-b706-9aa6240b304e",
+                            ConcurrencyStamp = "f525337d-713d-408e-84aa-25f9eb14cb6c",
+                            Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "09b82502-6233-448a-90fb-2519ba271e84",
-                            ConcurrencyStamp = "e5aa3118-c578-46eb-b3ab-55be62095ff8",
-                            Name = "admin",
+                            Id = "536fe38b-7da2-4c7b-9d90-7233395630c1",
+                            ConcurrencyStamp = "454cc0ce-aedb-43a0-a703-a4cc5d08a3ff",
+                            Name = "Admin",
                             NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "0e0f92e1-fbcb-4c52-96c9-2ecc6e73cb8c",
+                            ConcurrencyStamp = "2c3018d7-578b-42e0-a84d-635768cae40b",
+                            Name = "Tester",
+                            NormalizedName = "TESTER"
                         });
                 });
 

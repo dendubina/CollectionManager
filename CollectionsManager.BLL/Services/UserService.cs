@@ -7,6 +7,7 @@ using CollectionsManager.BLL.DTO.User;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.BLL.Extensions;
 using CollectionsManager.BLL.Services.Interfaces;
+using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities;
 using CollectionsManager.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -50,8 +51,8 @@ namespace CollectionsManager.BLL.Services
 
             foreach (var user in users)
             {
-                await _userManager.AddToRoleAsync(user, "admin");
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "admin"));
+                await _userManager.AddToRoleAsync(user, RoleNames.Admin.ToString());
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
             }
         }
 
@@ -66,8 +67,8 @@ namespace CollectionsManager.BLL.Services
 
             foreach (var user in users)
             {
-                await _userManager.RemoveFromRoleAsync(user, "admin");
-                await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, "admin"));
+                await _userManager.RemoveFromRoleAsync(user, RoleNames.Admin.ToString());
+                await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
             }
         }
 

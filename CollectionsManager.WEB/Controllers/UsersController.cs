@@ -5,12 +5,13 @@ using AutoMapper;
 using CollectionManager.WEB.Extensions;
 using CollectionManager.WEB.Models.Users;
 using CollectionsManager.BLL.Services.Interfaces;
+using CollectionsManager.DAL.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectionManager.WEB.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = nameof(RoleNames.Admin))]
     public class UsersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

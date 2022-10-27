@@ -329,12 +329,17 @@ namespace CollectionsManager.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c54baca8-517b-4def-b19d-d15d90f4ed30", "6f0183fa-7150-4312-8d81-fbe7c59d9fe3", "user", "USER" });
+                values: new object[] { "e35ce4e8-5eb7-4538-b706-9aa6240b304e", "f525337d-713d-408e-84aa-25f9eb14cb6c", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "09b82502-6233-448a-90fb-2519ba271e84", "e5aa3118-c578-46eb-b3ab-55be62095ff8", "admin", "ADMIN" });
+                values: new object[] { "536fe38b-7da2-4c7b-9d90-7233395630c1", "454cc0ce-aedb-43a0-a703-a4cc5d08a3ff", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "0e0f92e1-fbcb-4c52-96c9-2ecc6e73cb8c", "2c3018d7-578b-42e0-a84d-635768cae40b", "Tester", "TESTER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

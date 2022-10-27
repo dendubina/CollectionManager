@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CollectionsManager.BLL.DTO.User;
 using CollectionsManager.BLL.Services.AuthService.Options;
 using CollectionsManager.BLL.Services.Interfaces;
+using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -88,8 +89,8 @@ namespace CollectionsManager.BLL.Services.AuthService
         {
             var roles = new []
             {
-                "user",
-                "admin",
+                RoleNames.User.ToString(),
+                RoleNames.Admin.ToString(),
             };
             
             await _userManager.AddToRolesAsync(user, roles);

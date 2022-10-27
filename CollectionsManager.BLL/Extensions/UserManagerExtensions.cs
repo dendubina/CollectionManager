@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CollectionsManager.BLL.Exceptions;
+using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,7 +14,7 @@ namespace CollectionsManager.BLL.Extensions
         {
             var user = await userManager.FindByIdAsync(currentUserId);
 
-            if (entityOwnerId.Equals(user.Id) || await userManager.IsInRoleAsync(user, "admin"))
+            if (entityOwnerId.Equals(user.Id) || await userManager.IsInRoleAsync(user, RoleNames.Admin.ToString()))
             {
                 return;
             }
@@ -25,6 +26,6 @@ namespace CollectionsManager.BLL.Extensions
             => userManager.Users.Where(x => userIds.Any(f => f == x.Id));
 
         public static async Task<bool> IsInAdminRoleAsync(this UserManager<User> userManager, string userId)
-            => await userManager.IsInRoleAsync(await userManager.FindByIdAsync(userId), "admin");
+            => await userManager.IsInRoleAsync(await userManager.FindByIdAsync(userId), RoleNames.Admin.ToString());
     }
 }

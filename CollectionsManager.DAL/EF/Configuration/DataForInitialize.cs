@@ -1,4 +1,5 @@
 ﻿using System;
+using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities.Users;
 
 namespace CollectionsManager.DAL.EF.Configuration
@@ -10,14 +11,20 @@ namespace CollectionsManager.DAL.EF.Configuration
             new Role()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "user",
-                NormalizedName = "USER",
+                Name = RoleNames.User.ToString(),
+                NormalizedName = RoleNames.User.ToString().ToUpper(),
             },
             new Role()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "admin",
-                NormalizedName = "ADMIN",
+                Name = RoleNames.Admin.ToString(),
+                NormalizedName = RoleNames.Admin.ToString().ToUpper(),
+            },
+            new Role()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = RoleNames.Tester.ToString(),
+                NormalizedName = RoleNames.Tester.ToString().ToUpper(),
             },
         };
     }
