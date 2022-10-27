@@ -62,6 +62,7 @@
                         <tr>
                             <td>
                                 <input asp-for="@Model.CustomFields[i].Name" class="form-control" />
+                                <span asp-validation-for="@Model.CustomFields[i].Name" class="text-danger"></span>
                             </td>
                             <td>
                                 @Html.DropDownListFor(x => Model.CustomFields[i].Type, Html.GetEnumSelectList<CustomPropertyType>(), "Select type", new { @class = "form-control" })
