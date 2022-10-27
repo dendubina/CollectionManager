@@ -46,8 +46,7 @@ namespace CollectionManager.WEB.Extensions
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
-        {
-            services.AddAutoMapper(
+            => services.AddAutoMapper(
                 typeof(CollectionsProfile),
                 typeof(CommentsProfile),
                 typeof(CustomFieldsProfile),
@@ -55,7 +54,6 @@ namespace CollectionManager.WEB.Extensions
                 typeof(TagsProfile),
                 typeof(LikesProfile),
                 typeof(ViewModelsProfile));
-        }
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {

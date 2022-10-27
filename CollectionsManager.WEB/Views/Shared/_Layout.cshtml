@@ -1,4 +1,5 @@
 ﻿@using CollectionManager.WEB.Extensions
+@using CollectionsManager.DAL.Constants
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +23,7 @@
                         {
                             <div class="hello-block"><span style="color: seagreen">Hello, @User.GetUserName()</span></div>
 
-                            @if (User.IsInRole("admin"))
+                            @if (User.IsInRole(RoleNames.Admin.ToString()))
                             {
                                 @Html.ActionLink("Admin Panel", "Index", "Users", null, new{@class = "btn btn-outline-warning login-button" })
                             }
