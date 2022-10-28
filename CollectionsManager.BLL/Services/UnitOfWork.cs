@@ -12,6 +12,7 @@ namespace CollectionsManager.BLL.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IImageStorageService _storageService;
+        private readonly ISearchService _searchService;
 
         private ICollectionsService _collectionsService;
         private ICommentsService _commentsService;
@@ -20,12 +21,13 @@ namespace CollectionsManager.BLL.Services
         private ITagsService _tagsService;
         private IUserService _userService;
 
-        public UnitOfWork(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IImageStorageService storageService)
+        public UnitOfWork(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IImageStorageService storageService, ISearchService searchService)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
             _userManager = userManager;
             _storageService = storageService;
+            _searchService = searchService;
         }
 
         public ICollectionsService Collections
@@ -60,7 +62,7 @@ namespace CollectionsManager.BLL.Services
             {
                 if (_itemsService is null)
                 {
-                    _itemsService = new ItemsService(_repositoryManager, _mapper, _userManager);
+                    _itemsService = new ItemsService(_repositoryManager, _mapper, _userManager, _searchService);
                 }
 
                 return _itemsService;

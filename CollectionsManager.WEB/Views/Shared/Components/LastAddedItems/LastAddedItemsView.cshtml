@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CollectionsManager.BLL.DTO.Items.LastAddedItemDto>
+
+@if (Model.Any())
+{
+    <div class="text-center" style="margin-top: 10px;"><h4>Last added items</h4></div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(x => x.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(x => x.AuthorName)
+                    </th>
+                    <th class="text-center">
+                        Actions
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(x => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AuthorName)
+                        </td>
+                        <td class="text-center">
+                            @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id }, new { @class="last-added-items-link" })
+                            @Html.ActionLink("To Collection", "CollectionDetails", "Collections", new { collectionId = item.CollectionId }, new { @class = "last-added-items-link" })
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

@@ -211,7 +211,8 @@ namespace CollectionsManager.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -329,17 +330,17 @@ namespace CollectionsManager.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "8bd39158-55c9-44d8-b35c-54e6f9a8c2a1", "e9e8f7ed-86c8-4586-a070-ba98d2ec1376", "User", "USER" });
+                values: new object[] { "e44acd41-a4ab-43f8-a344-4edba20beaba", "363d679a-8fa5-4d2b-b6e8-f57734bc73d6", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "64adf9ad-29a8-42da-af5b-7fbc10e176b5", "97e0bbfa-7263-42cf-9840-1060d3f43d1a", "Admin", "ADMIN" });
+                values: new object[] { "cdd23ab8-20e8-40a9-b158-f3c998032aaf", "4354700d-0c65-4c37-abd2-7a40266774af", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9de7075e-6d8e-4a53-ace1-d097a7ccc6e8", "80e8411b-076f-4e14-af98-d2b51ecf4e28", "Tester", "TESTER" });
+                values: new object[] { "63969e45-afef-43d2-9f3f-8282b2d82167", "1159ca73-9127-4ef3-be5a-b8729a8915a9", "Tester", "TESTER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

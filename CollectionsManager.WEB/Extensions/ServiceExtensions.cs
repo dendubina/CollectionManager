@@ -9,11 +9,13 @@ using CollectionsManager.BLL.Services.AuthService.Options;
 using CollectionsManager.BLL.Services.ImageService;
 using CollectionsManager.BLL.Services.ImageService.Options;
 using CollectionsManager.BLL.Services.Interfaces;
+using CollectionsManager.BLL.Services.SearchService;
 using CollectionsManager.DAL.EF;
 using CollectionsManager.DAL.Entities;
 using CollectionsManager.DAL.Entities.Users;
 using CollectionsManager.DAL.Repositories;
 using CollectionsManager.DAL.Repositories.Interfaces;
+using Elasticsearch.Net;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Nest;
 
 namespace CollectionManager.WEB.Extensions
 {
@@ -80,6 +83,17 @@ namespace CollectionManager.WEB.Extensions
             services.AddFluentValidationClientsideAdapters();
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<SignInModelValidator>();
+        }
+
+        public static void ConfigureSearchService(this IServiceCollection services)
+        {
+            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
+            var settings = new ConnectionSettings(pool);
+
+            var client = new ElasticClient(settings);
+
+            services.AddSingleton(client);
+            services.AddScoped<ISearchService, SearchService>();
         }
 
         public static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)

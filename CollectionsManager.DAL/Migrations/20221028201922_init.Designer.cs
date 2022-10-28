@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionsManager.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221028123903_init")]
+    [Migration("20221028201922_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,6 +136,9 @@ namespace CollectionsManager.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CollectionId")
                         .HasColumnType("uniqueidentifier");
@@ -278,22 +281,22 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8bd39158-55c9-44d8-b35c-54e6f9a8c2a1",
-                            ConcurrencyStamp = "e9e8f7ed-86c8-4586-a070-ba98d2ec1376",
+                            Id = "e44acd41-a4ab-43f8-a344-4edba20beaba",
+                            ConcurrencyStamp = "363d679a-8fa5-4d2b-b6e8-f57734bc73d6",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "64adf9ad-29a8-42da-af5b-7fbc10e176b5",
-                            ConcurrencyStamp = "97e0bbfa-7263-42cf-9840-1060d3f43d1a",
+                            Id = "cdd23ab8-20e8-40a9-b158-f3c998032aaf",
+                            ConcurrencyStamp = "4354700d-0c65-4c37-abd2-7a40266774af",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9de7075e-6d8e-4a53-ace1-d097a7ccc6e8",
-                            ConcurrencyStamp = "80e8411b-076f-4e14-af98-d2b51ecf4e28",
+                            Id = "63969e45-afef-43d2-9f3f-8282b2d82167",
+                            ConcurrencyStamp = "1159ca73-9127-4ef3-be5a-b8729a8915a9",
                             Name = "Tester",
                             NormalizedName = "TESTER"
                         });

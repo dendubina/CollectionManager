@@ -24,6 +24,8 @@ namespace CollectionManager.WEB
 
             services.ConfigureImageStorage(Configuration);
 
+            services.ConfigureSearchService();
+
             services.ConfigureUnitOfWork();
 
             services.ConfigureAutoMapper();

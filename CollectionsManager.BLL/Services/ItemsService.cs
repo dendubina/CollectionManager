@@ -19,12 +19,14 @@ namespace CollectionsManager.BLL.Services
         private readonly IRepositoryManager _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly ISearchService _searchService;
 
-        public ItemsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager)
+        public ItemsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager, ISearchService searchService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _searchService = searchService;
         }
 
         public async Task<ItemToEditDto> GetItemToEditAsync(Guid itemId)
@@ -60,9 +62,24 @@ namespace CollectionsManager.BLL.Services
             return item;
         }
 
+        public async Task<IEnumerable<LastAddedItemDto>> GetLastAddedItems(int count)
+        {
+            return await _unitOfWork.Items.GetAll(trackChanges: false)
+                .OrderByDescending(x => x.AddedDate)
+                .Take(count)
+                .Select(item => new LastAddedItemDto
+                {
+                    Name = item.Name,
+                    AuthorName = item.Collection.Owner.UserName,
+                    Id = item.Id,
+                    CollectionId = item.CollectionId,
+                }).ToArrayAsync();
+        }
+
         public async Task CreateItemAsync(ItemToCreate item)
         {
             var entity = _mapper.Map<Item>(item);
+            entity.AddedDate = DateTime.Now;
 
             _unitOfWork.Items.CreateItem(entity);
 
@@ -73,6 +90,7 @@ namespace CollectionsManager.BLL.Services
             }
 
             await _unitOfWork.SaveAsync();
+            await _searchService.AddItemAsync(entity.Id);
         }
 
         public async Task UpdateItemAsync(ItemToEditDto item)

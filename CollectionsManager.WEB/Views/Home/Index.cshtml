@@ -7,10 +7,8 @@
     <title>Super collections</title>
 </head>
 
-<div class="text-center">
-    <h4>Largest collections</h4>
-</div>
+@await Component.InvokeAsync("LastAddedItems");
 
-<div class="container-fluid">
-    @await Component.InvokeAsync("LargestCollections")
-</div>
+@await Component.InvokeAsync("LargestCollections")
+   
+

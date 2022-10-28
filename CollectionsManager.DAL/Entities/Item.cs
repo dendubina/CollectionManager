@@ -17,6 +17,8 @@ namespace CollectionsManager.DAL.Entities
 
         public Guid CollectionId { get; set; }
 
+        public DateTime AddedDate { get; set; }
+
         public ICollection<Tag> Tags { get; set; }
 
         public ICollection<Like> Likes { get; set; }
