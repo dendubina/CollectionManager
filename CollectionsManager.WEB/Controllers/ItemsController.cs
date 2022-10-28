@@ -7,7 +7,6 @@ using CollectionManager.WEB.Models.Items;
 using CollectionsManager.BLL.DTO.Items;
 using CollectionsManager.BLL.DTO.Tags;
 using CollectionsManager.BLL.Services.Interfaces;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,8 +55,12 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ItemToEditViewModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+
             var dto = _mapper.Map<ItemToEditDto>(model);
             dto.CurrentUserId = User.GetUserId();
+
             var tags = model.ExistedTags
                 .Where(x => x.ToRemove == false)
                 .Select(x => x.Name);

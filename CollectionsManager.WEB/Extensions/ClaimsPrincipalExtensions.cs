@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using CollectionsManager.DAL.Constants;
 
 namespace CollectionManager.WEB.Extensions
 {
@@ -12,6 +13,6 @@ namespace CollectionManager.WEB.Extensions
             => claimsPrincipal.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value;
 
         public static bool IsUserHasAccess(this ClaimsPrincipal claimsPrincipal, string ownerId)
-            => claimsPrincipal.Identity.IsAuthenticated && GetUserId(claimsPrincipal) == ownerId || claimsPrincipal.IsInRole("admin");
+            => claimsPrincipal.Identity.IsAuthenticated && GetUserId(claimsPrincipal) == ownerId || claimsPrincipal.IsInRole(RoleNames.Admin.ToString());
     }
 }

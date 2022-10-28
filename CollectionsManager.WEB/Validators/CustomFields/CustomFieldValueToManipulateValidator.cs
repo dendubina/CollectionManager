@@ -9,7 +9,6 @@ namespace CollectionManager.WEB.Validators.CustomFields
     {
         public CustomFieldValueToManipulateValidator()
         {
-
             RuleFor(x => x.Type)
                 .IsInEnum()
                 .DependentRules(() =>
