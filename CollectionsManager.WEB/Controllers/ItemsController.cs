@@ -7,6 +7,7 @@ using CollectionManager.WEB.Models.Items;
 using CollectionsManager.BLL.DTO.Items;
 using CollectionsManager.BLL.DTO.Tags;
 using CollectionsManager.BLL.Services.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +37,9 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
         {
+            if (!ModelState.IsValid)
+                return View(await _unitOfWork.Collections.GetItemToAddAsync(item.CollectionId));
+
             await _unitOfWork.Items.CreateItemAsync(item);
 
             return RedirectToCollectionDetails(item.CollectionId);

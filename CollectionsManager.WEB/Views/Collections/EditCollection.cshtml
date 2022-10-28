@@ -15,7 +15,7 @@
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form asp-action="EditCollection">
+        <form asp-action="EditCollection" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             @Html.HiddenFor(x => x.Id)
@@ -25,11 +25,19 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control"/>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
                 @Html.DropDownListFor(x => x.Category, Html.GetEnumSelectList<CollectionCategory>(), "Select Category", new { @class = "form-control" })
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 @Html.TextAreaFor(x => x.Description, new { id = "descriptionInput", @class = "form-control", rows = "10" })

@@ -10,7 +10,7 @@ namespace CollectionManager.WEB.Validators.Collections
 {
     public class CollectionToManipulateValidator : AbstractValidator<CollectionToManipulateDto>
     {
-        private const double MaxImageSizeMB = 1;
+        private const double MaxImageSizeMB = 3;
 
         private readonly Dictionary<string, List<byte[]>> _fileSignatures = new()
         {

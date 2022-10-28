@@ -171,7 +171,7 @@ namespace CollectionsManager.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageSource = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "https://embdesignshop.com/frontassets/images/no_image.jpg"),
+                    ImageSource = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "https://storage.googleapis.com/download/storage/v1/b/collections-images-bucket/o/638025681499527187.jpg?generation=1666960550830642&alt=media"),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -329,17 +329,17 @@ namespace CollectionsManager.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b20686ab-a132-4abe-8e9f-690854af6ecd", "0de4ef8f-4dd7-4200-8a43-6cd85447cee0", "User", "USER" });
+                values: new object[] { "8bd39158-55c9-44d8-b35c-54e6f9a8c2a1", "e9e8f7ed-86c8-4586-a070-ba98d2ec1376", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "70b5f0d1-4173-46aa-8cb3-2503c2e44de7", "805395bd-86cf-414f-b615-4a3ec13ac28f", "Admin", "ADMIN" });
+                values: new object[] { "64adf9ad-29a8-42da-af5b-7fbc10e176b5", "97e0bbfa-7263-42cf-9840-1060d3f43d1a", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "235536b4-553b-49c0-b077-1a430f29acff", "d81480c3-ff3a-4e5f-9531-353f6e13b3a1", "Tester", "TESTER" });
+                values: new object[] { "9de7075e-6d8e-4a53-ace1-d097a7ccc6e8", "80e8411b-076f-4e14-af98-d2b51ecf4e28", "Tester", "TESTER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

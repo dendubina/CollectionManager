@@ -50,7 +50,7 @@ namespace CollectionsManager.DAL.EF
             modelBuilder
                 .Entity<Collection>()
                 .Property(x => x.ImageSource)
-                .HasDefaultValue("https://embdesignshop.com/frontassets/images/no_image.jpg");
+                .HasDefaultValue("https://storage.googleapis.com/download/storage/v1/b/collections-images-bucket/o/638025681499527187.jpg?generation=1666960550830642&alt=media");
 
             modelBuilder.ApplyConfiguration(new RolesConfig());
         }

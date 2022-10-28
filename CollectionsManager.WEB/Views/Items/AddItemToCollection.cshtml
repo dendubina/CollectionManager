@@ -18,6 +18,7 @@
                 @Html.HiddenFor(x => x.CollectionId)
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" autocomplete="off" />
@@ -38,12 +39,12 @@
                                     <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="datetime-local" class="form-control" />break;
 
                                 case CustomPropertyType.Bool:
-                                    <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="checkbox" class="form-check-input" />break;
+                                    <br/><input asp-for="@Model.CustomFieldValuesToCreate[i].Value" type="checkbox" class="form-check-input" />break;
 
                                 default:
                                     <input asp-for="@Model.CustomFieldValuesToCreate[i].Value" autocomplete="off" class="form-control" />break;
                             }
-                            <span asp-validation-for="@Model.CustomFieldValuesToCreate[i]" class="text-danger"></span>
+                            @Html.ValidationMessageFor(x => x.CustomFieldValuesToCreate[i].Value)
                         </div>
                     }
                 }

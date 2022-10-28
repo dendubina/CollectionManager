@@ -78,6 +78,7 @@ namespace CollectionManager.WEB.Extensions
         {
             ValidatorOptions.Global.LanguageManager.Enabled = false;
             services.AddFluentValidationClientsideAdapters();
+            services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<SignInModelValidator>();
         }
 

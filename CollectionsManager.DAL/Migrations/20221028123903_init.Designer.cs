@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionsManager.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221027181832_init")]
+    [Migration("20221028123903_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace CollectionsManager.DAL.Migrations
                     b.Property<string>("ImageSource")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("https://embdesignshop.com/frontassets/images/no_image.jpg");
+                        .HasDefaultValue("https://storage.googleapis.com/download/storage/v1/b/collections-images-bucket/o/638025681499527187.jpg?generation=1666960550830642&alt=media");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -278,22 +278,22 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b20686ab-a132-4abe-8e9f-690854af6ecd",
-                            ConcurrencyStamp = "0de4ef8f-4dd7-4200-8a43-6cd85447cee0",
+                            Id = "8bd39158-55c9-44d8-b35c-54e6f9a8c2a1",
+                            ConcurrencyStamp = "e9e8f7ed-86c8-4586-a070-ba98d2ec1376",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "70b5f0d1-4173-46aa-8cb3-2503c2e44de7",
-                            ConcurrencyStamp = "805395bd-86cf-414f-b615-4a3ec13ac28f",
+                            Id = "64adf9ad-29a8-42da-af5b-7fbc10e176b5",
+                            ConcurrencyStamp = "97e0bbfa-7263-42cf-9840-1060d3f43d1a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "235536b4-553b-49c0-b077-1a430f29acff",
-                            ConcurrencyStamp = "d81480c3-ff3a-4e5f-9531-353f6e13b3a1",
+                            Id = "9de7075e-6d8e-4a53-ace1-d097a7ccc6e8",
+                            ConcurrencyStamp = "80e8411b-076f-4e14-af98-d2b51ecf4e28",
                             Name = "Tester",
                             NormalizedName = "TESTER"
                         });

@@ -40,8 +40,10 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCollection(CollectionToManipulateDto model)
         {
-            model.OwnerId = User.GetUserId();
+            if (!ModelState.IsValid)
+                return View();
 
+            model.OwnerId = User.GetUserId();
             await _unitOfWork.Collections.CreateCollectionAsync(model);
 
             return RedirectToIndex();
@@ -54,6 +56,9 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCollection(CollectionToManipulateDto model)
         {
+            if (!ModelState.IsValid)
+                return View(await _unitOfWork.Collections.GetCollectionToEditAsync(model.Id));
+
             model.CustomFields = model.CustomFields?.Where(x => x.ToRemove == false).ToList();
             model.OwnerId = User.GetUserId();
 
