@@ -31,7 +31,7 @@ namespace CollectionsManager.BLL.Services.AuthService
 
         public async Task<UserProfile> SignInAsync(SignInModel userData)
         {
-            var user = await _userManager.FindByNameAsync(userData.UserName);
+            var user = await _userManager.FindByEmailAsync(userData.Email);
 
             if (user is null)
             {
@@ -42,7 +42,7 @@ namespace CollectionsManager.BLL.Services.AuthService
 
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException("Invalid user name or password");
+                throw new InvalidOperationException("Invalid email or password");
             }
 
             return await CreateProfile(user);
@@ -86,15 +86,7 @@ namespace CollectionsManager.BLL.Services.AuthService
         }
 
         private async Task AddDefaultRoles(User user)
-        {
-            var roles = new []
-            {
-                RoleNames.User.ToString(),
-                RoleNames.Admin.ToString(),
-            };
-            
-            await _userManager.AddToRolesAsync(user, roles);
-        }
+            => await _userManager.AddToRoleAsync(user, RoleNames.User.ToString());
 
         private async Task<JwtSecurityToken> GenerateJwtToken(User user)
         {

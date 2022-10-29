@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CollectionManager.WEB.Controllers
 {
-    [Authorize]
     public class LikesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,11 +18,17 @@ namespace CollectionManager.WEB.Controllers
 
         public async Task<IActionResult> PutLike(Guid itemId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("SignIn", "Account");
+            }
+
             await _unitOfWork.Likes.PutLikeAsync(itemId, User.GetUserId());
 
             return RedirectToItemDetails(itemId);
         }
 
+        [Authorize]
         public async Task<IActionResult> RemoveLike(Guid itemId)
         {
             await _unitOfWork.Likes.RemoveLikeAsync(itemId, User.GetUserId());

@@ -16,13 +16,5 @@ namespace CollectionsManager.DAL.Repositories
 
         public void CreateComment(Comment comment)
             => Create(comment);
-
-        /* public async Task<IEnumerable<Comment>> GetCommentsByItemId(Guid itemId)
-             => await FindByCondition(x => x.ItemId.Equals(itemId), trackChanges: false)
-                 .Include(x => x.Author)
-                 .ToArrayAsync();
-
-         public void CreateComment(Comment comment)
-             => Create(comment);*/
     }
 }

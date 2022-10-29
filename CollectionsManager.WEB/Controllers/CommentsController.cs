@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CollectionManager.WEB.Controllers
 {
-    [Authorize]
     public class CommentsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,6 +18,7 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostComment(CommentToCreateDto comment)
         {
             comment.AuthorId = User.GetUserId();
@@ -29,7 +29,6 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetCommentsForItem(Guid itemId)
             => Json(await _unitOfWork.Comments.GetCommentsByItemId(itemId));
     }

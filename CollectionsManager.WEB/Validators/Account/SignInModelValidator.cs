@@ -7,9 +7,10 @@ namespace CollectionManager.WEB.Validators.Account
     {
         public SignInModelValidator()
         {
-            RuleFor(x => x.UserName)
+            RuleFor(x => x.Email)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .EmailAddress();
 
             RuleFor(x => x.Password)
                 .NotNull()

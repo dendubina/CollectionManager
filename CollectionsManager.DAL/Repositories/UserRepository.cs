@@ -9,7 +9,6 @@ namespace CollectionsManager.DAL.Repositories
     {
         public UserRepository(AppDbContext context) : base(context)
         {
-            
         }
 
         public IQueryable<User> GetAll(bool trackChanges)

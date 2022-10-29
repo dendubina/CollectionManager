@@ -17,14 +17,5 @@ namespace CollectionsManager.DAL.Repositories
 
         public void RemoveLike(string authorId, Guid itemId)
             => Delete(DbContext.Likes.First(x => x.ItemId.Equals(itemId) && x.AuthorId == authorId));
-
-
-        /* public void PutLike(Guid itemId, Guid authorId)
-             => Create(new Like { ItemId = itemId, AuthorId = authorId.ToString() });
-
-
-         public void RemoveLike(Guid itemId, Guid authorId)
-             => Delete(DbContext.Likes.First(x => x.ItemId.Equals(itemId) && x.AuthorId == authorId.ToString()));*/
-
     }
 }
