@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using CollectionManager.WEB.Mapper;
+using CollectionManager.WEB.Models.Options;
 using CollectionManager.WEB.Validators.Account;
 using CollectionsManager.BLL.MapperProfiles;
 using CollectionsManager.BLL.Services;
@@ -96,6 +97,9 @@ namespace CollectionManager.WEB.Extensions
             services.AddSingleton(client);
             services.AddScoped<ISearchService, ElasticSearchService>();
         }
+
+        public static void ConfigureViewOptions(this IServiceCollection services, IConfiguration config)
+            => services.Configure<ViewOptions>(config.GetSection(nameof(ViewOptions)));
 
         public static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
         {

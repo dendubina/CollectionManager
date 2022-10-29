@@ -25,16 +25,6 @@ namespace CollectionsManager.BLL.Services.SearchService
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SearchItem>> SearchBySubstringAsync(string substring)
-        {
-            var response = await _client.SearchAsync<SearchItem>(s => s
-                .Index(_itemsIndex)
-                .Query(q => q
-                    .QueryString(sq => sq.Query($"*{substring}*").AllowLeadingWildcard())));
-
-            return response.Documents;
-        }
-
         public async Task AddItemsAsync(IEnumerable<Guid> itemIds)
         {
             var items = await GetFromDatabase(itemIds);
@@ -61,6 +51,16 @@ namespace CollectionsManager.BLL.Services.SearchService
             {
                 await _client.DeleteAsync<SearchItem>(itemId, i => i.Index(_itemsIndex));
             }
+        }
+
+        public async Task<IEnumerable<SearchItem>> SearchBySubstringAsync(string substring)
+        {
+            var response = await _client.SearchAsync<SearchItem>(s => s
+                .Index(_itemsIndex)
+                .Query(q => q
+                    .QueryString(sq => sq.Query($"*{substring}*").AllowLeadingWildcard())));
+
+            return response.Documents;
         }
 
         private async Task<IEnumerable<SearchItem>> GetFromDatabase(IEnumerable<Guid> itemIds)

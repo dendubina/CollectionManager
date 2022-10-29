@@ -36,6 +36,8 @@ namespace CollectionManager.WEB
 
             services.AddAuthorization();
 
+            services.ConfigureViewOptions(Configuration);
+
             services.AddControllersWithViews();
 
             services.ConfigureFluentValidation();
