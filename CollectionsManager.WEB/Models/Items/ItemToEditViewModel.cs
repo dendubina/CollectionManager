@@ -16,7 +16,7 @@ namespace CollectionManager.WEB.Models.Items
 
         public string Name { get; set; }
 
-        public IList<TagDto> TagsToAdd { get; set; }
+        public IList<TagDto> Tags { get; set; }
 
         public IList<ExistedTagToEditViewModel> ExistedTags { get; set; }
 

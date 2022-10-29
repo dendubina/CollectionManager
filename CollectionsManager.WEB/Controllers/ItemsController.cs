@@ -65,9 +65,9 @@ namespace CollectionManager.WEB.Controllers
                 .Where(x => x.ToRemove == false)
                 .Select(x => x.Name);
 
-            if (model.TagsToAdd is not null)
+            if (model.Tags is not null)
             {
-                tags = tags.Union(model.TagsToAdd.Select(x => x.Name));
+                tags = tags.Union(model.Tags.Select(x => x.Name));
             }
                
             dto.Tags = tags.Select(tagName => new TagDto { Name = tagName });
