@@ -90,7 +90,7 @@ namespace CollectionsManager.BLL.Services
             }
 
             await _unitOfWork.SaveAsync();
-            await _searchService.AddItemAsync(entity.Id);
+            await _searchService.AddItemsAsync(new[] { entity.Id });
         }
 
         public async Task UpdateItemAsync(ItemToEditDto item)
@@ -112,6 +112,7 @@ namespace CollectionsManager.BLL.Services
             }
 
             await _unitOfWork.SaveAsync();
+            await _searchService.UpdateItemsAsync(new[] { entity.Id });
         }
 
         public async Task DeleteItemAsync(Guid itemId, string currentUserId)
@@ -125,6 +126,7 @@ namespace CollectionsManager.BLL.Services
             await _userManager.CheckIsUserHasAccess(entity.Collection.OwnerId, currentUserId);
 
             _unitOfWork.Items.DeleteItem(entity);
+            await _searchService.DeleteItemsAsync(new[] { entity.Id });
             await _unitOfWork.SaveAsync();
         }
 

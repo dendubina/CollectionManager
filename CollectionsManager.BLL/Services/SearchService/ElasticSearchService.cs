@@ -1,0 +1,89 @@
+﻿using CollectionsManager.BLL.Services.Interfaces;
+using CollectionsManager.BLL.Services.SearchService.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CollectionsManager.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Nest;
+
+namespace CollectionsManager.BLL.Services.SearchService
+{
+    public class ElasticSearchService : ISearchService
+    {
+        private const string ItemIndex = "search-item";
+
+        private readonly IElasticClient _client;
+        private readonly IRepositoryManager _unitOfWork;
+
+        public ElasticSearchService(IElasticClient client, IRepositoryManager unitOfWork)
+        {
+            _client = client;
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<IEnumerable<SearchItem>> SearchBySubstringAsync(string substring)
+        {
+            var response = await _client.SearchAsync<SearchItem>(s => s
+                .Index(ItemIndex)
+                .Query(q => q
+                    .QueryString(sq => sq.Query($"*{substring}*").AllowLeadingWildcard())));
+
+            return response.Documents;
+        }
+
+        public async Task AddItemsAsync(IEnumerable<Guid> itemIds)
+        {
+            var items = await GetFromDatabase(itemIds);
+
+            foreach (var item in items)
+            {
+                await _client.IndexAsync(item, request => request.Index(ItemIndex));
+            }
+        }
+
+        public async Task UpdateItemsAsync(IEnumerable<Guid> itemIds)
+        {
+            var items = await GetFromDatabase(itemIds);
+
+            foreach (var item in items)
+            {
+                await _client.UpdateAsync<SearchItem, SearchItem>(item.Id, x => x.Index(ItemIndex).Doc(item));
+            }
+        }
+
+        public async Task DeleteItemsAsync(IEnumerable<Guid> itemIds)
+        {
+            foreach (var itemId in itemIds)
+            {
+                await _client.DeleteAsync<SearchItem>(itemId, i => i.Index(ItemIndex));
+            }
+        }
+
+        private async Task<IEnumerable<SearchItem>> GetFromDatabase(IEnumerable<Guid> itemIds)
+        {
+            return await _unitOfWork.Items
+                .GetAll(trackChanges: false)
+                .Where(x => itemIds.Any(id => id.Equals(x.Id)))
+                .Select(item => new SearchItem
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CollectionName = item.Collection.Name,
+                    OwnerName = item.Collection.Owner.UserName,
+                    CustomFields = item.CustomValues.Select(value => new CustomField
+                    {
+                        Name = value.Field.Name,
+                        Value = value.Value,
+                    }),
+                    Tags = item.Tags.Select(x => x.Name),
+                    Comments = item.Comments.Select(comment => new Comment
+                    {
+                        Author = comment.Author.UserName,
+                        Text = comment.Text
+                    })
+                }).ToArrayAsync();
+        }
+    }
+}

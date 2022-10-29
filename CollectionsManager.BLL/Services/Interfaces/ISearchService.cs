@@ -7,7 +7,11 @@ namespace CollectionsManager.BLL.Services.Interfaces
 {
     public interface ISearchService
     {
-        Task AddItemAsync(Guid itemId);
+        Task AddItemsAsync(IEnumerable<Guid> itemIds);
+
+        Task UpdateItemsAsync(IEnumerable<Guid> itemIds);
+
+        Task DeleteItemsAsync(IEnumerable<Guid> itemIds);
 
         Task<IEnumerable<SearchItem>> SearchBySubstringAsync(string substring);
     }

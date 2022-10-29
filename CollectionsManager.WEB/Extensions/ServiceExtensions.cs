@@ -87,13 +87,10 @@ namespace CollectionManager.WEB.Extensions
 
         public static void ConfigureSearchService(this IServiceCollection services)
         {
-            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
-            var settings = new ConnectionSettings(pool);
-
-            var client = new ElasticClient(settings);
+            IElasticClient client = new ElasticClient("my_elastic:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDlkZGQ0NTBmMjM1OTQ0OWM4ODAzMDE1ZDFiYzhiYmZlJGQ0MjAzY2JjMDMwNzRjOTM5MzU5ZjUwMzcyMmVkZDY1", new ApiKeyAuthenticationCredentials("Rkp4SEk0UUI1R2xyMnM0QkpCY2s6eWZSOHNsUGxUNHlWSUtWTHRwclctUQ=="));
 
             services.AddSingleton(client);
-            services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<ISearchService, ElasticSearchService>();
         }
 
         public static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)

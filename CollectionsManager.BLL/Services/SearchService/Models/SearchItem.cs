@@ -7,6 +7,8 @@ namespace CollectionsManager.BLL.Services.SearchService.Models
     {
         public Guid Id { get; set; }
 
+        public string Name { get; set; }
+
         public string CollectionName { get; set; }
 
         public string OwnerName { get; set; }

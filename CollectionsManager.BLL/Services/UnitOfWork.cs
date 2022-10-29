@@ -36,7 +36,7 @@ namespace CollectionsManager.BLL.Services
             {
                 if (_collectionsService is null)
                 {
-                    _collectionsService = new CollectionsService(_repositoryManager, _mapper, _userManager, _storageService);
+                    _collectionsService = new CollectionsService(_repositoryManager, _mapper, _userManager, _storageService, _searchService);
                 }
 
                 return _collectionsService;
@@ -49,7 +49,7 @@ namespace CollectionsManager.BLL.Services
             {
                 if (_commentsService is null)
                 {
-                    _commentsService = new CommentsService(_repositoryManager, _mapper);
+                    _commentsService = new CommentsService(_repositoryManager, _mapper, _searchService);
                 }
 
                 return _commentsService;

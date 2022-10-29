@@ -20,14 +20,16 @@ namespace CollectionsManager.BLL.Services
         private readonly UserManager<User> _userManager;
         private readonly IImageStorageService _imageService;
         private readonly IRepositoryManager _unitOfWork;
+        private readonly ISearchService _searchService;
         private readonly IMapper _mapper;
 
-        public CollectionsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager, IImageStorageService imageService)
+        public CollectionsService(IRepositoryManager unitOfWork, IMapper mapper, UserManager<User> userManager, IImageStorageService imageService, ISearchService searchService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _imageService = imageService;
+            _searchService = searchService;
         }
 
         public async Task<IEnumerable<LargestCollectionToReturnDto>> GetMostLargeCollectionsAsync(int count)
@@ -103,6 +105,7 @@ namespace CollectionsManager.BLL.Services
         {
             var entity = await _unitOfWork.Collections
                 .GetCollection(collection.Id, trackChanges: true)
+                .Include(x => x.Items)
                 .Include(x => x.CustomFields)
                 .FirstOrDefaultAsync();
 
@@ -117,12 +120,15 @@ namespace CollectionsManager.BLL.Services
             }
 
             await _unitOfWork.SaveAsync();
+
+            await _searchService.UpdateItemsAsync(entity.Items.Select(x => x.Id));
         }
 
         public async Task DeleteCollectionAsync(Guid collectionId, string currentUserId)
         {
             var collection = await _unitOfWork.Collections
                 .GetCollection(collectionId, trackChanges: false)
+                .Include(x => x.Items)
                 .FirstOrDefaultAsync();
 
             CheckIsExists(collection, collectionId);
@@ -130,6 +136,8 @@ namespace CollectionsManager.BLL.Services
 
             _unitOfWork.Collections.DeleteCollection(collection);
             await _unitOfWork.SaveAsync();
+
+            await _searchService.DeleteItemsAsync(collection.Items.Select(x => x.Id));
         }
 
         private static void CheckIsExists(object entity, Guid entityId)

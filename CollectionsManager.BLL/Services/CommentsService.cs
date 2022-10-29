@@ -15,11 +15,13 @@ namespace CollectionsManager.BLL.Services
     {
         private readonly IRepositoryManager _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ISearchService _searchService;
 
-        public CommentsService(IRepositoryManager unitOfWork, IMapper mapper)
+        public CommentsService(IRepositoryManager unitOfWork, IMapper mapper, ISearchService searchService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _searchService = searchService;
         }
 
         public async Task<IEnumerable<CommentToReturnDto>> GetCommentsByItemId(Guid itemId)
@@ -34,6 +36,7 @@ namespace CollectionsManager.BLL.Services
         {
             _unitOfWork.Comments.CreateComment(_mapper.Map<Comment>(comment));
 
+            await _searchService.UpdateItemsAsync(new[] { comment.ItemId });
             await _unitOfWork.SaveAsync();
         }
     }
