@@ -9,6 +9,8 @@ namespace CollectionsManager.BLL.Services.Interfaces
     {
         Task<ItemDetailsToReturnDto> GetItemDetailsAsync(Guid itemId);
 
+        Task<ItemToCreate> GetItemToAddAsync(Guid collectionId);
+
         Task<ItemToEditDto> GetItemToEditAsync(Guid itemId);
 
         Task<IEnumerable<LastAddedItemDto>> GetLastAddedItems(int count);

@@ -76,6 +76,13 @@ namespace CollectionsManager.BLL.Services
                 }).ToArrayAsync();
         }
 
+        public async Task<ItemToCreate> GetItemToAddAsync(Guid collectionId)
+            => await _unitOfWork.Collections
+                .GetCollection(collectionId, trackChanges: false)
+                .Include(x => x.CustomFields)
+                .Select(collection => _mapper.Map<ItemToCreate>(collection))
+                .FirstOrDefaultAsync();
+
         public async Task CreateItemAsync(ItemToCreate item)
         {
             var entity = _mapper.Map<Item>(item);

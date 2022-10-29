@@ -4,21 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CollectionsManager.BLL.Services.SearchService.Models.Options;
 using CollectionsManager.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Nest;
 
 namespace CollectionsManager.BLL.Services.SearchService
 {
     public class ElasticSearchService : ISearchService
     {
-        private const string ItemIndex = "search-item";
-
+        private readonly string _itemsIndex;
         private readonly IElasticClient _client;
         private readonly IRepositoryManager _unitOfWork;
 
-        public ElasticSearchService(IElasticClient client, IRepositoryManager unitOfWork)
+        public ElasticSearchService(IElasticClient client, IRepositoryManager unitOfWork, IOptions<ElasticSearchOptions> options)
         {
+            _itemsIndex = options.Value.ItemsIndex;
             _client = client;
             _unitOfWork = unitOfWork;
         }
@@ -26,7 +28,7 @@ namespace CollectionsManager.BLL.Services.SearchService
         public async Task<IEnumerable<SearchItem>> SearchBySubstringAsync(string substring)
         {
             var response = await _client.SearchAsync<SearchItem>(s => s
-                .Index(ItemIndex)
+                .Index(_itemsIndex)
                 .Query(q => q
                     .QueryString(sq => sq.Query($"*{substring}*").AllowLeadingWildcard())));
 
@@ -39,7 +41,7 @@ namespace CollectionsManager.BLL.Services.SearchService
 
             foreach (var item in items)
             {
-                await _client.IndexAsync(item, request => request.Index(ItemIndex));
+                await _client.IndexAsync(item, request => request.Index(_itemsIndex));
             }
         }
 
@@ -49,7 +51,7 @@ namespace CollectionsManager.BLL.Services.SearchService
 
             foreach (var item in items)
             {
-                await _client.UpdateAsync<SearchItem, SearchItem>(item.Id, x => x.Index(ItemIndex).Doc(item));
+                await _client.UpdateAsync<SearchItem, SearchItem>(item.Id, x => x.Index(_itemsIndex).Doc(item));
             }
         }
 
@@ -57,7 +59,7 @@ namespace CollectionsManager.BLL.Services.SearchService
         {
             foreach (var itemId in itemIds)
             {
-                await _client.DeleteAsync<SearchItem>(itemId, i => i.Index(ItemIndex));
+                await _client.DeleteAsync<SearchItem>(itemId, i => i.Index(_itemsIndex));
             }
         }
 

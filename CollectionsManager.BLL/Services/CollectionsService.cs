@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CollectionsManager.BLL.DTO.Collections;
-using CollectionsManager.BLL.DTO.Items;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.BLL.Extensions;
 using CollectionsManager.BLL.Services.Interfaces;
@@ -80,13 +79,6 @@ namespace CollectionsManager.BLL.Services
 
             return collection;
         }
-
-        public async Task<ItemToCreate> GetItemToAddAsync(Guid collectionId)
-            => await _unitOfWork.Collections
-                .GetCollection(collectionId, trackChanges: false)
-                .Include(x => x.CustomFields)
-                .Select(collection => _mapper.Map<ItemToCreate>(collection))
-                .FirstOrDefaultAsync();
 
         public async Task CreateCollectionAsync(CollectionToManipulateDto collection)
         {

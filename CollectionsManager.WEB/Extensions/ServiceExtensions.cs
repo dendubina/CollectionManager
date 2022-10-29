@@ -10,6 +10,7 @@ using CollectionsManager.BLL.Services.ImageService;
 using CollectionsManager.BLL.Services.ImageService.Options;
 using CollectionsManager.BLL.Services.Interfaces;
 using CollectionsManager.BLL.Services.SearchService;
+using CollectionsManager.BLL.Services.SearchService.Models.Options;
 using CollectionsManager.DAL.EF;
 using CollectionsManager.DAL.Entities;
 using CollectionsManager.DAL.Entities.Users;
@@ -35,7 +36,7 @@ namespace CollectionManager.WEB.Extensions
             services.AddDbContext<AppDbContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("LocalDb"));
-                opts.EnableSensitiveDataLogging();
+               // opts.EnableSensitiveDataLogging();
             });
         }
 
@@ -85,9 +86,12 @@ namespace CollectionManager.WEB.Extensions
             services.AddValidatorsFromAssemblyContaining<SignInModelValidator>();
         }
 
-        public static void ConfigureSearchService(this IServiceCollection services)
+        public static void ConfigureSearchService(this IServiceCollection services, IConfiguration config)
         {
-            IElasticClient client = new ElasticClient("my_elastic:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDlkZGQ0NTBmMjM1OTQ0OWM4ODAzMDE1ZDFiYzhiYmZlJGQ0MjAzY2JjMDMwNzRjOTM5MzU5ZjUwMzcyMmVkZDY1", new ApiKeyAuthenticationCredentials("Rkp4SEk0UUI1R2xyMnM0QkpCY2s6eWZSOHNsUGxUNHlWSUtWTHRwclctUQ=="));
+            services.Configure<ElasticSearchOptions>(config.GetSection(nameof(ElasticSearchOptions)));
+            var options = config.GetSection(nameof(ElasticSearchOptions)).Get<ElasticSearchOptions>();
+
+            IElasticClient client = new ElasticClient(options.CloudId, new ApiKeyAuthenticationCredentials(options.ApiKey));
 
             services.AddSingleton(client);
             services.AddScoped<ISearchService, ElasticSearchService>();

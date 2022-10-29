@@ -36,8 +36,8 @@ namespace CollectionsManager.BLL.Services
         {
             _unitOfWork.Comments.CreateComment(_mapper.Map<Comment>(comment));
 
-            await _searchService.UpdateItemsAsync(new[] { comment.ItemId });
             await _unitOfWork.SaveAsync();
+            await _searchService.UpdateItemsAsync(new[] { comment.ItemId });
         }
     }
 }

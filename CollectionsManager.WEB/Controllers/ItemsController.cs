@@ -31,13 +31,13 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public async Task<IActionResult> AddItemToCollection(Guid collectionId)
-            => View(await _unitOfWork.Collections.GetItemToAddAsync(collectionId));
+            => View(await _unitOfWork.Items.GetItemToAddAsync(collectionId));
 
         [HttpPost]
         public async Task<IActionResult> AddItemToCollection(ItemToCreate item)
         {
             if (!ModelState.IsValid)
-                return View(await _unitOfWork.Collections.GetItemToAddAsync(item.CollectionId));
+                return View(item);
 
             await _unitOfWork.Items.CreateItemAsync(item);
 
