@@ -17,7 +17,7 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public IActionResult SignIn()
-            => User.Identity.IsAuthenticated ? RedirectToHomePage() : View();
+            => User.Identity is { IsAuthenticated: true } ? RedirectToHomePage() : View();
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInModel model)
@@ -37,7 +37,7 @@ namespace CollectionManager.WEB.Controllers
 
         [HttpGet]
         public IActionResult SignUp()
-            => User.Identity.IsAuthenticated ? RedirectToHomePage() : View();
+            => User.Identity is { IsAuthenticated: true } ? RedirectToHomePage() : View();
 
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpModel model)
@@ -55,6 +55,7 @@ namespace CollectionManager.WEB.Controllers
             return RedirectToHomePage();
         }
 
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _authService.LogoutAsync();

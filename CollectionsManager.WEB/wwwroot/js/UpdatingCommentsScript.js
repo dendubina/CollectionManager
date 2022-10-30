@@ -1,6 +1,7 @@
 ﻿ {
     const dateOptions = {weekday: "short", year: "numeric", month: "short", day: "numeric"}
     const commentUrl = `/Comments/GetCommentsForItem/?itemId=${document.getElementById("itemId").value}`;
+    const commentsContainer = document.getElementById("commentsContainer");
     const commentsBlock = document.getElementById("commentsBlock");
     let currentCommentsCount = 0;
 
@@ -27,7 +28,11 @@
     const updateComments = async () =>{
         let comments = await getComments();
         let commentsToAdd = comments.slice(currentCommentsCount, comments.length + 1);
-        currentCommentsCount = comments.length;       
+        currentCommentsCount = comments.length;
+
+        if (currentCommentsCount > 0) {
+            commentsContainer.style.display = "block";
+        }
 
         commentsToAdd.forEach(elem => {
             commentsBlock.insertAdjacentHTML("afterbegin", getHtml(elem))

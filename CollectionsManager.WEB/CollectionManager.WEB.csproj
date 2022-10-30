@@ -22,8 +22,4 @@
     <ProjectReference Include="..\CollectionsManager.DAL\CollectionsManager.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Config\" />
-  </ItemGroup>
-
 </Project>

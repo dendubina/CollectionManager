@@ -18,7 +18,7 @@ namespace CollectionManager.WEB.Controllers
 
         public async Task<IActionResult> PutLike(Guid itemId)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity is { IsAuthenticated: false })
             {
                 return RedirectToAction("SignIn", "Account");
             }

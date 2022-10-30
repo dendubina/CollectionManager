@@ -1,5 +1,4 @@
 ﻿@using CollectionManager.WEB.Extensions
-@using System.Globalization
 @model CollectionsManager.BLL.DTO.Items.ItemDetailsToReturnDto
 
 <!DOCTYPE html>
@@ -9,7 +8,6 @@
     <meta name="viewport" content="width=device-width" />
     <title>Item Details</title>
     <link rel="stylesheet" href="~/css/ItemDetails.css" />
-
 </head>
 <body>
 
@@ -79,10 +77,9 @@
                 {
                     <button class="btn btn-outline-secondary like-button" onclick="location.href = '@Url.Action("PutLike", "Likes", new { itemId = Model.Id })'"><i class="bi bi-heart"></i> @Model.Likes.Count()</button>
                 }
-
             </div>
 
-            @if (User.Identity.IsAuthenticated)
+            @if (User.Identity is { IsAuthenticated: true })
             {
                 <div style="margin-top: 10px;">
                     <form asp-action="PostComment" asp-controller="Comments">
@@ -98,10 +95,11 @@
                 </div>
             }
             
-            <div class="container my-5 py-5">
+            <div class="container my-5 py-5" id="commentsContainer" style="display: none">
+                <div class="text-center"><h5>Comments</h5></div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-10">
-                        <div class="card text-dark" id="commentsBlock">
+                        <div class="card text-dark" id="commentsBlock" style="margin: auto;">
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,10 @@
     text-align: start;
 }
 
+body {
+    background-color: #f0f0f0;
+}
+
 .row {
     margin: 0 auto;
 }
