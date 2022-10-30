@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CollectionsManager.BLL.DTO.Tags.MostPopularTagDto>
+
+@if (Model.Any())
+{
+    <div class="text-center"><h4>Most popular tags</h4></div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            @foreach (var tag in Model)
+            {
+                <div style="display: inline-block; margin-top: 10px">
+                    @Html.ActionLink(tag.Name, "SearchByTag", "Items", new { tag = tag.Name }, new { @class = "btn btn-primary btn-sm" })
+                </div>
+            }
+        </div>
+    </div>
+   
+}

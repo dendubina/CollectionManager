@@ -86,6 +86,7 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Search(string substring)
         {
             var items = await _searchService.SearchBySubstringAsync(substring);
@@ -94,6 +95,7 @@ namespace CollectionManager.WEB.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> SearchByTag(string tag)
             => View("SearchResult", await _unitOfWork.Items.GetByTagAsync(tag));
 

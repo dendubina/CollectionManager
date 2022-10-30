@@ -9,5 +9,7 @@ namespace CollectionsManager.BLL.Services.Interfaces
         Task<IEnumerable<TagDto>> GetAllAsync();
 
         Task<IEnumerable<TagDto>> FindBySubstringAsync(string substring);
+
+        Task<IEnumerable<MostPopularTagDto>> GetMostPopularTagsAsync(int count);
     }
 }

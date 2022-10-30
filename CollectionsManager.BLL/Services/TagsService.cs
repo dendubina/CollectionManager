@@ -18,16 +18,24 @@ namespace CollectionsManager.BLL.Services
         }
 
         public async Task<IEnumerable<TagDto>> GetAllAsync()
-            => await _unitOfWork.Tags
-                .GetAll(trackChanges: false)
+            => await _unitOfWork.Tags.GetAll(trackChanges: false)
                 .Select(tag => new TagDto { Name = tag.Name })
                 .ToArrayAsync();
 
         public async Task<IEnumerable<TagDto>> FindBySubstringAsync(string substring)
-            => await _unitOfWork.Tags
-                .GetAll(trackChanges: false)
+            => await _unitOfWork.Tags.GetAll(trackChanges: false)
                 .Where(x => x.Name.Contains(substring))
                 .Select(tag => new TagDto { Name = tag.Name })
                 .ToArrayAsync();
+
+        public async Task<IEnumerable<MostPopularTagDto>> GetMostPopularTagsAsync(int count)
+            => await _unitOfWork.Tags.GetAll(trackChanges: false)
+                .OrderByDescending(x => x.Items.Count)
+                .Take(count)
+                .Select(tag => new MostPopularTagDto
+                {
+                    Name = tag.Name,
+                    ItemsCount = tag.Items.Count,
+                }).ToArrayAsync();
     }
 }
