@@ -18,6 +18,6 @@ namespace CollectionManager.WEB.ViewComponents
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
-            => View("LastAddedItemsView", await _unitOfWork.Items.GetLastAddedItems(_itemsToShowCount));
+            => View("LastAddedItemsView", await _unitOfWork.Items.GetLastAddedItemsAsync(_itemsToShowCount));
     }
 }

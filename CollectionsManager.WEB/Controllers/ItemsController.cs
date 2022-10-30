@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -17,11 +18,13 @@ namespace CollectionManager.WEB.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISearchService _searchService;
 
-        public ItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ItemsController(IUnitOfWork unitOfWork, IMapper mapper, ISearchService searchService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _searchService = searchService;
         }
 
         [HttpGet]
@@ -60,14 +63,19 @@ namespace CollectionManager.WEB.Controllers
 
             var dto = _mapper.Map<ItemToEditDto>(model);
             dto.CurrentUserId = User.GetUserId();
+            var tags = new List<string>();
 
-            var tags = model.ExistedTags
-                .Where(x => x.ToRemove == false)
-                .Select(x => x.Name);
+            if (model.ExistedTags is not null)
+            {
+                tags = model.ExistedTags
+                    .Where(x => x.ToRemove == false)
+                    .Select(x => x.Name)
+                    .ToList();
+            }
 
             if (model.Tags is not null)
             {
-                tags = tags.Union(model.Tags.Select(x => x.Name));
+                tags = tags.Union(model.Tags.Select(x => x.Name)).ToList();
             }
                
             dto.Tags = tags.Select(tagName => new TagDto { Name = tagName });
@@ -77,11 +85,17 @@ namespace CollectionManager.WEB.Controllers
             return RedirectToAction("Details", new { itemId = model.Id });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Search(SearchModel model)
+        [HttpGet]
+        public async Task<IActionResult> Search(string substring)
         {
-            return RedirectToAction("Index", "Home");
+            var items = await _searchService.SearchBySubstringAsync(substring);
+
+            return View("SearchResult", _mapper.Map<IEnumerable<FoundItemToReturnDto>>(items));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchByTag(string tag)
+            => View("SearchResult", await _unitOfWork.Items.GetByTagAsync(tag));
 
         public async Task<IActionResult> Delete(Guid itemId, Guid collectionId)
         {

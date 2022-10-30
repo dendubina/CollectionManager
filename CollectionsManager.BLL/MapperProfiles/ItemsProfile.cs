@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CollectionsManager.BLL.DTO.Items;
+using CollectionsManager.BLL.Services.SearchService.Models;
 using CollectionsManager.DAL.Entities;
 
 namespace CollectionsManager.BLL.MapperProfiles
@@ -26,6 +27,8 @@ namespace CollectionsManager.BLL.MapperProfiles
             CreateMap<ItemToEditDto, Item>()
                 .ForMember(x => x.CustomValues, opt => opt.MapFrom(x => x.CustomFields))
                 .ForMember(x => x.Tags, opt => opt.Ignore());
+
+            CreateMap<SearchItem, FoundItemToReturnDto>();
         }
     }
 }

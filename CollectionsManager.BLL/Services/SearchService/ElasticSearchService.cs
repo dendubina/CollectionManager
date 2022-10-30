@@ -72,6 +72,7 @@ namespace CollectionsManager.BLL.Services.SearchService
                 {
                     Id = item.Id,
                     Name = item.Name,
+                    CollectionId = item.CollectionId,
                     CollectionName = item.Collection.Name,
                     OwnerName = item.Collection.Owner.UserName,
                     CustomFields = item.CustomValues.Select(value => new CustomField

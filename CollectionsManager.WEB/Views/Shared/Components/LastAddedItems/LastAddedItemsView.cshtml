@@ -31,8 +31,8 @@
                             @Html.DisplayFor(x => item.AuthorName)
                         </td>
                         <td class="text-center">
-                            @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id }, new { @class="last-added-items-link" })
-                            @Html.ActionLink("To Collection", "CollectionDetails", "Collections", new { collectionId = item.CollectionId }, new { @class = "last-added-items-link" })
+                            @Html.ActionLink("Details", "Details", "Items", new { itemId = item.Id }, new { @class="table-link" })
+                            @Html.ActionLink("To Collection", "CollectionDetails", "Collections", new { collectionId = item.CollectionId }, new { @class = "table-link" })
                         </td>
                     </tr>
                 }

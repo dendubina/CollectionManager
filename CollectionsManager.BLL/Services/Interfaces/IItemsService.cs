@@ -13,7 +13,9 @@ namespace CollectionsManager.BLL.Services.Interfaces
 
         Task<ItemToEditDto> GetItemToEditAsync(Guid itemId);
 
-        Task<IEnumerable<LastAddedItemDto>> GetLastAddedItems(int count);
+        Task<IEnumerable<FoundItemToReturnDto>> GetByTagAsync(string tag);
+
+        Task<IEnumerable<LastAddedItemDto>> GetLastAddedItemsAsync(int count);
 
         Task CreateItemAsync(ItemToCreate item);
 

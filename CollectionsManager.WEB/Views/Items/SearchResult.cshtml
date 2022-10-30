@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CollectionsManager.BLL.DTO.Items.FoundItemToReturnDto>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Search</title>
+</head>
+<body>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectionName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OwnerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tags)
+                    </th>
+                    <th class="text-center">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CollectionName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnerName)
+                        </td>
+                        <td>
+                            @foreach (var tag in item.Tags)
+                            {
+                                @Html.ActionLink(tag, "SearchByTag", "Items", new { tag }, new {@class = "tag-link"})
+                            }
+                        </td>
+                        <td class="text-center">
+                            @Html.ActionLink("To Collection", "CollectionDetails", "Collections", new { collectionId = item.CollectionId }, new { @class = "table-link" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="margin-left: 20px; margin-top: 20px; font-style: italic;">Nothing found</p>
+    }
+</body>
+</html>

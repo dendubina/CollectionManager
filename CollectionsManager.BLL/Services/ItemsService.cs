@@ -62,7 +62,7 @@ namespace CollectionsManager.BLL.Services
             return item;
         }
 
-        public async Task<IEnumerable<LastAddedItemDto>> GetLastAddedItems(int count)
+        public async Task<IEnumerable<LastAddedItemDto>> GetLastAddedItemsAsync(int count)
         {
             return await _unitOfWork.Items.GetAll(trackChanges: false)
                 .OrderByDescending(x => x.AddedDate)
@@ -73,6 +73,21 @@ namespace CollectionsManager.BLL.Services
                     AuthorName = item.Collection.Owner.UserName,
                     Id = item.Id,
                     CollectionId = item.CollectionId,
+                }).ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<FoundItemToReturnDto>> GetByTagAsync(string tag)
+        {
+            return await _unitOfWork.Items.GetAll(trackChanges: false)
+                .Where(item => item.Tags.Select(t => t.Name).Contains(tag))
+                .Select(item => new FoundItemToReturnDto
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CollectionId = item.CollectionId,
+                    CollectionName = item.Collection.Name,
+                    OwnerName = item.Collection.Owner.UserName,
+                    Tags = item.Tags.Select(x => x.Name),
                 }).ToArrayAsync();
         }
 
