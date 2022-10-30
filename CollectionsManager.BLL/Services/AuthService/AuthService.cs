@@ -72,7 +72,7 @@ namespace CollectionsManager.BLL.Services.AuthService
             return await CreateProfile(createdUser);
         }
 
-        public async Task Logout()
+        public async Task LogoutAsync()
             => await _signInManager.SignOutAsync();
 
         private async Task AddDefaultClaims(User user)

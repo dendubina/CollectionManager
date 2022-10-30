@@ -6,49 +6,77 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-dark bg-dark custom-navbar">
-            <div class="container-fluid">
-                <div class="left-header-block">
-                    @Html.ActionLink("Collections Manager", "Index", "Home", null, new { @class = "btn btn-outline-primary main-page-link" })
-                </div>
-                <div class="is-sign-in-block">
-                    @{
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            <div class="hello-block"><span style="color: seagreen">Hello, @User.GetUserName()</span></div>
-
-                            @if (User.IsInRole(RoleNames.Admin.ToString()))
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            @Html.ActionLink("Collections Manager", "Index", "Home", null, new { @class = "btn btn-outline-primary main-page-link" })
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item" style="visibility: hidden;">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <form asp-controller="Items" asp-action="Search" method="post" class="d-flex" >
+                            <input class="form-control me-2" name="SearchString" type="search" data-val="true" data-val-required="" placeholder="Search" aria-label="Search" autocomplete="off">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @{
+                            if (User.Identity.IsAuthenticated)
                             {
-                                @Html.ActionLink("Admin Panel", "Index", "Users", null, new{@class = "btn btn-outline-warning login-button" })
-                            }
+                                <li class="nav-item">
+                                    <div class="hello-block"><span style="color: seagreen">Hello, @User.GetUserName()</span></div>
+                                </li>
 
-                            @Html.ActionLink("My Collections", "UsersCollections", "Collections", new { userId = User.GetUserId() }, new{@class = "btn btn-outline-success login-button" })
-                            @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                                @if (User.IsInRole(RoleNames.Admin.ToString()))
+                                {
+                                    <li class="nav-item">
+                                        @Html.ActionLink("Admin Panel", "Index", "Users", null, new { @class = "btn btn-outline-warning login-button" })
+                                    </li>
+                                }
+
+                                <li class="nav-item">
+                                    @Html.ActionLink("My Collections", "UsersCollections", "Collections", new { userId = User.GetUserId() }, new { @class = "btn btn-outline-success login-button" })
+                                </li>
+
+                                <li class="nav-item">
+                                    @Html.ActionLink("Logout", "Logout", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    @Html.ActionLink("Sign In", "SignIn", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Sign Up", "SignUp", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
+                                </li>
+                            }
                         }
-                        else
-                        {
-                            @Html.ActionLink("Sign In", "SignIn", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
-                            @Html.ActionLink("Sign Up", "SignUp", "Account", routeValues: null, new { @class = "btn btn-outline-primary login-button" })
-                        }
-                    }
+                    </ul>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 </header>
 
     @RenderBody()
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

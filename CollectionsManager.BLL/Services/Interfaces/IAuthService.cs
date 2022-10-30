@@ -9,6 +9,6 @@ namespace CollectionsManager.BLL.Services.Interfaces
 
         Task<UserProfile> SignUpAsync(SignUpModel userData);
 
-        Task Logout();
+        Task LogoutAsync();
     }
 }

@@ -77,6 +77,12 @@ namespace CollectionManager.WEB.Controllers
             return RedirectToAction("Details", new { itemId = model.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Search(SearchModel model)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         public async Task<IActionResult> Delete(Guid itemId, Guid collectionId)
         {
             await _unitOfWork.Items.DeleteItemAsync(itemId, User.GetUserId());
