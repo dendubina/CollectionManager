@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using CollectionManager.WEB.Extensions;
+using CollectionManager.WEB.Middlewares;
+using Microsoft.Extensions.Hosting;
 
 namespace CollectionManager.WEB
 {
@@ -62,6 +63,8 @@ namespace CollectionManager.WEB
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<LogoutMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

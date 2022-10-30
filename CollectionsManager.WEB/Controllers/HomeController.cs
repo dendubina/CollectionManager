@@ -1,6 +1,7 @@
 ﻿using CollectionManager.WEB.Models;
+using CollectionsManager.BLL.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace CollectionManager.WEB.Controllers
 {
@@ -14,10 +15,21 @@ namespace CollectionManager.WEB.Controllers
         public IActionResult Index()
             => View();
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var error = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
+
+            switch (error)
+            {
+                case ResourceNotFoundException e:
+                    return View(new ErrorViewModel { Message = e.Message });
+
+                case ForbiddenAccessException e:
+                    return View(new ErrorViewModel { Message = e.Message });
+
+                default:
+                    return View(new ErrorViewModel() { Message = $"Oops, something went wrong {error.Message}" });
+            }
         }
     }
 }

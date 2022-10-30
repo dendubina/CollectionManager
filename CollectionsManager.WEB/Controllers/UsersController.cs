@@ -54,7 +54,7 @@ namespace CollectionManager.WEB.Controllers
                         await _unitOfWork.Users.BlockAsync(selectedUserId, User.GetUserId());
                         break;
 
-                    case "UnBlock":
+                    case "Unblock":
                         await _unitOfWork.Users.UnblockAsync(selectedUserId, User.GetUserId());
                         break;
                 }
