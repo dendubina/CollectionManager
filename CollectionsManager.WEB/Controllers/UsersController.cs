@@ -33,18 +33,31 @@ namespace CollectionManager.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> HandleChangingRoles(IList<UserViewModel> users, string submit)
         {
-            var selectedUsersIds = users
+            var selectedUserId = users
                 .Where(x => x.IsSelected)
-                .Select(x => x.Id);
+                .Select(x => x.Id)
+                .FirstOrDefault();
 
-            switch (submit)
+            if (selectedUserId is not null)
             {
-                case "AddAdminRole":
-                    await _unitOfWork.Users.AddAdminRoleAsync(selectedUsersIds, User.GetUserId());
-                    break;
-                case "RemoveAdminRole":
-                    await _unitOfWork.Users.RemoveAdminRoleAsync(selectedUsersIds, User.GetUserId());
-                    break;
+                switch (submit)
+                {
+                    case "AddAdminRole":
+                        await _unitOfWork.Users.AddAdminRoleAsync(selectedUserId, User.GetUserId());
+                        break;
+
+                    case "RemoveAdminRole":
+                        await _unitOfWork.Users.RemoveAdminRoleAsync(selectedUserId, User.GetUserId());
+                        break;
+
+                    case "Block":
+                        await _unitOfWork.Users.BlockAsync(selectedUserId, User.GetUserId());
+                        break;
+
+                    case "UnBlock":
+                        await _unitOfWork.Users.UnblockAsync(selectedUserId, User.GetUserId());
+                        break;
+                }
             }
 
             return RedirectToAction("Index");

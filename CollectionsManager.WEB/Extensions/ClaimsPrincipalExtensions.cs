@@ -12,7 +12,7 @@ namespace CollectionManager.WEB.Extensions
         public static string GetUserName(this ClaimsPrincipal claimsPrincipal)
             => claimsPrincipal.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value;
 
-        public static bool IsUserHasAccess(this ClaimsPrincipal claimsPrincipal, string ownerId)
-            => claimsPrincipal.Identity.IsAuthenticated && GetUserId(claimsPrincipal) == ownerId || claimsPrincipal.IsInRole(RoleNames.Admin.ToString());
+        public static bool IsUserHasAccess(this ClaimsPrincipal claimsPrincipal, string entityOwnerId)
+            => claimsPrincipal.Identity.IsAuthenticated && GetUserId(claimsPrincipal) == entityOwnerId || claimsPrincipal.IsInRole(RoleNames.Admin.ToString());
     }
 }

@@ -2,14 +2,12 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using CollectionsManager.BLL.DTO.User;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.BLL.Extensions;
 using CollectionsManager.BLL.Services.Interfaces;
 using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities;
-using CollectionsManager.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,16 +16,9 @@ namespace CollectionsManager.BLL.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        
-        private readonly IRepositoryManager _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager,  IMapper mapper, IRepositoryManager unitOfWork)
-        {
-            _userManager = userManager;
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
+        public UserService(UserManager<User> userManager)
+            => _userManager = userManager;
 
         public async Task<IEnumerable<UserToReturnDto>> GetAllAsync()
             => await _userManager.Users
@@ -36,43 +27,66 @@ namespace CollectionsManager.BLL.Services
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
+                    Status = user.Status,
                     Roles = user.UserRoles.Select(x => x.Role.Name)
-                })
-                .ToArrayAsync();
+                }).ToArrayAsync();
         
-        public async Task AddAdminRoleAsync(IEnumerable<string> userIds, string currentUserId)
+        public async Task AddAdminRoleAsync(string userId, string currentUserId)
         {
-            if (!await _userManager.IsInAdminRoleAsync(currentUserId))
-            {
-                ThrowForbiddenAccessException(currentUserId);
-            }
+            await CheckAdminRoleAsync(currentUserId);
 
-            var users = await _userManager.FindByIdsAsync(userIds).ToArrayAsync();
+            var user = await _userManager.FindByIdAsync(userId);
 
-            foreach (var user in users)
+            CheckIsExists(user, userId);
+
+            await _userManager.AddToRoleAsync(user, RoleNames.Admin.ToString());
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
+        }
+
+        public async Task RemoveAdminRoleAsync(string userId, string currentUserId)
+        {
+            await CheckAdminRoleAsync(currentUserId);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            CheckIsExists(user, userId);
+
+            await _userManager.RemoveFromRoleAsync(user, RoleNames.Admin.ToString());
+            await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
+        }
+
+        public async Task BlockAsync(string userId, string currentUserId)
+            => await ChangeStatus(UserStatus.Blocked, userId, currentUserId);
+
+        public async Task UnblockAsync(string userId, string currentUserId)
+            => await ChangeStatus(UserStatus.Active, userId, currentUserId);
+
+        private async Task ChangeStatus(UserStatus status, string userId, string currentUserId)
+        {
+            await CheckAdminRoleAsync(currentUserId);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            CheckIsExists(user, userId);
+
+            user.Status = status;
+            await _userManager.UpdateAsync(user);
+        }
+
+        private static void CheckIsExists(User user, string userId)
+        {
+            if (user is null)
             {
-                await _userManager.AddToRoleAsync(user, RoleNames.Admin.ToString());
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
+                throw new ResourceNotFoundException($"User with id {userId} not found");
             }
         }
 
-        public async Task RemoveAdminRoleAsync(IEnumerable<string> userIds, string currentUserId)
+        private async Task CheckAdminRoleAsync(string userId)
         {
-            if (!await _userManager.IsInAdminRoleAsync(currentUserId))
+            if (!await _userManager.IsInAdminRoleAsync(userId))
             {
-                ThrowForbiddenAccessException(currentUserId);
-            }
-
-            var users = await _userManager.FindByIdsAsync(userIds).ToArrayAsync();
-
-            foreach (var user in users)
-            {
-                await _userManager.RemoveFromRoleAsync(user, RoleNames.Admin.ToString());
-                await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
+                throw new ForbiddenAccessException($"User with id {userId} doesn't have access");
             }
         }
-
-        private static void ThrowForbiddenAccessException(string currentUserId)
-            => throw new ForbiddenAccessException($"User with id {currentUserId} doesn't have access");
     }
 }

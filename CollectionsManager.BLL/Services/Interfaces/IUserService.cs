@@ -8,8 +8,12 @@ namespace CollectionsManager.BLL.Services.Interfaces
     {
         Task<IEnumerable<UserToReturnDto>> GetAllAsync();
 
-        Task AddAdminRoleAsync(IEnumerable<string> userIds, string currentUserId);
+        Task AddAdminRoleAsync(string userId, string currentUserId);
 
-        Task RemoveAdminRoleAsync(IEnumerable<string> userIds, string currentUserId);
+        Task RemoveAdminRoleAsync(string userId, string currentUserId);
+
+        Task BlockAsync(string userId, string currentUserId);
+
+        Task UnblockAsync(string userId, string currentUserId);
     }
 }

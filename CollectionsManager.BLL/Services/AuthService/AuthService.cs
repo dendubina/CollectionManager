@@ -33,7 +33,7 @@ namespace CollectionsManager.BLL.Services.AuthService
         {
             var user = await _userManager.FindByEmailAsync(userData.Email);
 
-            if (user is null)
+            if (user is null || !user.Status.Equals(UserStatus.Active))
             {
                 throw new InvalidOperationException("User not found");
             }
@@ -54,6 +54,7 @@ namespace CollectionsManager.BLL.Services.AuthService
             {
                 UserName = userData.UserName,
                 Email = userData.Email,
+                Status = UserStatus.Active,
             };
 
             var result = await _userManager.CreateAsync(userToCreate, userData.Password);
@@ -86,7 +87,7 @@ namespace CollectionsManager.BLL.Services.AuthService
         }
 
         private async Task AddDefaultRoles(User user)
-            => await _userManager.AddToRoleAsync(user, RoleNames.User.ToString());
+            => await _userManager.AddToRoleAsync(user, RoleNames.Admin.ToString());
 
         private async Task<JwtSecurityToken> GenerateJwtToken(User user)
         {

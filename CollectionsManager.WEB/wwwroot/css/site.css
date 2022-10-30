@@ -6,6 +6,10 @@
     margin: 0 auto;
 }
 
+.user-status {
+    font-weight: bold;
+}
+
 .navbar {
     padding: 0;
 }

@@ -1,4 +1,5 @@
-﻿@model IList<CollectionManager.WEB.Models.Users.UserViewModel>
+﻿@using CollectionsManager.DAL.Constants
+@model IList<CollectionManager.WEB.Models.Users.UserViewModel>
 
 <!DOCTYPE html>
 
@@ -10,11 +11,12 @@
 <body>
     @using (Html.BeginForm("HandleChangingRoles", "Users", FormMethod.Post))
     {
-        <div class="buttons-block text-center">
-            <button type="submit" name="submit" value="AddAdminRole" class="btn btn-outline-success">Add admin</button>
-            <button type="submit" name="submit" value="RemoveAdminRole" class="btn btn-outline-warning">Remove admin</button>
-        </div>
-
+    <div class="buttons-block text-center">
+        <button type="submit" name="submit" value="AddAdminRole" class="btn btn-outline-success">Add admin</button>
+        <button type="submit" name="submit" value="RemoveAdminRole" class="btn btn-outline-warning">Remove admin</button>
+        <button type="submit" name="submit" value="Block" class="btn btn-outline-danger">Block</button>
+        <button type="submit" name="submit" value="Unblock" class="btn btn-outline-success">UnBlock</button>
+    </div>
         <table class="table">
             <thead>
                 <tr>
@@ -32,6 +34,9 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(m => m[0].Roles)
+                    </th>
+                    <th>
+                       @Html.DisplayNameFor(m => m[0].Status)
                     </th>
                 </tr>
             </thead>
@@ -57,10 +62,44 @@
                         <td>
                             <span>@string.Join(", ", Model[i].Roles)</span>
                         </td>
+                        <td>
+                            @switch (Model[i].Status)
+                            {
+                                case UserStatus.Active:
+                                    <span class="user-status" style="color: seagreen;" >@Model[i].Status.ToString()</span>
+                                    break;
+
+                                case UserStatus.Blocked:
+                                    <span class="user-status" style="color: #9d1535">@Model[i].Status.ToString()</span>
+                                    break;
+                                            
+                                default:
+                                    <span class="user-status">@Model[i].Status.ToString()</span>
+                                    break;
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     }
+<script>
+    {
+        const checkBoxes = document.querySelectorAll(".user-check-box");
+
+        handleCheckBoxClick = (event) => {
+
+            checkBoxes.forEach(checkBox => {
+                checkBox.checked = false;
+            });
+
+            event.target.checked = true;
+        }
+
+        checkBoxes.forEach(checkBox => {
+            checkBox.addEventListener("click", handleCheckBoxClick)
+        });
+    }
+</script>
 </body>
 </html>

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CollectionsManager.BLL.Exceptions;
 using CollectionsManager.DAL.Constants;
 using CollectionsManager.DAL.Entities;
@@ -14,7 +12,7 @@ namespace CollectionsManager.BLL.Extensions
         {
             var user = await userManager.FindByIdAsync(currentUserId);
 
-            if (entityOwnerId.Equals(user.Id) || await userManager.IsInRoleAsync(user, RoleNames.Admin.ToString()))
+            if (!user.Status.Equals(UserStatus.Blocked) && entityOwnerId.Equals(user.Id) || await userManager.IsInRoleAsync(user, RoleNames.Admin.ToString()))
             {
                 return;
             }
@@ -22,10 +20,12 @@ namespace CollectionsManager.BLL.Extensions
             throw new ForbiddenAccessException($"User with id {currentUserId} has no access to operation");
         }
 
-        public static IQueryable<User> FindByIdsAsync(this UserManager<User> userManager, IEnumerable<string> userIds)
-            => userManager.Users.Where(x => userIds.Any(f => f == x.Id));
-
         public static async Task<bool> IsInAdminRoleAsync(this UserManager<User> userManager, string userId)
-            => await userManager.IsInRoleAsync(await userManager.FindByIdAsync(userId), RoleNames.Admin.ToString());
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            return await userManager.IsInRoleAsync(user, RoleNames.Admin.ToString()) && !user.Status.Equals(UserStatus.Blocked);
+        }
+          
     }
 }

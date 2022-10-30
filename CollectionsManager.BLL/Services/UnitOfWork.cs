@@ -101,7 +101,7 @@ namespace CollectionsManager.BLL.Services
             {
                 if (_userService is null)
                 {
-                    _userService = new UserService(_userManager, _mapper, _repositoryManager);
+                    _userService = new UserService(_userManager);
                 }
 
                 return _userService;

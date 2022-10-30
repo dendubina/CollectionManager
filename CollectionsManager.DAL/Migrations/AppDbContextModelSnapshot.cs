@@ -230,6 +230,9 @@ namespace CollectionsManager.DAL.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -279,22 +282,22 @@ namespace CollectionsManager.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e44acd41-a4ab-43f8-a344-4edba20beaba",
-                            ConcurrencyStamp = "363d679a-8fa5-4d2b-b6e8-f57734bc73d6",
+                            Id = "5a690d42-6893-4adb-aea4-7b23775291f1",
+                            ConcurrencyStamp = "4e8303ec-e8bf-4573-812b-5a58ecb28021",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "cdd23ab8-20e8-40a9-b158-f3c998032aaf",
-                            ConcurrencyStamp = "4354700d-0c65-4c37-abd2-7a40266774af",
+                            Id = "2d5e7df7-83e0-46df-bead-6d17cfdc4ede",
+                            ConcurrencyStamp = "bbade42c-b062-4108-8727-4f8193b30337",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "63969e45-afef-43d2-9f3f-8282b2d82167",
-                            ConcurrencyStamp = "1159ca73-9127-4ef3-be5a-b8729a8915a9",
+                            Id = "da3aaf82-88d6-4768-a260-92521d62a741",
+                            ConcurrencyStamp = "39375e9e-82e7-4191-9ba7-f6818f1afecc",
                             Name = "Tester",
                             NormalizedName = "TESTER"
                         });
