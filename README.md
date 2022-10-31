@@ -45,4 +45,4 @@ https://github.com/dendubina/MyPet.WEB
 - Добавить экспорт коллекций в CSV-файл. ***(С помощью библиотеки CsvHelper. Было реализовано в Task #6. https://github.com/dendubina/ITransition-Tasks/blob/main/Task-6-RandomData/Controllers/HomeController.cs#L48 Здесь немного сложнее логика, нужно время разобраться)***
 
 ##### Cтруктура базы данных:
-![Alt text](/dbimg.jpg?raw=true "Optional Title")
+![Alt text](/dbimg.png?raw=true "Optional Title")
