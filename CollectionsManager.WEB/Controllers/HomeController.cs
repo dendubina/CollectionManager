@@ -28,7 +28,7 @@ namespace CollectionManager.WEB.Controllers
                     return View(new ErrorViewModel { Message = e.Message });
 
                 default:
-                    return View(new ErrorViewModel() { Message = $"Oops, something went wrong {error.Message}" });
+                    return View(new ErrorViewModel() { Message = $"Oops, something went wrong. {error.Message}" });
             }
         }
     }

@@ -33,11 +33,11 @@ namespace CollectionsManager.BLL.Services
         
         public async Task AddAdminRoleAsync(string userId, string currentUserId)
         {
-            await CheckAdminRoleAsync(currentUserId);
+            await CheckIsUserHasAccessAsync(currentUserId);
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            CheckIsExists(user, userId);
+            CheckIsUserExists(user, userId);
 
             await _userManager.AddToRoleAsync(user, RoleNames.Admin.ToString());
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
@@ -45,11 +45,11 @@ namespace CollectionsManager.BLL.Services
 
         public async Task RemoveAdminRoleAsync(string userId, string currentUserId)
         {
-            await CheckAdminRoleAsync(currentUserId);
+            await CheckIsUserHasAccessAsync(currentUserId);
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            CheckIsExists(user, userId);
+            CheckIsUserExists(user, userId);
 
             await _userManager.RemoveFromRoleAsync(user, RoleNames.Admin.ToString());
             await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Admin.ToString()));
@@ -63,17 +63,17 @@ namespace CollectionsManager.BLL.Services
 
         private async Task ChangeStatus(UserStatus status, string userId, string currentUserId)
         {
-            await CheckAdminRoleAsync(currentUserId);
+            await CheckIsUserHasAccessAsync(currentUserId);
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            CheckIsExists(user, userId);
+            CheckIsUserExists(user, userId);
 
             user.Status = status;
             await _userManager.UpdateAsync(user);
         }
 
-        private static void CheckIsExists(User user, string userId)
+        private static void CheckIsUserExists(User user, string userId)
         {
             if (user is null)
             {
@@ -81,7 +81,7 @@ namespace CollectionsManager.BLL.Services
             }
         }
 
-        private async Task CheckAdminRoleAsync(string userId)
+        private async Task CheckIsUserHasAccessAsync(string userId)
         {
             if (!await _userManager.IsInAdminRoleAsync(userId))
             {

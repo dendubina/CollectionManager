@@ -37,7 +37,6 @@ namespace CollectionManager.WEB.Extensions
             services.AddDbContext<AppDbContext>(opts =>
             {
                 opts.UseSqlServer(configuration.GetConnectionString("LocalDb"));
-               // opts.EnableSensitiveDataLogging();
             });
         }
 
