@@ -3,7 +3,7 @@
 - MS SQL Server
 - Entity Framework
 - ElasticSearch
-- Automapper, FluentValidation, Bootstrap
+- NEST, Google.Cloud.Storage.V1, Automapper, FluentValidation, Bootstrap
 
 #### Пример приложения с микросервисной архитектурой:
 https://github.com/dendubina/FridgeManager.API
