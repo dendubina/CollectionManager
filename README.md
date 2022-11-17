@@ -40,7 +40,6 @@ https://github.com/dendubina/MyPet.WEB
 ##### Требования со звездочкой (на “отлично”, 10/10, только если все предыдущие требования реализованы ):
 
 - Аутентификация через социальные сети; ***(Нобходимо время разобраться, например Google: https://developers.google.com/api-client-library/dotnet/guide/aaa_oauth https://medium.com/c-sharp-progarmming/asp-net-core-google-authentication-4c0aa8feebbc)***
-- Добавить кастомные поля с типом “один из заданного списка” с возможностью редактирования списка доступных значений ***(Не совсем понял условие, не хватило времени заняться)***
 - ~~Добавить произвольное число кастомных полей(не 0 или 1 или 2 или 3 поля данного типа, в произвольное число).~~
 - Добавить экспорт коллекций в CSV-файл. ***(С помощью библиотеки CsvHelper. Было реализовано в Task #6. https://github.com/dendubina/ITransition-Tasks/blob/main/Task-6-RandomData/Controllers/HomeController.cs#L48 Здесь немного сложнее логика, нужно время разобраться)***
 
